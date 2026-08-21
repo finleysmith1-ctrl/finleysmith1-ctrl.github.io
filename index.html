@@ -136,7 +136,8 @@ footer { border-top: 1px solid var(--line); padding: 40px 0; color: var(--faint)
   .shots2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 42px 0 0; }
   @media (max-width: 720px){ .shots2 { grid-template-columns: 1fr; } }
   .shots2 figure { margin: 0; }
-  .shots2 img { width: 100%; border-radius: 12px; border: 1px solid var(--line);
+  .shots2 img { width: 100%; aspect-ratio: 11/5; object-fit: cover; object-position: top;
+    border-radius: 12px; border: 1px solid var(--line);
     box-shadow: 0 24px 60px -40px rgba(0,0,0,.6); display: block; }
   .shots2 figcaption { margin-top: 11px; font-size: 13.5px; color: var(--soft); }
   .micro { margin-top: 26px; font-size: 14px; color: var(--faint); max-width: 60ch; margin-left: auto; margin-right: auto; }
