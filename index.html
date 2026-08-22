@@ -12,18 +12,8 @@
   --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
 }
-:root[data-theme="light"] {
-  --bg: #f5f7f5; --bg2: #eef2ef; --card: #ffffff; --line: #e0e7e3;
-  --ink: #0e1613; --soft: #4a5b55; --faint: #7c8d86;
-  --jade: #0d7a5f; --jade-deep: #0d7a5f; --jade-soft: #e6f3ee;
-}
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --bg: #f5f7f5; --bg2: #eef2ef; --card: #ffffff; --line: #e0e7e3;
-    --ink: #0e1613; --soft: #4a5b55; --faint: #7c8d86;
-    --jade: #0d7a5f; --jade-deep: #0d7a5f; --jade-soft: #e6f3ee;
-  }
-}
+/* Committed to a dark world on purpose — a premium landing page picks one
+   look rather than following the OS. */
 * { box-sizing: border-box; }
 ::selection { background: var(--jade); color: #06120d; }
 :focus-visible { outline: 2px solid var(--jade); outline-offset: 3px; border-radius: 4px; }
