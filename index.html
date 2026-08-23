@@ -219,6 +219,35 @@ footer { border-top: 1px solid var(--line); padding: 40px 0; color: var(--faint)
   .maplegend .d-has { background: #5b6f68; }
   @media (max-width: 640px){ .plabel { display: none; } .mapwrap { padding: 14px 12px 12px; } }
 section[id], header[id] { scroll-margin-top: 88px; }
+
+/* ---- editorial layout: asymmetric, left-aligned section headers (the opposite
+   of the centered-everything template look that reads as AI-made) ---- */
+.sechead { display: grid; grid-template-columns: 1.15fr .85fr; gap: 18px 46px; align-items: end; margin-bottom: 46px; }
+.sechead > div { min-width: 0; }
+.sechead h2 { margin: 0; text-align: left; }
+.sechead .lead { margin: 0; text-align: left; max-width: 46ch; align-self: end; }
+.sechead .eyebrow { text-align: left; }
+@media (max-width: 760px){ .sechead { grid-template-columns: 1fr; gap: 12px; margin-bottom: 30px; } }
+
+/* ---- atmosphere: soft light so the page has depth instead of flat blocks ---- */
+.hero::before {
+  content: ""; position: absolute; inset: -90px -30% auto -30%; height: 780px; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(48% 55% at 20% 8%, rgba(52,211,153,.14), transparent 66%),
+    radial-gradient(42% 48% at 90% 0%, rgba(230,182,76,.07), transparent 70%);
+}
+.hero > .wrap { position: relative; z-index: 1; }
+/* a faint grid texture over the whole page — subliminal, kills the flatness */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .5;
+  background-image:
+    linear-gradient(rgba(255,255,255,.014) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+body > * { position: relative; z-index: 1; }
+/* the alternating sections get a whisper of gradient, not a flat fill */
+section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
 </style>
 </head>
 <body>
@@ -272,11 +301,13 @@ section[id], header[id] { scroll-margin-top: 88px; }
   </div>
 </div></section>
 
-<section id="map"><div class="wrap center">
-  <div class="eyebrow" style="text-align:center">Live lead map</div>
-  <h2>Every business with nothing to click.</h2>
-  <p class="lead">Point it at any town. Sitesmith checks each business against the live web and lights up
-  the ones with no website — the exact people who need what you build.</p>
+<section id="map"><div class="wrap">
+  <div class="sechead">
+    <div><div class="eyebrow">Live lead map</div>
+      <h2>Every business with nothing to click.</h2></div>
+    <p class="lead">Point it at any town. Sitesmith checks each business against the live web and lights up
+    the ones with no website — the exact people who need what you build.</p>
+  </div>
   <div class="mapwrap">
     <div class="mapinner">
     <svg class="usmap" viewBox="0 0 1000 549" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
@@ -1695,10 +1726,13 @@ section[id], header[id] { scroll-margin-top: 88px; }
   </div>
 </div></section>
 
-<section id="how" class="center"><div class="wrap">
-  <div class="eyebrow" style="text-align:center">How it works</div>
-  <h2>Three steps. The middle one is the trick nobody else does.</h2>
-  <div class="grid" style="margin-top:44px;text-align:left">
+<section id="how"><div class="wrap">
+  <div class="sechead">
+    <div><div class="eyebrow">How it works</div>
+      <h2>Three steps. The middle one is the trick nobody else does.</h2></div>
+    <p class="lead">Most tools stop at a list of names. The one in the middle — building the site before you pitch — is the part that gets a reply.</p>
+  </div>
+  <div class="grid" style="margin-top:0;text-align:left">
     <div class="feat"><span class="ix">STEP 01</span><h3>It finds the leads</h3>
       <p>Pick a town and a trade. Sitesmith pulls every matching business from OpenStreetMap, keeps the ones with no website on record, and scores them so your best prospects sit on top.</p></div>
     <div class="feat"><span class="ix">STEP 02</span><h3>It verifies them</h3>
@@ -1709,12 +1743,13 @@ section[id], header[id] { scroll-margin-top: 88px; }
 </div></section>
 
 
-<section id="builds" class="alt"><div class="wrap center">
-  <div class="eyebrow" style="margin-bottom:14px">Real output</div>
-  <h2>It doesn't just find the lead. It builds their website.</h2>
-  <p class="lead">A real, finished, responsive site for each business — their actual hours, a call
-  button, proper SEO. You walk in with the work already done. Two real examples, generated in about
-  forty seconds each:</p>
+<section id="builds" class="alt"><div class="wrap">
+  <div class="sechead">
+    <div><div class="eyebrow">Real output</div>
+      <h2>It doesn't just find the lead. It builds their website.</h2></div>
+    <p class="lead">A real, finished, responsive site for each business — their actual hours, a call
+    button, proper SEO. Two real examples, generated in about forty seconds each:</p>
+  </div>
   <div class="shots2">
     <figure>
       <div class="frame">
@@ -1737,16 +1772,24 @@ section[id], header[id] { scroll-margin-top: 88px; }
   designed for their trade. Download it as a ready-to-host folder and it's live in five minutes.</p>
 </div></section>
 
-<section class="center"><div class="wrap">
-  <h2>Then pitch from your phone</h2>
-  <p class="lead">A call sheet, best leads first. Tap to call, a line to say, one tap to log what
-  happened. Calling is the main channel — the tool is built around it.</p>
-  <div class="phoneshot"><img src="img/callsheet.png" alt="The Sitesmith call sheet on a phone" loading="lazy"></div>
+<section><div class="wrap">
+  <div class="split" style="align-items:center">
+    <div>
+      <div class="eyebrow">On the phone</div>
+      <h2 style="text-align:left">Then pitch from your phone.</h2>
+      <p class="lead" style="text-align:left;margin:0">A call sheet, best leads first. Tap to call, a line to say, one tap to log what
+      happened. Calling is the main channel — the tool is built around it.</p>
+    </div>
+    <div class="phoneshot" style="margin:0 auto"><img src="img/callsheet.png" alt="The Sitesmith call sheet on a phone" loading="lazy"></div>
+  </div>
 </div></section>
 
-<section id="features" class="alt"><div class="wrap center">
-  <h2>Everything in the box</h2>
-  <p class="lead">No monthly lock-in. It's a tool you own and run yourself.</p>
+<section id="features" class="alt"><div class="wrap">
+  <div class="sechead">
+    <div><div class="eyebrow">What's inside</div>
+      <h2>Everything in the box.</h2></div>
+    <p class="lead">No monthly lock-in. It's a tool you own and run yourself — the whole workflow, start to finish.</p>
+  </div>
   <div class="grid">
     <div class="feat"><span class="ix">01</span><h3>Map view</h3><p>See your leads as pins. Six on one street is a morning of walk-ins.</p></div>
     <div class="feat"><span class="ix">02</span><h3>Call sheet</h3><p>A phone-first sheet: tap to call, a line to say, one-tap outcome logging.</p></div>
@@ -1760,10 +1803,14 @@ section[id], header[id] { scroll-margin-top: 88px; }
   </div>
 </div></section>
 
-<section id="price" class="center"><div class="wrap">
-  <h2>Simple price</h2>
-  <p class="lead">Pay once. It's yours. One landed client pays for it many times over.</p>
-  <div class="price" id="buy">
+<section id="price"><div class="wrap">
+  <div class="split" style="align-items:center">
+    <div>
+      <div class="eyebrow">Pricing</div>
+      <h2 style="text-align:left">Simple price. Pay once, own it.</h2>
+      <p class="lead" style="text-align:left;margin:0 0 8px">One landed client pays for it many times over — and there's no subscription, no usage caps, nothing to cancel.</p>
+    </div>
+  <div class="price" id="buy" style="margin:0">
     <div class="once">One-time</div>
     <div class="tag">$39<small> once</small></div>
     <ul>
@@ -1776,11 +1823,13 @@ section[id], header[id] { scroll-margin-top: 88px; }
     <a class="btn big" style="width:100%" href="mailto:soccerlover249145@gmail.com?subject=I%20want%20Sitesmith&body=Hi%20Finley%2C%20I%20saw%20Sitesmith%20and%20I%27m%20interested%20%E2%80%94%20how%20do%20I%20get%20it%3F">Get early access — $39</a>
     <p class="note">Just launched — email to get your copy. You bring a free OpenRouter key for the AI; runs on macOS with Python 3.</p>
   </div>
+  </div><!-- /split -->
 </div></section>
 
-<section class="alt center"><div class="wrap">
-  <h2>Questions</h2>
-  <div class="faq">
+<section class="alt"><div class="wrap">
+  <div class="eyebrow">FAQ</div>
+  <h2 style="text-align:left">Questions</h2>
+  <div class="faq" style="margin-left:0">
     <details><summary>Do I need to be technical?</summary>
       <p>You run one command to start it, then everything happens in your browser. If you can open Terminal and paste a line, you're fine — setup is walked through step by step.</p></details>
     <details><summary>What does it cost to run?</summary>
