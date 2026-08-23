@@ -47,8 +47,11 @@
 ::selection { background: var(--jade); color: #06120d; }
 :focus-visible { outline: 2px solid var(--jade); outline-offset: 3px; border-radius: 4px; }
 html { scrollbar-color: var(--jade-deep) transparent; }
+/* No overflow-x:hidden here — it silently kills position:sticky (the floating
+   nav). Horizontal overflow is prevented at the source instead: the hero glow
+   is contained and wide tables scroll inside their own wrappers. */
 body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--sans);
-  -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  -webkit-font-smoothing: antialiased; }
 .wrap { max-width: 1000px; margin: 0 auto; padding: 0 22px; }
 a { color: inherit; }
 
@@ -273,7 +276,9 @@ body::before {
     linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
   background-size: 44px 44px;
 }
-body > * { position: relative; z-index: 1; }
+/* :not(nav) — this blanket position:relative was overriding the nav's
+   position:sticky (later rule, same specificity) and quietly killing it */
+body > :not(nav) { position: relative; z-index: 1; }
 /* the alternating sections get a whisper of gradient, not a flat fill */
 section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
 
