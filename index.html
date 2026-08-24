@@ -447,14 +447,6 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
 #progress { position: fixed; top: 0; left: 0; height: 2px; width: 0;
   background: linear-gradient(90deg, var(--jade), #7ce7c0); z-index: 60; }
 
-/* ============ cursor companion — a trailing ring, native cursor kept ===== */
-#ring { position: fixed; top: 0; left: 0; width: 30px; height: 30px; border-radius: 50%;
-  border: 1.5px solid rgba(52,211,153,.55); pointer-events: none; z-index: 70;
-  transform: translate(-50%,-50%); transition: width .25s ease, height .25s ease,
-  border-color .25s ease, opacity .3s ease; opacity: 0; }
-#ring.on { opacity: 1; }
-#ring.hot { width: 52px; height: 52px; border-color: rgba(52,211,153,.9); }
-@media (pointer: coarse) { #ring { display: none; } }
 
 /* ============ the closer ============ */
 .closer { text-align: center; padding: 130px 0 110px; position: relative; overflow: hidden; }
@@ -2266,7 +2258,7 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
   }, { passive: true });
 })();
 </script>
-<div id="progress" aria-hidden="true"></div><div id="ring" aria-hidden="true"></div>
+<div id="progress" aria-hidden="true"></div>
 <script>
 (function () {
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2276,21 +2268,6 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
     var h = document.documentElement.scrollHeight - innerHeight;
     bar.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + '%';
   }, { passive: true });
-  // trailing ring
-  var ring = document.getElementById('ring');
-  if (matchMedia('(pointer: fine)').matches && !reduce) {
-    var rx = -100, ry = -100, tx = rx, ty = ry;
-    addEventListener('mousemove', function (e) {
-      tx = e.clientX; ty = e.clientY; ring.classList.add('on');
-      var t = e.target.closest && e.target.closest('a, button');
-      ring.classList.toggle('hot', !!t);
-    }, { passive: true });
-    (function loop() {
-      rx += (tx - rx) * 0.16; ry += (ty - ry) * 0.16;
-      ring.style.transform = 'translate(' + (rx - 15) + 'px,' + (ry - 15) + 'px)';
-      requestAnimationFrame(loop);
-    })();
-  }
   // wordmark drifts up as it enters
   var mark = document.querySelector('.bigmark span');
   if (mark && !reduce) {
