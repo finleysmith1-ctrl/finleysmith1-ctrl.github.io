@@ -202,13 +202,13 @@ footer { border-top: 1px solid var(--line); padding: 40px 0; color: var(--faint)
   .phoneshot img { width: 100%; border-radius: 22px; border: 6px solid var(--card);
     box-shadow: 0 30px 70px -30px rgba(0,0,0,.7); display: block; }
   /* example sites framed in browser chrome + a mono figure caption (engineered feel) */
-  .shots2 .frame { border: 1px solid rgba(234,242,238,.12); border-radius: 12px; overflow: hidden;
+  .shots2 .frame, .exgrid .frame { border: 1px solid rgba(234,242,238,.12); border-radius: 12px; overflow: hidden;
     background: var(--card); box-shadow: var(--hairline-top), 0 24px 60px -40px rgba(0,0,0,.7); }
-  .shots2 .frame img { width: 100%; aspect-ratio: 16/10; object-fit: cover; object-position: top;
+  .shots2 .frame img, .exgrid .frame img { width: 100%; aspect-ratio: 16/10; object-fit: cover; object-position: top;
     display: block; border: 0; border-radius: 0; box-shadow: none; }
-  .shots2 .cap { display: flex; justify-content: space-between; gap: 10px; margin-top: 12px;
+  .shots2 .cap, .exgrid .cap { display: flex; justify-content: space-between; gap: 10px; margin-top: 12px;
     font: 12px/1.4 var(--mono); color: var(--faint); letter-spacing: .03em; }
-  .shots2 .cap b { color: var(--soft); font-weight: 600; text-transform: uppercase; letter-spacing: .07em; }
+  .shots2 .cap b, .exgrid .cap b { color: var(--soft); font-weight: 600; text-transform: uppercase; letter-spacing: .07em; }
 
   /* live lead map — dot-matrix US from real geometry, pins at real city coords */
   .mapwrap { position: relative; max-width: 940px; margin: 42px auto 0; padding: 20px 20px 16px;
