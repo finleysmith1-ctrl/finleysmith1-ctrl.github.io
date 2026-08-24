@@ -180,7 +180,7 @@ footer { border-top: 1px solid var(--line); padding: 40px 0; color: var(--faint)
   .chrome .d { width: 11px; height: 11px; border-radius: 50%; } .chrome .r{background:#f45b4d}
   .chrome .y{background:#f5bd4f} .chrome .g{background:#5ac26a}
   .chrome .url { margin-left: 10px; font: 12px/1 var(--mono); color: var(--faint); }
-  .shot img { display: block; width: 100%; }
+  .shot img, .shot video { display: block; width: 100%; }
   .shots2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 42px 0 0; }
   .exgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 42px 0 0; }
   @media (max-width: 980px){ .exgrid { grid-template-columns: 1fr 1fr; } }
@@ -338,6 +338,15 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
   radial-gradient(900px 480px at 82% 0%, rgba(230,182,76,.05), transparent 70%); }
 #compare, #own { background:
   radial-gradient(900px 480px at 12% 8%, rgba(52,211,153,.06), transparent 70%); }
+
+/* the live-check heartbeat — restrained: the product's one central mechanic */
+@keyframes oppPulse { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+.opp, .opp-sm { animation: oppPulse 2.6s ease-in-out infinite; }
+.opp-sm { animation-delay: 1.1s; }
+.plabel.checking b::after { content: ""; }
+.plabel.checking span { color: var(--gold, #e6b64c); }
+.plabel span { transition: color .3s ease; }
+@media (prefers-reduced-motion: reduce) { .opp, .opp-sm { animation: none; } }
 </style>
 </head>
 <body>
@@ -366,8 +375,12 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
 
   <div class="shot">
     <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
-      <div class="url">unwebbed · builder</div></div>
-    <img src="img/app-unwebbed.png" alt="The Unwebbed Builder — describe a site and it builds it, with finished projects below" loading="eager">
+      <div class="url">unwebbed · builder &nbsp;·&nbsp; REAL BUILD, CONDENSED — FULL TIME ~3 MIN</div></div>
+    <video autoplay muted loop playsinline preload="metadata" poster="img/app-unwebbed.png"
+      aria-hidden="true" title="Unwebbed building a real site — condensed, real build time about 3 minutes">
+      <source src="img/demo.mp4" type="video/mp4">
+      <img src="img/app-unwebbed.png" alt="The Unwebbed Builder — describe a site and it builds it">
+    </video>
   </div>
 </div>
 </div></header>
@@ -2016,6 +2029,27 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
     el.style.transitionDelay = Math.min(i % 6, 4) * 40 + 'ms';
     io.observe(el);
   });
+})();
+</script>
+<script>
+(function () {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var labels = [].slice.call(document.querySelectorAll('.plabel'));
+  if (!labels.length) return;
+  var i = 0;
+  setInterval(function () {
+    var el = labels[i % labels.length]; i++;
+    var span = el.querySelector('span');
+    if (!span) return;
+    var real = span.dataset.real || span.textContent;
+    span.dataset.real = real;
+    el.classList.add('checking');
+    span.textContent = 'CHECKING LIVE WEB…';
+    setTimeout(function () {
+      span.textContent = real;
+      el.classList.remove('checking');
+    }, 1100);
+  }, 3400);
 })();
 </script>
 </body>
