@@ -423,6 +423,46 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
 .fair a, .honest a, .faq a, footer a { background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
   transition: background-size .3s cubic-bezier(.2,.7,.2,1); text-decoration: none; }
 .fair a:hover, .honest a:hover, .faq a:hover, footer a:hover { background-size: 100% 1px; }
+
+/* ============ the tonal flip — warm daylight sections (owner-calibrated:
+   warm & light wins; the page now breathes dark → light → dark) ============ */
+.light {
+  --bg: #f3eee3; --bg2: #ece5d6; --card: #fbf8f0; --line: rgba(24,34,28,.14);
+  --ink: #182219; --soft: #4e6156; --faint: #7f8f85;
+  --jade: #0d8a60; --jade-deep: #0a6b4b; --jade-soft: #dff0e7;
+  --amber: #a97b22; --hairline-top: inset 0 1px 0 rgba(255,255,255,.7);
+  background: var(--bg); color: var(--soft);
+}
+.light h2, .light h3, .light b { color: var(--ink); }
+.light .frame { border-color: rgba(24,34,28,.16);
+  box-shadow: 0 1px 2px rgba(20,30,24,.08), 0 18px 44px -18px rgba(20,30,24,.25); }
+#builds.light { background:
+  radial-gradient(900px 480px at 82% 0%, rgba(169,123,34,.07), transparent 70%), var(--bg); }
+.light .chapter { color: rgba(13,138,96,.09); }
+.light .btn.ghost, .light .btn:not(.big) { color: var(--ink); }
+/* dark→light seam: a soft edge so the flip feels bound, not broken */
+.light { border-top: 1px solid rgba(24,34,28,.08); border-bottom: 1px solid rgba(24,34,28,.08); }
+
+/* ============ scroll progress hairline ============ */
+#progress { position: fixed; top: 0; left: 0; height: 2px; width: 0;
+  background: linear-gradient(90deg, var(--jade), #7ce7c0); z-index: 60; }
+
+/* ============ cursor companion — a trailing ring, native cursor kept ===== */
+#ring { position: fixed; top: 0; left: 0; width: 30px; height: 30px; border-radius: 50%;
+  border: 1.5px solid rgba(52,211,153,.55); pointer-events: none; z-index: 70;
+  transform: translate(-50%,-50%); transition: width .25s ease, height .25s ease,
+  border-color .25s ease, opacity .3s ease; opacity: 0; }
+#ring.on { opacity: 1; }
+#ring.hot { width: 52px; height: 52px; border-color: rgba(52,211,153,.9); }
+@media (pointer: coarse) { #ring { display: none; } }
+
+/* ============ the closer ============ */
+.closer { text-align: center; padding: 130px 0 110px; position: relative; overflow: hidden; }
+.closer::before { content: ""; position: absolute; inset: 0;
+  background: radial-gradient(640px 380px at 50% 110%, rgba(52,211,153,.13), transparent 70%); }
+.closer h2 { font-size: clamp(38px, 6.5vw, 84px); max-width: 16ch; margin: 0 auto 14px; }
+.closer .lead { margin-bottom: 30px; }
+.closer > * { position: relative; }
 </style>
 </head>
 <body>
@@ -1931,7 +1971,7 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
 </div></section>
 
 
-<section id="builds" class="alt"><div class="wrap">
+<section id="builds" class="alt light"><div class="wrap">
   <div class="sechead">
     <span class="chapter" aria-hidden="true">03</span><div><div class="eyebrow">Real output</div>
       <h2>It doesn't just find the lead. It builds their website.</h2></div>
@@ -2047,7 +2087,7 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
   for people who'd rather own the tool and keep the margin.</p>
 </div></section>
 
-<section id="price"><div class="wrap">
+<section id="price" class="light"><div class="wrap">
   <div class="split" style="align-items:center">
     <div>
       <div class="eyebrow">Pricing</div>
@@ -2094,6 +2134,14 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
   close the deals. That's the part no tool can do for you, and it's the part that makes the money.
 </div></div>
 
+<section class="closer"><div class="wrap">
+  <div class="eyebrow">The whole point</div>
+  <h2>Show up with the work already done.</h2>
+  <p class="lead">The next town over is full of businesses with nothing to click.
+  Someone is going to build their sites. It might as well be you, first.</p>
+  <div class="cta" style="justify-content:center"><a class="btn big" href="#buy">Get Unwebbed &mdash; $39</a>
+  <a class="btn big ghost" href="#builds">See the live builds</a></div>
+</div></section>
 <div class="bigmark" aria-hidden="true"><span>UNWEBBED<b>.</b></span></div>
 <footer><div class="wrap foot">
   <div class="logo"><span class="mark">U</span> Unwebbed</div>
@@ -2216,6 +2264,44 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
     else if (y < last - 6 || y < 200) nav.classList.remove('hidden');
     last = y;
   }, { passive: true });
+})();
+</script>
+<div id="progress" aria-hidden="true"></div><div id="ring" aria-hidden="true"></div>
+<script>
+(function () {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // reading progress
+  var bar = document.getElementById('progress');
+  addEventListener('scroll', function () {
+    var h = document.documentElement.scrollHeight - innerHeight;
+    bar.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + '%';
+  }, { passive: true });
+  // trailing ring
+  var ring = document.getElementById('ring');
+  if (matchMedia('(pointer: fine)').matches && !reduce) {
+    var rx = -100, ry = -100, tx = rx, ty = ry;
+    addEventListener('mousemove', function (e) {
+      tx = e.clientX; ty = e.clientY; ring.classList.add('on');
+      var t = e.target.closest && e.target.closest('a, button');
+      ring.classList.toggle('hot', !!t);
+    }, { passive: true });
+    (function loop() {
+      rx += (tx - rx) * 0.16; ry += (ty - ry) * 0.16;
+      ring.style.transform = 'translate(' + (rx - 15) + 'px,' + (ry - 15) + 'px)';
+      requestAnimationFrame(loop);
+    })();
+  }
+  // wordmark drifts up as it enters
+  var mark = document.querySelector('.bigmark span');
+  if (mark && !reduce) {
+    addEventListener('scroll', function () {
+      var r = mark.getBoundingClientRect();
+      if (r.top < innerHeight) {
+        var k = Math.min(1, (innerHeight - r.top) / (innerHeight * .8));
+        mark.style.transform = 'translateY(' + (18 - k * 14) + '%)';
+      }
+    }, { passive: true });
+  }
 })();
 </script>
 </body>
