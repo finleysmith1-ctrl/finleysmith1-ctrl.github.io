@@ -37,9 +37,9 @@
 @font-face {
   font-family: "Bricolage Grotesque";
   font-style: normal;
-  font-weight: 600 800;
+  font-weight: 200 800;
   font-display: swap;
-  src: url(fonts/bricolage.woff2) format("woff2");
+  src: url(fonts/bricolage-var.woff2) format("woff2");
 }
 /* Committed to a dark world on purpose — a premium landing page picks one
    look rather than following the OS. */
@@ -52,11 +52,11 @@ html { scrollbar-color: var(--jade-deep) transparent; }
    is contained and wide tables scroll inside their own wrappers. */
 body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--sans);
   -webkit-font-smoothing: antialiased; }
-.wrap { max-width: 1000px; margin: 0 auto; padding: 0 22px; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
 a { color: inherit; }
 
 /* nav */
-nav { position: sticky; top: 14px; z-index: 20; margin: 14px auto 0; max-width: 1000px;
+nav { position: sticky; top: 14px; z-index: 20; margin: 14px auto 0; max-width: 1100px;
   background: color-mix(in srgb, var(--card) 82%, transparent); backdrop-filter: blur(14px) saturate(1.2);
   border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--hairline-top), 0 10px 40px -20px rgba(0,0,0,.6); }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 58px; padding: 0 8px 0 18px; }
@@ -81,7 +81,7 @@ nav { position: sticky; top: 14px; z-index: 20; margin: 14px auto 0; max-width: 
 .hero { padding: 90px 0 30px; text-align: left; position: relative; }
 .eyebrow { font: 600 12px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
   color: var(--jade); margin-bottom: 20px; }
-h1 { font-family: var(--display); font-size: clamp(42px, 8.5vw, 92px); line-height: 0.98; letter-spacing: -.045em; font-weight: 800;
+h1 { font-family: var(--display); font-size: clamp(48px, 9.5vw, 112px); line-height: 0.99; letter-spacing: -.045em; font-weight: 460;
   margin: 0 0 22px; max-width: 15ch; text-wrap: balance;
   animation: rise .7s cubic-bezier(.16,1,.3,1) both; }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
@@ -106,9 +106,9 @@ h1 .u { color: var(--jade); }
 .step .d { font-size: 13.5px; color: var(--soft); line-height: 1.5; }
 
 /* sections */
-section { padding: 70px 0; }
+section { padding: 110px 0; position: relative; }
 .center { text-align: center; }
-h2 { font-family: var(--display); font-size: clamp(30px, 5vw, 52px); letter-spacing: -.035em; font-weight: 800; margin: 0 0 16px; text-wrap: balance; line-height: 1.02; }
+h2 { font-family: var(--display); font-size: clamp(34px, 5.6vw, 64px); letter-spacing: -.04em; font-weight: 480; margin: 0 0 16px; text-wrap: balance; line-height: 1.03; }
 .lead { font-size: 18px; color: var(--soft); max-width: 54ch; margin: 0 auto; }
 section.alt { background: var(--bg2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 
@@ -137,7 +137,7 @@ section.alt { background: var(--bg2); border-top: 1px solid var(--line); border-
 .statwrap { padding: 66px 0; }
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px 26px; margin-top: 34px; }
 @media (max-width: 760px){ .stats { grid-template-columns: 1fr 1fr; gap: 34px 22px; } }
-.stat .n { font: 800 clamp(40px, 6vw, 74px)/0.92 var(--display); letter-spacing: -.045em; }
+.stat .n { font: 350 clamp(44px, 6.5vw, 84px)/0.92 var(--display); letter-spacing: -.045em; }
 .stat .n.amber { color: var(--amber); } .stat .n.jade { color: var(--jade); }
 .stat .l { font: 600 11px/1.35 var(--mono); letter-spacing: .1em; text-transform: uppercase;
   color: var(--ink); margin-top: 14px; }
@@ -247,7 +247,10 @@ section[id], header[id] { scroll-margin-top: 88px; }
 
 /* ---- editorial layout: asymmetric, left-aligned section headers (the opposite
    of the centered-everything template look that reads as AI-made) ---- */
-.sechead { display: grid; grid-template-columns: 1.15fr .85fr; gap: 18px 46px; align-items: end; margin-bottom: 46px; }
+.sechead { display: grid; grid-template-columns: 1.15fr .85fr; gap: 18px 46px; align-items: end; margin-bottom: 52px; position: relative; }
+.chapter { position: absolute; top: -70px; left: -14px; font: 300 clamp(120px, 18vw, 220px)/1 var(--display);
+  letter-spacing: -.05em; color: rgba(52,211,153,.055); pointer-events: none; user-select: none; z-index: 0; }
+.sechead > div, .sechead > p { position: relative; z-index: 1; }
 .sechead > div { min-width: 0; }
 .sechead h2 { margin: 0; text-align: left; }
 .sechead .lead { margin: 0; text-align: left; max-width: 46ch; align-self: end; }
@@ -329,6 +332,12 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
   transition: opacity .55s ease, transform .55s cubic-bezier(.16,1,.3,1); }
 .rv.in { opacity: 1; transform: none; }
 @media (prefers-reduced-motion: reduce){ .rv { opacity: 1; transform: none; transition: none; } }
+
+/* ambient chapter tints — the page breathes instead of one flat ground */
+#builds { background:
+  radial-gradient(900px 480px at 82% 0%, rgba(230,182,76,.05), transparent 70%); }
+#compare, #own { background:
+  radial-gradient(900px 480px at 12% 8%, rgba(52,211,153,.06), transparent 70%); }
 </style>
 </head>
 <body>
@@ -384,7 +393,7 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
 
 <section id="map"><div class="wrap">
   <div class="sechead">
-    <div><div class="eyebrow">Live lead map</div>
+    <span class="chapter" aria-hidden="true">01</span><div><div class="eyebrow">Live lead map</div>
       <h2>Every business with nothing to click.</h2></div>
     <p class="lead">Point it at any town. Unwebbed checks each business against the live web and lights up
     the ones with no website — the exact people who need what you build.</p>
@@ -1809,7 +1818,7 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
 
 <section id="how"><div class="wrap">
   <div class="sechead">
-    <div><div class="eyebrow">How it works</div>
+    <span class="chapter" aria-hidden="true">02</span><div><div class="eyebrow">How it works</div>
       <h2>Three steps. The middle one is the trick nobody else does.</h2></div>
     <p class="lead">Most tools stop at a list of names. The one in the middle — building the site before you pitch — is the part that gets a reply.</p>
   </div>
@@ -1826,7 +1835,7 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
 
 <section id="builds" class="alt"><div class="wrap">
   <div class="sechead">
-    <div><div class="eyebrow">Real output</div>
+    <span class="chapter" aria-hidden="true">03</span><div><div class="eyebrow">Real output</div>
       <h2>It doesn't just find the lead. It builds their website.</h2></div>
     <p class="lead">A real, finished, responsive site for each business — their actual hours, a call
     button, proper SEO. Every build fact-checks itself before it's done, in about three
@@ -1901,7 +1910,7 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
 
 <section id="features" class="alt"><div class="wrap">
   <div class="sechead">
-    <div><div class="eyebrow">What's inside</div>
+    <span class="chapter" aria-hidden="true">04</span><div><div class="eyebrow">What's inside</div>
       <h2>Everything in the box.</h2></div>
     <p class="lead">No monthly lock-in. It's a tool you own and run yourself — the whole workflow, start to finish.</p>
   </div>
@@ -1921,7 +1930,7 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
 
 <section id="compare"><div class="wrap">
   <div class="sechead">
-    <div><div class="eyebrow">Own it, don't rent it</div>
+    <span class="chapter" aria-hidden="true">05</span><div><div class="eyebrow">Own it, don't rent it</div>
       <h2>The subscription tools cost $300+ a year. Forever.</h2></div>
     <p class="lead">Same workflow — find, build, pitch — without the meter running. Here's the honest
     comparison:</p>
