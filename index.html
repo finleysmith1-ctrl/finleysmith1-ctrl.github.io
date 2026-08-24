@@ -182,6 +182,15 @@ footer { border-top: 1px solid var(--line); padding: 40px 0; color: var(--faint)
   .chrome .url { margin-left: 10px; font: 12px/1 var(--mono); color: var(--faint); }
   .shot img { display: block; width: 100%; }
   .shots2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 42px 0 0; }
+  .exgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 42px 0 0; }
+  @media (max-width: 980px){ .exgrid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 620px){ .exgrid { grid-template-columns: 1fr; } }
+  .exgrid a.excard { display: block; text-decoration: none; color: inherit;
+    transition: transform .15s ease; }
+  .exgrid a.excard:hover { transform: translateY(-3px); }
+  .exgrid a.excard:hover .frame { border-color: rgba(52,211,153,.5); }
+  .exgrid .frame img { aspect-ratio: 16/10; }
+  .exgrid .open { color: var(--jade); font-weight: 650; font-size: 12.5px; white-space: nowrap; }
   @media (max-width: 720px){ .shots2 { grid-template-columns: 1fr; } }
   .shots2 figure { margin: 0; }
   .shots2 img { width: 100%; aspect-ratio: 11/5; object-fit: cover; object-position: top;
@@ -1764,13 +1773,13 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
 <circle class="has" cx="857.3" cy="208.6" r="2.6"/>
 </g>
 </svg>
-    <div class="plabel left" style="left:3.66%;top:16.06%"><b>Union Barber Co</b><span>NO WEBSITE · Portland, OR</span></div>
-<div class="plabel right" style="left:64.20%;top:30.39%"><b>Lakeview Electric</b><span>NO WEBSITE · Chicago, IL</span></div>
-<div class="plabel left" style="left:46.74%;top:76.10%"><b>Hill Country Roofing</b><span>NO WEBSITE · Austin, TX</span></div>
-<div class="plabel left" style="left:76.91%;top:93.50%"><b>Bayside Cafe</b><span>NO WEBSITE · Miami, FL</span></div>
-<div class="plabel right" style="left:34.21%;top:38.82%"><b>Summit Plumbing</b><span>NO WEBSITE · Denver, CO</span></div>
+    <div class="plabel left" style="left:3.66%;top:16.06%"><b>Amayas&#39; Auto Repair</b><span>NO WEBSITE · San Rafael, CA</span></div>
+<div class="plabel right" style="left:64.20%;top:30.39%"><b>Leonardo&#39;s Auto Repair</b><span>NO WEBSITE · San Rafael, CA</span></div>
+<div class="plabel left" style="left:46.74%;top:76.10%"><b>Mt Tam Motors</b><span>NO WEBSITE · San Rafael, CA</span></div>
+<div class="plabel left" style="left:76.91%;top:93.50%"><b>Marin Auto Works</b><span>NO WEBSITE · Mill Valley, CA</span></div>
+<div class="plabel right" style="left:34.21%;top:38.82%"><b>Wheel Repair Solutions</b><span>NO WEBSITE · San Rafael, CA</span></div>
     </div><!-- /mapinner -->
-    <div class="maplegend"><span class="mono">LIVE WEBSITE CHECK</span>
+    <div class="maplegend"><span class="mono">REAL RUN · AUTO REPAIR · SAN RAFAEL, CA · AUG 2026</span>
       <span class="lg"><i class="d-opp"></i> Opportunity found</span>
       <span class="lg"><i class="d-has"></i> Has website</span></div>
   </div>
@@ -1821,28 +1830,61 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
       <h2>It doesn't just find the lead. It builds their website.</h2></div>
     <p class="lead">A real, finished, responsive site for each business — their actual hours, a call
     button, proper SEO. Every build fact-checks itself before it's done, in about three
-    minutes. Two real examples:</p>
+    minutes. Six examples — open them:</p>
   </div>
-  <div class="shots2">
-    <figure>
+  <div class="exgrid">
+    <a class="excard" href="/examples/marin-auto-glass/" target="_blank" rel="noopener">
       <div class="frame">
         <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
-          <span class="url">ramirez-plumbing/index.html</span></div>
-        <img src="img/site-plumber.png" alt="A generated plumber website" loading="lazy">
+          <span class="url">examples/marin-auto-glass/index.html</span><span class="open">Open live &#8599;</span></div>
+        <img src="img/ex-marin-auto-glass.jpg" alt="Generated site: Auto glass — coral &amp; cream editorial" loading="lazy" width="1280" height="800">
       </div>
-      <div class="cap"><b>Plumber — call-first, problem-first</b><span>FIG.01 · GENERATED, UNEDITED</span></div>
-    </figure>
-    <figure>
+      <div class="cap"><b>Auto glass — coral &amp; cream editorial</b><span>FIG.01 · GENERATED, UNEDITED · REAL LEAD, DETAILS ANONYMIZED</span></div>
+    </a>
+    <a class="excard" href="/examples/rapid-rooter/" target="_blank" rel="noopener">
       <div class="frame">
         <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
-          <span class="url">dogeared-books/index.html</span></div>
-        <img src="img/site-books.png" alt="A generated bookshop website" loading="lazy">
+          <span class="url">examples/rapid-rooter/index.html</span><span class="open">Open live &#8599;</span></div>
+        <img src="img/ex-rapid-rooter.jpg" alt="Generated site: Emergency plumber — call-first" loading="lazy" width="1280" height="800">
       </div>
-      <div class="cap"><b>Bookshop — vintage letterpress</b><span>FIG.02 · GENERATED, UNEDITED</span></div>
-    </figure>
+      <div class="cap"><b>Emergency plumber — call-first</b><span>FIG.02 · GENERATED, UNEDITED · FICTIONAL BRIEF</span></div>
+    </a>
+    <a class="excard" href="/examples/hazel-and-rye/" target="_blank" rel="noopener">
+      <div class="frame">
+        <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
+          <span class="url">examples/hazel-and-rye/index.html</span><span class="open">Open live &#8599;</span></div>
+        <img src="img/ex-hazel-and-rye.jpg" alt="Generated site: Bakery — editorial, real hours" loading="lazy" width="1280" height="800">
+      </div>
+      <div class="cap"><b>Bakery — editorial, real hours</b><span>FIG.03 · GENERATED, UNEDITED · FICTIONAL BRIEF</span></div>
+    </a>
+    <a class="excard" href="/examples/cedar-dental/" target="_blank" rel="noopener">
+      <div class="frame">
+        <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
+          <span class="url">examples/cedar-dental/index.html</span><span class="open">Open live &#8599;</span></div>
+        <img src="img/ex-cedar-dental.jpg" alt="Generated site: Dental clinic — calm &amp; clinical" loading="lazy" width="1280" height="800">
+      </div>
+      <div class="cap"><b>Dental clinic — calm &amp; clinical</b><span>FIG.04 · GENERATED, UNEDITED · FICTIONAL BRIEF</span></div>
+    </a>
+    <a class="excard" href="/examples/marigold-and-fern/" target="_blank" rel="noopener">
+      <div class="frame">
+        <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
+          <span class="url">examples/marigold-and-fern/index.html</span><span class="open">Open live &#8599;</span></div>
+        <img src="img/ex-marigold-and-fern.jpg" alt="Generated site: Florist — lush &amp; seasonal" loading="lazy" width="1280" height="800">
+      </div>
+      <div class="cap"><b>Florist — lush &amp; seasonal</b><span>FIG.05 · GENERATED, UNEDITED · FICTIONAL BRIEF</span></div>
+    </a>
+    <a class="excard" href="/examples/ironworks/" target="_blank" rel="noopener">
+      <div class="frame">
+        <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
+          <span class="url">examples/ironworks/index.html</span><span class="open">Open live &#8599;</span></div>
+        <img src="img/ex-ironworks.jpg" alt="Generated site: Gym — no-frills strength" loading="lazy" width="1280" height="800">
+      </div>
+      <div class="cap"><b>Gym — no-frills strength</b><span>FIG.06 · GENERATED, UNEDITED · FICTIONAL BRIEF</span></div>
+    </a>
   </div>
-  <p class="micro">No stock photos, no invented reviews, no fake anything — just their real details,
-  designed for their trade. Download it as a ready-to-host folder and it's live in five minutes.</p>
+  <p class="micro">These are live pages, not screenshots — open one, resize it, view source.
+  Their real details, designed for their trade. Every build fact-checks itself and inspects
+  its own screenshots before it's done. Download any build as a ready-to-host folder.</p>
 </div></section>
 
 <section><div class="wrap">
@@ -1886,7 +1928,7 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
   </div>
   <div class="vswrap"><table class="vs">
     <tr><th></th><th class="us">Unwebbed</th><th>Subscription tools</th></tr>
-    <tr><td>Price</td><td class="us">$39 early access, once<br><small style="color:var(--faint)">$149 after the first 25 copies</small></td><td class="them">$25–50 every month</td></tr>
+    <tr><td>Price</td><td class="us">$3$39 early access, once<br><small style="color:var(--faint)">$149 once it has earned it</small></td><td class="them">$25–50 every month</td></tr>
     <tr><td>After one year</td><td class="us">still what you paid</td><td class="them">$300–600 and counting</td></tr>
     <tr><td>Usage</td><td class="us">Unlimited — it's your tool</td><td class="them">Capped by monthly "credits"</td></tr>
     <tr><td>Your leads &amp; notes</td><td class="us">On your Mac, private</td><td class="them">In their cloud</td></tr>
@@ -1903,10 +1945,10 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
     <div>
       <div class="eyebrow">Pricing</div>
       <h2 style="text-align:left">Simple price. Pay once, own it.</h2>
-      <p class="lead" style="text-align:left;margin:0 0 8px">One landed client pays for it many times over — and there's no subscription, no usage caps, nothing to cancel.</p>
+      <p class="lead" style="text-align:left;margin:0 0 8px">A freelance one-page site typically sells for $800&ndash;$3,000. One landed client pays for this tool five times over &mdash; and there's no subscription, no usage caps, nothing to cancel.</p>
     </div>
   <div class="price" id="buy" style="margin:0">
-    <div class="once">Early access — first 25 copies</div>
+    <div class="once">Early access</div>
     <div class="tag">$39<small> once &nbsp;·&nbsp; then $149</small></div>
     <ul>
       <li>The full Unwebbed app</li>
@@ -1916,7 +1958,7 @@ section.alt { background: linear-gradient(180deg, var(--bg2), #0d1613); }
       <li>Free updates</li>
     </ul>
     <a class="btn big" style="width:100%" href="mailto:soccerlover249145@gmail.com?subject=I%20want%20Unwebbed&body=Hi%20Finley%2C%20I%20saw%20Unwebbed%20and%20I%27m%20interested%20%E2%80%94%20how%20do%20I%20get%20it%3F">Get early access — $39</a>
-    <p class="note">Just launched — the first 25 copies go for $39, then the price moves to $149.
+    <p class="note">$39 while it&#39;s new and rough around the edges — $149 once it isn&#39;t. Early buyers keep every update either way.
     Email to get your copy. You bring a free OpenRouter key for the AI; runs on macOS with Python 3.</p>
   </div>
   </div><!-- /split -->
