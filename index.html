@@ -500,8 +500,8 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
 @media (max-width: 900px){ #scrollnum { display: none; } }
 
 /* 5. hero meta line — real coordinates, real clock (their LOCATION: DENMARK · 04:16) */
-.herometa { display: flex; justify-content: space-between; gap: 18px; max-width: 780px;
-  margin: 40px auto -30px; font: 600 10.5px/1.6 var(--mono); letter-spacing: .16em;
+.herometa { display: flex; justify-content: space-between; gap: 18px; max-width: 1100px;
+  padding: 0 24px; margin: 30px auto 0; font: 600 10.5px/1.6 var(--mono); letter-spacing: .16em;
   color: var(--faint); text-transform: uppercase;
   opacity: 0; animation: heroRise .9s cubic-bezier(.2,.7,.2,1) .55s forwards; }
 .herometa b { color: var(--jade); font-weight: 600; }
@@ -514,7 +514,8 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
 .endband .closer::before { background:
   radial-gradient(700px 420px at 50% 115%, rgba(255,255,255,.14), transparent 70%); }
 .endband .closer .eyebrow { color: #a9f0d3; }
-.endband .closer h2 { color: #fff; }
+.endband .closer h2 { color: #fff; text-transform: uppercase; font-weight: 800;
+  letter-spacing: -.02em; line-height: .95; }
 .endband .closer .lead { color: rgba(234,255,245,.78); }
 .endband .btn.big { background: #fff; color: #0a6b4b;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 16px 36px -16px rgba(0,0,0,.45); }
@@ -526,6 +527,94 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
 .endband footer { border-top: 1px solid rgba(255,255,255,.22); }
 .endband .foot { color: rgba(234,255,245,.75); }
 .endband .mark { background: #fff; color: #0a6b4b; }
+
+/* ============== WAVE 6 — THE POSTER REBUILD (bones, not paint) =============
+   The references win on structure: type at poster scale IS the layout, whole
+   chapters commit to one color, and work hangs like numbered exhibits.
+   This wave rebuilds the hero, the section headers, "how it works" and the
+   gallery around those bones. ============================================== */
+
+/* --- hero as a poster: two monster lines with the product between them --- */
+.hero.poster { padding: 44px 0 10px; text-align: center; }
+.postline { font-family: var(--display); font-weight: 800; text-transform: uppercase;
+  line-height: .88; letter-spacing: -.028em; white-space: nowrap; text-align: center;
+  margin: 0; max-width: none; color: var(--ink); user-select: none; width: 100%; }
+h1.postline { animation: none; }
+.postline.p1 { font-size: clamp(46px, 13.2vw, 268px); }
+.postline.p2 { font-size: clamp(36px, 10.4vw, 212px); margin-top: 8px; }
+.postline .q { color: var(--jade); }
+.heromid { display: grid; grid-template-columns: 1.45fr 1fr; gap: 40px; align-items: center;
+  max-width: 1100px; margin: 30px auto 36px; padding: 0 24px; text-align: left; }
+.heromid .shot { margin: 0; max-width: none; }
+.aboutblock .k { display: block; font: 700 11px/1 var(--mono); letter-spacing: .22em;
+  color: var(--jade); margin-bottom: 14px; }
+.aboutblock .sub { font: 500 12.5px/2 var(--mono); letter-spacing: .06em;
+  text-transform: uppercase; color: var(--soft); max-width: 44ch; margin: 0 0 4px; }
+.aboutblock .cta { margin-top: 20px; }
+.aboutblock .microcopy { font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+.hero .postline.p2 { opacity: 0; animation: heroRise .9s cubic-bezier(.2,.7,.2,1) .5s forwards; }
+.hero h1.postline { opacity: 0; animation: heroRise .9s cubic-bezier(.2,.7,.2,1) .08s forwards; }
+@media (max-width: 860px){ .heromid { grid-template-columns: 1fr; gap: 24px; } }
+@media (prefers-reduced-motion: reduce){
+  .hero .postline.p2, .hero h1.postline { animation: none; opacity: 1; } }
+
+/* --- section headers at poster scale: giant word, hairline, mono meta --- */
+.chap-head { margin-bottom: 46px; }
+.giant { font-family: var(--display); font-weight: 800; text-transform: uppercase;
+  font-size: clamp(44px, 9.8vw, 172px); line-height: .92; letter-spacing: -.025em;
+  text-align: center; margin: 0 0 20px; color: var(--ink); text-wrap: balance; }
+.chap-rule { border: 0; border-top: 1px solid var(--line); margin: 0 0 14px; }
+.chap-meta { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px;
+  font: 600 11.5px/1.8 var(--mono); letter-spacing: .13em; text-transform: uppercase;
+  color: var(--faint); }
+.chap-meta p { margin: 0; max-width: 52ch; text-align: left; }
+.chap-meta .no { color: var(--jade); white-space: nowrap; }
+
+/* --- the amber chapter: how it works as a full-bleed poster spread --- */
+.amberband { background: #e9a63c; color: #241705; padding: 96px 0 0; overflow: hidden;
+  border-block: 1px solid rgba(36,23,5,.25); }
+.amberband .giant { color: #241705; }
+.amberband .chap-rule { border-color: rgba(36,23,5,.35); }
+.amberband .chap-meta { color: rgba(36,23,5,.78); }
+.amberband .chap-meta .no { color: #241705; }
+.trick { position: relative; overflow: hidden; border-top: 1px solid rgba(36,23,5,.35);
+  margin-top: 64px; padding: 30px 0 0; }
+.trick:first-of-type { margin-top: 72px; }
+.trick .tdesc { font: 600 12px/1.9 var(--mono); letter-spacing: .12em; text-transform: uppercase;
+  color: rgba(36,23,5,.85); max-width: 46ch; margin: 0 0 46px; text-align: left; }
+.trick .tname { font-family: var(--display); font-weight: 800; text-transform: uppercase;
+  font-size: clamp(64px, 12.8vw, 224px); line-height: .8; letter-spacing: -.02em;
+  margin: 0; transform: translateY(13%); text-align: left; color: #241705; }
+.trick .tnum { position: absolute; right: 0; bottom: 22%;
+  font: 800 clamp(38px, 5.4vw, 84px)/1 var(--display); color: transparent;
+  -webkit-text-stroke: 1.5px rgba(36,23,5,.6); letter-spacing: .02em; }
+.amberband .btn.big { background: #241705; color: #f3d9a6; box-shadow: none; }
+
+/* --- proof as numbered exhibits, not cards --- */
+.workrows { margin-top: 8px; }
+.workrow { display: grid; grid-template-columns: 92px 1fr 240px; gap: 30px; align-items: start;
+  padding: 36px 0; border-top: 1px solid var(--line); text-decoration: none; color: inherit; }
+.workrow:last-of-type { border-bottom: 1px solid var(--line); }
+.workrow .wnum { font: 800 58px/0.9 var(--display); letter-spacing: -.03em; color: var(--ink); }
+.workrow .frame { margin: 0; border: 1px solid rgba(24,34,28,.16); border-radius: 12px;
+  overflow: hidden; background: var(--card);
+  box-shadow: 0 1px 2px rgba(20,30,24,.08), 0 18px 44px -18px rgba(20,30,24,.25);
+  transition: transform .25s cubic-bezier(.2,.7,.2,1), border-color .25s ease; }
+.workrow:hover .frame { transform: translateY(-3px); border-color: rgba(13,138,96,.55); }
+.workrow .frame img { width: 100%; aspect-ratio: 16/9; height: auto; object-fit: cover;
+  object-position: top; display: block; transition: object-position 4.5s cubic-bezier(.4,0,.4,1); }
+.workrow:hover .frame img { object-position: bottom; }
+.workrow .wcap { display: flex; flex-direction: column; gap: 11px; align-items: flex-start;
+  font: 600 11px/1.8 var(--mono); letter-spacing: .13em; text-transform: uppercase;
+  color: var(--faint); text-align: left; }
+.workrow .wcap b { color: var(--ink); font-size: 13px; letter-spacing: .1em; }
+.workrow .view { border: 1px solid var(--line); padding: 10px 15px; margin-top: 4px;
+  color: var(--ink); transition: background .2s ease, color .2s ease, border-color .2s ease; }
+.workrow:hover .view { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+@media (max-width: 900px){
+  .workrow { grid-template-columns: 1fr; gap: 14px; padding: 26px 0; }
+  .workrow .wnum { font-size: 38px; }
+}
 </style>
 </head>
 <body>
@@ -557,44 +646,56 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
   </div>
 </div></nav>
 
-<header class="hero" id="top"><div class="wrap">
-  <div class="eyebrow">For freelance web designers</div>
-  <h1>Find shops with <span class="u">no website</span>. Pitch them one you already built.</h1>
-  <p class="sub">Unwebbed finds the local businesses near you that have no website,
-  writes the pitch, and builds each one a real sample site — so you show up with the
-  work already done.</p>
-  <div class="cta">
-    <a class="btn big" href="#buy">Get Unwebbed</a>
-    <a class="btn big ghost" href="#how">See how it works</a>
+<header class="hero poster" id="top">
+  <h1 class="postline p1">No website<span class="q">?</span></h1>
+
+  <div class="heromid">
+    <div class="shot">
+      <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
+        <div class="url">unwebbed · builder &nbsp;·&nbsp; REAL BUILD, CONDENSED — FULL TIME ~3 MIN</div></div>
+      <span class="anno a1">LIVE WEB CHECK &mdash; <b>REAL</b></span>
+      <span class="anno a2">FACT-CHECKS ITSELF &middot; <b>~3 MIN</b></span>
+      <video autoplay muted loop playsinline preload="metadata" poster="img/app-unwebbed.png"
+        aria-hidden="true" title="Unwebbed building a real site — condensed, real build time about 3 minutes">
+        <source src="img/demo.mp4" type="video/mp4">
+        <img src="img/app-unwebbed.png" alt="The Unwebbed Builder — describe a site and it builds it">
+      </video>
+    </div>
+    <div class="aboutblock">
+      <span class="k">ABOUT &mdash; A TOOL FOR FREELANCE WEB DESIGNERS</span>
+      <p class="sub">Unwebbed finds the local businesses near you that have no website,
+      writes the pitch, and builds each one a real sample site &mdash; so you show up
+      with the work already done.</p>
+      <div class="cta">
+        <a class="btn big" href="#buy">Get Unwebbed</a>
+        <a class="btn big ghost" href="#how">See how</a>
+      </div>
+      <p class="microcopy">Runs on your Mac · no monthly fee · your own AI key (pennies)</p>
+    </div>
   </div>
-  <p class="microcopy">Runs on your Mac · no monthly fee · you bring your own AI key (costs pennies)</p>
+
+  <p class="postline p2" >Already <span class="q">built.</span></p>
 
   <div class="herometa" aria-hidden="true">
     <span>FIELD TOOL &mdash; MAC</span>
     <span>LAST REAL RUN: <b>SAN RAFAEL, CA</b> &middot; AUG 2026</span>
     <span>LOCAL <b id="clock">--:--</b></span>
   </div>
-
-  <div class="shot">
-    <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
-      <div class="url">unwebbed · builder &nbsp;·&nbsp; REAL BUILD, CONDENSED — FULL TIME ~3 MIN</div></div>
-    <span class="anno a1">LIVE WEB CHECK &mdash; <b>REAL</b></span>
-    <span class="anno a2">FACT-CHECKS ITSELF &middot; <b>~3 MIN</b></span>
-    <video autoplay muted loop playsinline preload="metadata" poster="img/app-unwebbed.png"
-      aria-hidden="true" title="Unwebbed building a real site — condensed, real build time about 3 minutes">
-      <source src="img/demo.mp4" type="video/mp4">
-      <img src="img/app-unwebbed.png" alt="The Unwebbed Builder — describe a site and it builds it">
-    </video>
-  </div>
-</div>
-</div></header>
+</header>
 
 <div class="marquee" aria-hidden="true"><div class="track"><span>BARBERS <i></i></span><span>CAFÉS <i></i></span><span>PLUMBERS <i></i></span><span>FLORISTS <i></i></span><span>DENTISTS <i></i></span><span>GYMS <i></i></span><span>BAKERIES <i></i></span><span>SALONS <i></i></span><span>ROOFERS <i></i></span><span>TATTOO STUDIOS <i></i></span><span>AUTO REPAIR <i></i></span><span>RESTAURANTS <i></i></span><span>LANDSCAPERS <i></i></span><span>PHOTOGRAPHERS <i></i></span><span>ELECTRICIANS <i></i></span><span>PET GROOMERS <i></i></span><span>BARBERS <i></i></span><span>CAFÉS <i></i></span><span>PLUMBERS <i></i></span><span>FLORISTS <i></i></span><span>DENTISTS <i></i></span><span>GYMS <i></i></span><span>BAKERIES <i></i></span><span>SALONS <i></i></span><span>ROOFERS <i></i></span><span>TATTOO STUDIOS <i></i></span><span>AUTO REPAIR <i></i></span><span>RESTAURANTS <i></i></span><span>LANDSCAPERS <i></i></span><span>PHOTOGRAPHERS <i></i></span><span>ELECTRICIANS <i></i></span><span>PET GROOMERS <i></i></span></div></div>
 
 
 <section class="statwrap"><div class="wrap">
-  <div class="eyebrow">The opportunity</div>
-  <h2 style="max-width:18ch">Every town is full of businesses with nothing to click.</h2>
+  <div class="chap-head">
+    <h2 class="giant">The gap</h2>
+    <hr class="chap-rule">
+    <div class="chap-meta">
+      <p>Every town is full of businesses with nothing to click. Someone is going
+      to build their sites.</p>
+      <span class="no">NO. 00 &mdash; THE OPPORTUNITY</span>
+    </div>
+  </div>
   <div class="stats">
     <div class="stat"><div class="n amber">33M</div>
       <div class="l">US small businesses</div>
@@ -612,11 +713,14 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
 </div></section>
 
 <section id="map"><div class="wrap">
-  <div class="sechead">
-    <span class="chapter" aria-hidden="true">01</span><div><div class="eyebrow">Live lead map</div>
-      <h2>Every business with nothing to click.</h2></div>
-    <p class="lead">Point it at any town. Unwebbed checks each business against the live web and lights up
-    the ones with no website — the exact people who need what you build.</p>
+  <div class="chap-head">
+    <h2 class="giant">The map</h2>
+    <hr class="chap-rule">
+    <div class="chap-meta">
+      <p>Point it at any town. Unwebbed checks each business against the live web and
+      lights up the ones with no website &mdash; the exact people who need what you build.</p>
+      <span class="no">NO. 01 &mdash; LIVE LEAD MAP</span>
+    </div>
   </div>
   <div class="mapwrap">
     <div class="mapinner">
@@ -2036,84 +2140,103 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
   </div>
 </div></section>
 
-<section id="how"><div class="wrap">
-  <div class="sechead">
-    <span class="chapter" aria-hidden="true">02</span><div><div class="eyebrow">How it works</div>
-      <h2>Three steps. The middle one is the trick nobody else does.</h2></div>
-    <p class="lead">Most tools stop at a list of names. The one in the middle — building the site before you pitch — is the part that gets a reply.</p>
+<section id="how" class="amberband"><div class="wrap">
+  <div class="chap-head">
+    <h2 class="giant">The trick</h2>
+    <hr class="chap-rule">
+    <div class="chap-meta">
+      <p>Most tools stop at a list of names. The middle step &mdash; building the site
+      before you pitch &mdash; is the part nobody else does, and the part that gets a reply.</p>
+      <span class="no">NO. 02 &mdash; HOW IT WORKS</span>
+    </div>
   </div>
-  <div class="grid" style="margin-top:0;text-align:left">
-    <div class="feat"><span class="ix">STEP 01</span><h3>It finds the leads</h3>
-      <p>Pick a town and a trade. Unwebbed pulls every matching business from OpenStreetMap, keeps the ones with no website on record, and scores them so your best prospects sit on top.</p></div>
-    <div class="feat"><span class="ix">STEP 02</span><h3>It verifies them</h3>
-      <p>It searches the live web and actually opens any site it finds — so a business that quietly has a website gets dropped before you waste a pitch on them.</p></div>
-    <div class="feat"><span class="ix">STEP 03</span><h3>It builds their site</h3>
-      <p>For each lead it writes a pitch in your voice and generates a real, finished one-page website — designed for that trade, with their real hours. You send it or show it.</p></div>
+
+  <div class="trick">
+    <p class="tdesc">Pick a town and a trade. It pulls every matching business from
+    OpenStreetMap, keeps the ones with no website on record, and scores them so your
+    best prospects sit on top.</p>
+    <span class="tnum" aria-hidden="true">001</span>
+    <h3 class="tname">It finds</h3>
+  </div>
+  <div class="trick">
+    <p class="tdesc">It searches the live web and actually opens any site it finds &mdash;
+    so a business that quietly has a website gets dropped before you waste a pitch on them.</p>
+    <span class="tnum" aria-hidden="true">002</span>
+    <h3 class="tname">It verifies</h3>
+  </div>
+  <div class="trick">
+    <p class="tdesc">For each lead it writes a pitch in your voice and generates a real,
+    finished one-page website &mdash; designed for that trade, with their real hours.
+    You send it or show it.</p>
+    <span class="tnum" aria-hidden="true">003</span>
+    <h3 class="tname">It builds</h3>
   </div>
 </div></section>
 
 
 <section id="builds" class="alt light"><div class="wrap">
-  <div class="sechead">
-    <span class="chapter" aria-hidden="true">03</span><div><div class="eyebrow">Real output</div>
-      <h2>It doesn't just find the lead. It builds their website.</h2></div>
-    <p class="lead">A real, finished, responsive site for each business — their actual hours, a call
-    button, proper SEO. Every build fact-checks itself before it's done, in about three
-    minutes. Six examples — open them:</p>
+  <div class="chap-head">
+    <h2 class="giant">Proof</h2>
+    <hr class="chap-rule">
+    <div class="chap-meta">
+      <p>Six sites this tool built, unedited. Real hours, call buttons, proper SEO.
+      Every build fact-checks itself before it's done, in about three minutes.
+      These are live pages, not screenshots &mdash; open one, resize it, view source.</p>
+      <span class="no">NO. 03 &mdash; REAL OUTPUT</span>
+    </div>
   </div>
-  <div class="exgrid">
-    <a class="excard" href="/examples/marin-auto-glass/" target="_blank" rel="noopener">
+  <div class="workrows">
+    <a class="workrow" href="/examples/marin-auto-glass/" target="_blank" rel="noopener">
+      <span class="wnum" aria-hidden="true">01</span>
       <div class="frame">
-        <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
-          <span class="url">examples/marin-auto-glass/index.html</span><span class="open">Open live &#8599;</span></div>
         <img src="img/ex-marin-auto-glass.jpg" alt="Generated site: Auto glass — coral &amp; cream editorial" loading="lazy" width="1280" height="800">
       </div>
-      <div class="cap"><b>Auto glass — coral &amp; cream editorial</b><span>FIG.01 · GENERATED, UNEDITED · REAL LEAD, DETAILS ANONYMIZED</span></div>
+      <div class="wcap"><b>Auto glass</b><span>Coral &amp; cream editorial</span>
+        <span>GENERATED, UNEDITED<br>REAL LEAD, ANONYMIZED</span><span class="view">VIEW LIVE &#8599;</span></div>
     </a>
-    <a class="excard" href="/examples/rapid-rooter/" target="_blank" rel="noopener">
+    <a class="workrow" href="/examples/rapid-rooter/" target="_blank" rel="noopener">
+      <span class="wnum" aria-hidden="true">02</span>
       <div class="frame">
-        <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
-          <span class="url">examples/rapid-rooter/index.html</span><span class="open">Open live &#8599;</span></div>
         <img src="img/ex-rapid-rooter.jpg" alt="Generated site: Emergency plumber — call-first" loading="lazy" width="1280" height="800">
       </div>
-      <div class="cap"><b>Emergency plumber — call-first</b><span>FIG.02 · GENERATED, UNEDITED · FICTIONAL BRIEF</span></div>
+      <div class="wcap"><b>Emergency plumber</b><span>Call-first, urgency layout</span>
+        <span>GENERATED, UNEDITED<br>FICTIONAL BRIEF</span><span class="view">VIEW LIVE &#8599;</span></div>
     </a>
-    <a class="excard" href="/examples/hazel-and-rye/" target="_blank" rel="noopener">
+    <a class="workrow" href="/examples/hazel-and-rye/" target="_blank" rel="noopener">
+      <span class="wnum" aria-hidden="true">03</span>
       <div class="frame">
-        <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
-          <span class="url">examples/hazel-and-rye/index.html</span><span class="open">Open live &#8599;</span></div>
         <img src="img/ex-hazel-and-rye.jpg" alt="Generated site: Bakery — editorial, real hours" loading="lazy" width="1280" height="800">
       </div>
-      <div class="cap"><b>Bakery — editorial, real hours</b><span>FIG.03 · GENERATED, UNEDITED · FICTIONAL BRIEF</span></div>
+      <div class="wcap"><b>Bakery</b><span>Editorial, real hours</span>
+        <span>GENERATED, UNEDITED<br>FICTIONAL BRIEF</span><span class="view">VIEW LIVE &#8599;</span></div>
     </a>
-    <a class="excard" href="/examples/cedar-dental/" target="_blank" rel="noopener">
+    <a class="workrow" href="/examples/cedar-dental/" target="_blank" rel="noopener">
+      <span class="wnum" aria-hidden="true">04</span>
       <div class="frame">
-        <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
-          <span class="url">examples/cedar-dental/index.html</span><span class="open">Open live &#8599;</span></div>
         <img src="img/ex-cedar-dental.jpg" alt="Generated site: Dental clinic — calm &amp; clinical" loading="lazy" width="1280" height="800">
       </div>
-      <div class="cap"><b>Dental clinic — calm &amp; clinical</b><span>FIG.04 · GENERATED, UNEDITED · FICTIONAL BRIEF</span></div>
+      <div class="wcap"><b>Dental clinic</b><span>Calm &amp; clinical</span>
+        <span>GENERATED, UNEDITED<br>FICTIONAL BRIEF</span><span class="view">VIEW LIVE &#8599;</span></div>
     </a>
-    <a class="excard" href="/examples/marigold-and-fern/" target="_blank" rel="noopener">
+    <a class="workrow" href="/examples/marigold-and-fern/" target="_blank" rel="noopener">
+      <span class="wnum" aria-hidden="true">05</span>
       <div class="frame">
-        <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
-          <span class="url">examples/marigold-and-fern/index.html</span><span class="open">Open live &#8599;</span></div>
         <img src="img/ex-marigold-and-fern.jpg" alt="Generated site: Florist — lush &amp; seasonal" loading="lazy" width="1280" height="800">
       </div>
-      <div class="cap"><b>Florist — lush &amp; seasonal</b><span>FIG.05 · GENERATED, UNEDITED · FICTIONAL BRIEF</span></div>
+      <div class="wcap"><b>Florist</b><span>Lush &amp; seasonal</span>
+        <span>GENERATED, UNEDITED<br>FICTIONAL BRIEF</span><span class="view">VIEW LIVE &#8599;</span></div>
     </a>
-    <a class="excard" href="/examples/ironworks/" target="_blank" rel="noopener">
+    <a class="workrow" href="/examples/ironworks/" target="_blank" rel="noopener">
+      <span class="wnum" aria-hidden="true">06</span>
       <div class="frame">
-        <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
-          <span class="url">examples/ironworks/index.html</span><span class="open">Open live &#8599;</span></div>
         <img src="img/ex-ironworks.jpg" alt="Generated site: Gym — no-frills strength" loading="lazy" width="1280" height="800">
       </div>
-      <div class="cap"><b>Gym — no-frills strength</b><span>FIG.06 · GENERATED, UNEDITED · FICTIONAL BRIEF</span></div>
+      <div class="wcap"><b>Gym</b><span>No-frills strength</span>
+        <span>GENERATED, UNEDITED<br>FICTIONAL BRIEF</span><span class="view">VIEW LIVE &#8599;</span></div>
     </a>
   </div>
-  <p class="micro">These are live pages, not screenshots — open one, resize it, view source.
-  Their real details, designed for their trade. Every build fact-checks itself and inspects
-  its own screenshots before it's done. Download any build as a ready-to-host folder.</p>
+  <p class="micro">Every build fact-checks itself and inspects its own screenshots before
+  it's done. Download any build as a ready-to-host folder.</p>
 </div></section>
 
 <section><div class="wrap">
@@ -2129,10 +2252,14 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
 </div></section>
 
 <section id="features" class="alt"><div class="wrap">
-  <div class="sechead">
-    <span class="chapter" aria-hidden="true">04</span><div><div class="eyebrow">What's inside</div>
-      <h2>Everything in the box.</h2></div>
-    <p class="lead">No monthly lock-in. It's a tool you own and run yourself — the whole workflow, start to finish.</p>
+  <div class="chap-head">
+    <h2 class="giant">The box</h2>
+    <hr class="chap-rule">
+    <div class="chap-meta">
+      <p>No monthly lock-in. A tool you own and run yourself &mdash; the whole
+      workflow, start to finish.</p>
+      <span class="no">NO. 04 &mdash; WHAT'S INSIDE</span>
+    </div>
   </div>
   <div class="manifest">
     <div class="mrow"><span class="ix">01</span><h3>Map view</h3><p>See your leads as pins. Six on one street is a morning of walk-ins.</p></div>
@@ -2149,11 +2276,14 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
 </div></section>
 
 <section id="compare"><div class="wrap">
-  <div class="sechead">
-    <span class="chapter" aria-hidden="true">05</span><div><div class="eyebrow">Own it, don't rent it</div>
-      <h2>The subscription tools cost $300+ a year. Forever.</h2></div>
-    <p class="lead">Same workflow — find, build, pitch — without the meter running. Here's the honest
-    comparison:</p>
+  <div class="chap-head">
+    <h2 class="giant">Own it</h2>
+    <hr class="chap-rule">
+    <div class="chap-meta">
+      <p>The subscription tools cost $300+ a year, forever. Same workflow &mdash; find,
+      build, pitch &mdash; without the meter running. The honest comparison:</p>
+      <span class="no">NO. 05 &mdash; VS. RENTING</span>
+    </div>
   </div>
   <div class="vswrap"><table class="vs">
     <tr><th></th><th class="us">Unwebbed</th><th>Subscription tools</th></tr>
@@ -2170,11 +2300,20 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
 </div></section>
 
 <section id="price" class="light"><div class="wrap">
+  <div class="chap-head">
+    <h2 class="giant">The price</h2>
+    <hr class="chap-rule">
+    <div class="chap-meta">
+      <p>A freelance one-page site typically sells for $800&ndash;$3,000. One landed
+      client pays for this tool five times over.</p>
+      <span class="no">NO. 06 &mdash; PAY ONCE</span>
+    </div>
+  </div>
   <div class="split" style="align-items:center">
     <div>
       <div class="eyebrow">Pricing</div>
-      <h2 style="text-align:left">Simple price. Pay once, own it.</h2>
-      <p class="lead" style="text-align:left;margin:0 0 8px">A freelance one-page site typically sells for $800&ndash;$3,000. One landed client pays for this tool five times over &mdash; and there's no subscription, no usage caps, nothing to cancel.</p>
+      <h2 style="text-align:left">Pay once. Own it.</h2>
+      <p class="lead" style="text-align:left;margin:0 0 8px">No subscription, no usage caps, nothing to cancel &mdash; and free updates forever.</p>
     </div>
   <div class="price" id="buy" style="margin:0">
     <div class="once">Early access</div>
@@ -2236,7 +2375,7 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
    runs, nothing is ever hidden. */
 (function () {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var els = document.querySelectorAll('.sechead, .stat, .mrow, .vswrap, .fair, .price, .shots2 figure, .split > div, .faq, .honest');
+  var els = document.querySelectorAll('.sechead, .chap-head, .trick, .workrow, .stat, .mrow, .vswrap, .fair, .price, .shots2 figure, .split > div, .faq, .honest');
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) {
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
