@@ -8,7 +8,8 @@
 <meta property="og:description" content="Find shops with no website. Pitch them one you already built.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#0c1210">
-<meta property="og:image" content="https://finleysmith1-ctrl.github.io/img/og.png">
+<meta property="og:image" content="https://unwebbed.app/img/og.png">
+<meta property="og:url" content="https://unwebbed.app/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d7a5f'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='38' font-weight='800' fill='white' text-anchor='middle'%3EU%3C/text%3E%3C/svg%3E">
 <link rel="preload" href="fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
@@ -622,8 +623,9 @@ h1.postline { animation: none; }
 .stat .n { font-weight: 800; letter-spacing: -.03em;
   font-size: clamp(52px, 7vw, 100px); }
 
-/* giant chapter words reveal char by char (JS splits; no JS = plain text) */
-.giant { overflow: hidden; }
+/* giant chapter words reveal char by char (JS splits; no JS = plain text)
+   padding-bottom keeps descenders (the Q tail) clear of the reveal mask */
+.giant { overflow: hidden; padding-bottom: .09em; margin-bottom: 8px; }
 .giant .ch { display: inline-block; transform: translateY(112%); white-space: pre;
   transition: transform .75s cubic-bezier(.2,.7,.2,1); }
 .giant.chin .ch { transform: none; }
@@ -706,6 +708,35 @@ body.menuopen .menumeta { animation-delay: .3s }
 #curtain.lift { animation: curtainLift .55s cubic-bezier(.7,0,.3,1) .45s forwards; }
 @keyframes curtainMark { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 @keyframes curtainLift { to { transform: translateY(-100%); } }
+
+/* ================= WAVE 8 — the working details ========================== */
+
+/* anchor links glide, and land clear of the sticky nav */
+html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+@media (prefers-reduced-motion: reduce){ html { scroll-behavior: auto; } }
+
+/* the live map scans — a radar sweep across the run */
+.mapinner { overflow: hidden; }
+.mapinner::after { content: ""; position: absolute; inset: -2% -30%; pointer-events: none;
+  background: linear-gradient(102deg, transparent 44%, rgba(52,211,153,.05) 48%,
+    rgba(52,211,153,.16) 50%, rgba(52,211,153,.05) 52%, transparent 56%);
+  animation: mapsweep 6.5s linear infinite; }
+@keyframes mapsweep { from { transform: translateX(-58%); } to { transform: translateX(58%); } }
+@media (prefers-reduced-motion: reduce){ .mapinner::after { display: none; } }
+
+/* FAQ as ruled poster rows */
+.faq { max-width: 860px; }
+.faq details { border-bottom: 1px solid var(--line); padding: 6px 0; }
+.faq details:first-child { border-top: 1px solid var(--line); }
+.faq summary { font-family: var(--display); font-weight: 650;
+  font-size: clamp(17px, 2.3vw, 24px); letter-spacing: -.02em; color: var(--ink);
+  padding: 18px 0; }
+.faq summary .qno { font: 700 11px/1 var(--mono); letter-spacing: .18em; color: var(--jade);
+  margin-right: 16px; }
+.faq summary::after { font-size: 26px; font-weight: 200;
+  transition: transform .3s cubic-bezier(.2,.7,.2,1); }
+.faq details[open] summary::after { content: "+"; transform: rotate(45deg); }
+.faq details p { margin: 0 0 20px; max-width: 62ch; }
 </style>
 </head>
 <body>
@@ -2448,19 +2479,26 @@ body.menuopen .menumeta { animation-delay: .3s }
   </div><!-- /split -->
 </div></section>
 
-<section class="alt"><div class="wrap">
-  <div class="eyebrow">FAQ</div>
-  <h2 style="text-align:left">Questions</h2>
+<section class="alt" id="faq"><div class="wrap">
+  <div class="chap-head">
+    <h2 class="giant">Questions</h2>
+    <hr class="chap-rule">
+    <div class="chap-meta">
+      <p>The honest answers, including what it costs to run and where the data
+      comes from.</p>
+      <span class="no">NO. 07 &mdash; FAQ</span>
+    </div>
+  </div>
   <div class="faq" style="margin-left:0">
-    <details><summary>Do I need to be technical?</summary>
+    <details><summary><span><span class="qno">Q.01</span>Do I need to be technical?</span></summary>
       <p>You run one command to start it, then everything happens in your browser. If you can open Terminal and paste a line, you're fine — setup is walked through step by step.</p></details>
-    <details><summary>What does it cost to run?</summary>
+    <details><summary><span><span class="qno">Q.02</span>What does it cost to run?</span></summary>
       <p>The app is free to use once you own it. The only running cost is the AI, billed by OpenRouter directly to you — typically 10–25 cents per business you pitch in full, including the build's own fact-check pass. Finding and verifying leads is free.</p></details>
-    <details><summary>Where does the lead data come from?</summary>
+    <details><summary><span><span class="qno">Q.03</span>Where does the lead data come from?</span></summary>
       <p>OpenStreetMap, the free public map database, plus a live web check on each candidate. No scraping of anyone's private data, no shady lists.</p></details>
-    <details><summary>Are the websites any good?</summary>
+    <details><summary><span><span class="qno">Q.04</span>Are the websites any good?</span></summary>
       <p>They're real, responsive, single-page sites with the business's actual hours, working call and directions buttons, and proper SEO — and they never invent fake reviews or details. You can hand one to a client as-is or use it as your pitch.</p></details>
-    <details><summary>Is it a subscription?</summary>
+    <details><summary><span><span class="qno">Q.05</span>Is it a subscription?</span></summary>
       <p>No. Pay once, own it, run it as much as you like. Updates are free.</p></details>
   </div>
 </div></section>
