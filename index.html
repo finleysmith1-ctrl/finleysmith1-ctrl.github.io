@@ -615,10 +615,123 @@ h1.postline { animation: none; }
   .workrow { grid-template-columns: 1fr; gap: 14px; padding: 26px 0; }
   .workrow .wnum { font-size: 38px; }
 }
+
+/* ============ WAVE 7 — MOTION + NAVIGATION (the page comes alive) ========= */
+
+/* stats at poster weight — numbers are the argument, let them shout */
+.stat .n { font-weight: 800; letter-spacing: -.03em;
+  font-size: clamp(52px, 7vw, 100px); }
+
+/* giant chapter words reveal char by char (JS splits; no JS = plain text) */
+.giant { overflow: hidden; }
+.giant .ch { display: inline-block; transform: translateY(112%); white-space: pre;
+  transition: transform .75s cubic-bezier(.2,.7,.2,1); }
+.giant.chin .ch { transform: none; }
+@media (prefers-reduced-motion: reduce){ .giant .ch { transform: none; transition: none; } }
+
+/* the amber band signs off with a working strip */
+.amarq { overflow: hidden; border-top: 1px solid rgba(36,23,5,.35); margin-top: 74px;
+  padding: 15px 0; }
+.amarq .track { display: flex; width: max-content; animation: marq 30s linear infinite reverse; }
+.amarq span { font: 700 13px/1 var(--mono); letter-spacing: .26em; color: rgba(36,23,5,.85);
+  white-space: nowrap; padding: 0 12px; }
+@media (prefers-reduced-motion: reduce){ .amarq .track { animation: none; } }
+
+/* full-screen menu — giant type navigation (also fixes mobile, which had none) */
+.menubtn { display: flex; flex-direction: column; justify-content: center; gap: 5px;
+  width: 42px; height: 42px; padding: 0 8px; margin-left: 6px; background: none;
+  border: 1px solid var(--line); border-radius: 10px; cursor: pointer; }
+.menubtn i { display: block; height: 2px; background: var(--ink); border-radius: 2px;
+  transition: transform .3s ease, opacity .3s ease; }
+body.menuopen .menubtn i:nth-child(1){ transform: translateY(7px) rotate(45deg); }
+body.menuopen .menubtn i:nth-child(2){ opacity: 0; }
+body.menuopen .menubtn i:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+#menu { position: fixed; inset: 0; z-index: 70; background: rgba(9,15,13,.96);
+  backdrop-filter: blur(18px); display: none; overflow-y: auto; }
+body.menuopen #menu { display: block; }
+body.menuopen { overflow: hidden; }
+body.menuopen #topnav { z-index: 80; transform: none; opacity: 1; }
+.menuinner { max-width: 1100px; margin: 0 auto; padding: 120px 24px 60px;
+  display: grid; grid-template-columns: 1.6fr 1fr; gap: 50px; }
+.menulinks { display: flex; flex-direction: column; align-items: flex-start; }
+.menulinks a { font: 800 clamp(38px, 7.6vw, 88px)/1.06 var(--display); text-transform: uppercase;
+  letter-spacing: -.03em; color: var(--ink); text-decoration: none; position: relative;
+  transition: color .2s ease, transform .3s cubic-bezier(.2,.7,.2,1); }
+.menulinks a:hover { color: var(--jade); transform: translateX(14px); }
+.menulinks a .mno { font: 700 11px/1 var(--mono); letter-spacing: .2em; color: var(--jade);
+  vertical-align: super; margin-right: 10px; }
+.menumeta { font: 600 11.5px/2.1 var(--mono); letter-spacing: .16em; text-transform: uppercase;
+  color: var(--faint); display: flex; flex-direction: column; gap: 4px; padding-top: 14px; }
+.menumeta a { color: var(--ink); text-decoration: none; }
+.menumeta a:hover { color: var(--jade); }
+.menumeta .sep { border-top: 1px solid var(--line); margin: 14px 0; }
+body.menuopen .menulinks a, body.menuopen .menumeta {
+  animation: heroRise .55s cubic-bezier(.2,.7,.2,1) both; }
+body.menuopen .menulinks a:nth-child(2){ animation-delay: .05s }
+body.menuopen .menulinks a:nth-child(3){ animation-delay: .1s }
+body.menuopen .menulinks a:nth-child(4){ animation-delay: .15s }
+body.menuopen .menulinks a:nth-child(5){ animation-delay: .2s }
+body.menuopen .menulinks a:nth-child(6){ animation-delay: .25s }
+body.menuopen .menumeta { animation-delay: .3s }
+@media (max-width: 860px){ .menuinner { grid-template-columns: 1fr; padding-top: 140px; } }
+@media (prefers-reduced-motion: reduce){
+  body.menuopen .menulinks a, body.menuopen .menumeta { animation: none; } }
+
+/* footer grid — the boxed sign-off panel before the nameplate */
+.footgrid { display: grid; grid-template-columns: 1.4fr 1fr 1fr;
+  border: 1px solid rgba(255,255,255,.4); margin-bottom: 10px; }
+.fcell { padding: 30px 28px 36px; border-left: 1px solid rgba(255,255,255,.4); }
+.fcell:first-child { border-left: 0; }
+.fcell h3 { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 3.4vw, 42px);
+  line-height: 1.05; letter-spacing: -.03em; color: #fff; margin: 0 0 16px; }
+.fcell h4 { font: 700 12px/1 var(--mono); letter-spacing: .2em; text-transform: uppercase;
+  color: #a9f0d3; margin: 4px 0 18px; }
+.fcell .fmono { font: 600 11px/2 var(--mono); letter-spacing: .14em; text-transform: uppercase;
+  color: rgba(234,255,245,.72); margin: 0; max-width: 34ch; }
+.fcell a { display: block; font: 600 12.5px/2.4 var(--mono); letter-spacing: .16em;
+  text-transform: uppercase; color: #eafff5; text-decoration: none; }
+.fcell a:hover { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 860px){ .footgrid { grid-template-columns: 1fr; }
+  .fcell { border-left: 0; border-top: 1px solid rgba(255,255,255,.4); }
+  .fcell:first-child { border-top: 0; } }
+
+/* intro curtain — 900ms, once per session, JS-gated so no-JS never sees it */
+#curtain { position: fixed; inset: 0; z-index: 200; background: var(--bg);
+  display: none; align-items: center; justify-content: center; }
+#curtain.show { display: flex; }
+#curtain .cmark { display: flex; align-items: center; gap: 12px;
+  font: 800 26px/1 var(--display); letter-spacing: -.02em; color: var(--ink);
+  animation: curtainMark .5s cubic-bezier(.2,.7,.2,1) both; }
+#curtain .cmark .mark { width: 34px; height: 30px; font-size: 15px; }
+#curtain.lift { animation: curtainLift .55s cubic-bezier(.7,0,.3,1) .45s forwards; }
+@keyframes curtainMark { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes curtainLift { to { transform: translateY(-100%); } }
 </style>
 </head>
 <body>
 
+<div id="curtain" aria-hidden="true"><div class="cmark"><span class="mark">U</span> Unwebbed</div></div>
+<div id="menu" role="dialog" aria-label="Menu">
+  <div class="menuinner">
+    <div class="menulinks">
+      <a href="#map"><span class="mno">01</span>The map</a>
+      <a href="#how"><span class="mno">02</span>The trick</a>
+      <a href="#builds"><span class="mno">03</span>Proof</a>
+      <a href="#features"><span class="mno">04</span>The box</a>
+      <a href="#price"><span class="mno">06</span>The price</a>
+      <a href="#faq"><span class="mno">&mdash;</span>FAQ</a>
+    </div>
+    <div class="menumeta">
+      <span>UNWEBBED &mdash; FIND SHOPS WITH NO WEBSITE.<br>PITCH THEM ONE YOU ALREADY BUILT.</span>
+      <div class="sep"></div>
+      <a href="https://app.unwebbed.app/login">LOG IN &#8599;</a>
+      <a href="#buy">GET UNWEBBED &mdash; $39</a>
+      <a href="mailto:soccerlover249145@gmail.com">EMAIL FINLEY</a>
+      <div class="sep"></div>
+      <span>RUNS ON YOUR MAC &middot; PAY ONCE &middot; OWN IT</span>
+    </div>
+  </div>
+</div>
 <div id="grain" aria-hidden="true"></div>
 <div id="regmarks" aria-hidden="true"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i><i class="tc"></i><i class="bc"></i></div>
 <nav id="rail" aria-label="Chapters">
@@ -643,6 +756,7 @@ h1.postline { animation: none; }
     <a href="#faq">FAQ</a>
     <a class="loglink" href="https://app.unwebbed.app/login">Log in</a>
     <a class="btn" href="#buy">Get Unwebbed</a>
+    <button class="menubtn" aria-label="Open menu" aria-expanded="false"><i></i><i></i><i></i></button>
   </div>
 </div></nav>
 
@@ -2171,7 +2285,9 @@ h1.postline { animation: none; }
     <span class="tnum" aria-hidden="true">003</span>
     <h3 class="tname">It builds</h3>
   </div>
-</div></section>
+</div>
+<div class="amarq" aria-hidden="true"><div class="track"><span>FIND &rarr;</span><span>VERIFY &rarr;</span><span>BUILD &rarr;</span><span>PITCH &rarr;</span><span>GET PAID &rarr;</span><span>REPEAT &rarr;</span><span>FIND &rarr;</span><span>VERIFY &rarr;</span><span>BUILD &rarr;</span><span>PITCH &rarr;</span><span>GET PAID &rarr;</span><span>REPEAT &rarr;</span><span>FIND &rarr;</span><span>VERIFY &rarr;</span><span>BUILD &rarr;</span><span>PITCH &rarr;</span><span>GET PAID &rarr;</span><span>REPEAT &rarr;</span><span>FIND &rarr;</span><span>VERIFY &rarr;</span><span>BUILD &rarr;</span><span>PITCH &rarr;</span><span>GET PAID &rarr;</span><span>REPEAT &rarr;</span></div></div>
+</section>
 
 
 <section id="builds" class="alt light"><div class="wrap">
@@ -2364,11 +2480,33 @@ h1.postline { animation: none; }
   <div class="cta" style="justify-content:center"><a class="btn big" href="#buy">Get Unwebbed &mdash; $39</a>
   <a class="btn big ghost" href="#builds">See the live builds</a></div>
 </div></section>
-<div class="bigmark" aria-hidden="true"><span>UNWEBBED<b>.</b></span></div>
-<footer><div class="wrap foot">
-  <div class="logo"><span class="mark">U</span> Unwebbed</div>
-  <div>Data from OpenStreetMap · Runs locally · © 2026</div>
+<footer><div class="wrap">
+  <div class="footgrid">
+    <div class="fcell">
+      <h3>Let's find your next client.</h3>
+      <p class="fmono">It's the shop down the street. Not in the spotlight &mdash;
+      out there with nothing to click.</p>
+    </div>
+    <div class="fcell">
+      <h4>Chapters</h4>
+      <a href="#map">The map</a>
+      <a href="#how">The trick</a>
+      <a href="#builds">Proof</a>
+      <a href="#price">The price</a>
+    </div>
+    <div class="fcell">
+      <h4>Contact</h4>
+      <a href="#buy">Get Unwebbed &mdash; $39</a>
+      <a href="https://app.unwebbed.app/login">Log in &#8599;</a>
+      <a href="mailto:soccerlover249145@gmail.com">Email Finley</a>
+    </div>
+  </div>
+  <div class="foot">
+    <div class="logo"><span class="mark">U</span> Unwebbed</div>
+    <div>Data from OpenStreetMap · Runs locally · © 2026</div>
+  </div>
 </div></footer>
+<div class="bigmark" aria-hidden="true"><span>UNWEBBED<b>.</b></span></div>
 </div>
 <script>
 /* One quiet reveal pattern. Classes are added here, from JS — so if JS never
@@ -2530,6 +2668,71 @@ h1.postline { animation: none; }
       var pct = h > 0 ? Math.round((scrollY / h) * 100) : 0;
       sn.textContent = String(pct).padStart(3, '0');
     }, { passive: true });
+  }
+
+  // giant chapter words reveal char by char
+  var giants = [].slice.call(document.querySelectorAll('.giant'));
+  if (giants.length && !reduce && 'IntersectionObserver' in window) {
+    giants.forEach(function (g) {
+      var text = g.textContent;
+      g.textContent = '';
+      text.split('').forEach(function (c, i) {
+        var s = document.createElement('span');
+        s.className = 'ch'; s.textContent = c;
+        s.style.transitionDelay = (i * 26) + 'ms';
+        g.appendChild(s);
+      });
+    });
+    var gio = new IntersectionObserver(function (es) {
+      es.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('chin'); gio.unobserve(en.target); }
+      });
+    }, { threshold: .4 });
+    giants.forEach(function (g) { gio.observe(g); });
+  }
+
+  // the hero's monster lines drift apart as you scroll away
+  var p1 = document.querySelector('.postline.p1'), p2 = document.querySelector('.postline.p2');
+  if (p1 && p2 && !reduce) {
+    // heroRise's fill-mode would override inline transforms — drop it once done
+    [p1, p2].forEach(function (el) {
+      el.addEventListener('animationend', function () { el.style.animation = 'none'; el.style.opacity = 1; });
+    });
+    addEventListener('scroll', function () {
+      var k = Math.min(scrollY / innerHeight, 1.2);
+      p1.style.transform = 'translateX(' + (-k * 5) + '%)';
+      p2.style.transform = 'translateX(' + (k * 5) + '%)';
+    }, { passive: true });
+  }
+
+  // full-screen menu
+  var mb = document.querySelector('.menubtn'), menuEl = document.getElementById('menu');
+  if (mb && menuEl) {
+    var setMenu = function (open) {
+      document.body.classList.toggle('menuopen', open);
+      mb.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+    mb.addEventListener('click', function () {
+      setMenu(!document.body.classList.contains('menuopen'));
+    });
+    menuEl.addEventListener('click', function (e) {
+      if (e.target.closest('a') || e.target === menuEl) setMenu(false);
+    });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+  }
+
+  // intro curtain — once per session, JS-gated
+  var curtain = document.getElementById('curtain');
+  if (curtain && !reduce) {
+    var seen = false;
+    try { seen = sessionStorage.getItem('uwIntro') === '1'; } catch (e) {}
+    if (!seen) {
+      curtain.classList.add('show', 'lift');
+      curtain.addEventListener('animationend', function (e) {
+        if (e.animationName === 'curtainLift') curtain.remove();
+      });
+      try { sessionStorage.setItem('uwIntro', '1'); } catch (e) {}
+    }
   }
 
   // chapter rail: light the dot for the section on screen
