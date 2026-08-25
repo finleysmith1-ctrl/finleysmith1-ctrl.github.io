@@ -737,6 +737,54 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
   transition: transform .3s cubic-bezier(.2,.7,.2,1); }
 .faq details[open] summary::after { content: "+"; transform: rotate(45deg); }
 .faq details p { margin: 0 0 20px; max-width: 62ch; }
+
+/* ============= WAVE 9 — THE SCROLL ENGINE (scrubbed, not timed) ===========
+   Everything here moves WITH the scroll, not on a clock: the amber names
+   slide in from the sides, exhibit photos parallax inside their frames and
+   wipe open, marquees skew with scroll velocity, outlined ticker strips
+   scrub past, and example-site cards float at different depths. ========== */
+
+/* amber names ride the scroll */
+.trick .tname { will-change: transform; }
+
+/* exhibits: wipe open on arrival, photo drifts inside the frame */
+.workrow.rv .frame { clip-path: inset(0 94% 0 0 round 12px);
+  transition: clip-path 1.1s cubic-bezier(.2,.7,.2,1), transform .25s cubic-bezier(.2,.7,.2,1), border-color .25s ease; }
+.workrow.rv.in .frame { clip-path: inset(0 0 0 0 round 12px); }
+.workrow .frame img { transform: scale(1.14); will-change: transform; }
+
+/* velocity skew hosts */
+.marquee, .amarq { will-change: transform; }
+
+/* scroll-scrubbed outlined ticker strip */
+.scrub { overflow: hidden; padding: 26px 0 30px; }
+.scrub span { display: inline-block; white-space: nowrap;
+  font: 800 clamp(44px, 7.5vw, 120px)/1 var(--display); text-transform: uppercase;
+  letter-spacing: -.02em; color: transparent;
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--jade) 55%, transparent);
+  will-change: transform; }
+
+/* floating example cards drifting at depth (the Otsuka move) */
+.statwrap { position: relative; overflow: hidden; }
+.statwrap .wrap { position: relative; z-index: 1; }
+.floatcards { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.fcard { position: absolute; border-radius: 10px; overflow: hidden; margin: 0;
+  border: 1px solid rgba(234,242,238,.14); opacity: .5; will-change: transform;
+  box-shadow: 0 24px 60px -30px rgba(0,0,0,.7); }
+.fcard img { width: 100%; display: block; }
+.fcard.far { filter: blur(2.5px); opacity: .26; }
+@media (max-width: 1100px){ .floatcards { display: none; } }
+
+/* the closer rises word by word */
+.closer h2 { overflow: hidden; padding-bottom: .06em; }
+.closer h2 .wd { display: inline-block; transform: translateY(115%);
+  transition: transform .85s cubic-bezier(.2,.7,.2,1); }
+.closer h2.win .wd { transform: none; }
+@media (prefers-reduced-motion: reduce){
+  .workrow.rv .frame { clip-path: none; }
+  .workrow .frame img { transform: none; }
+  .closer h2 .wd { transform: none; transition: none; }
+}
 </style>
 </head>
 <body>
@@ -831,7 +879,14 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 <div class="marquee" aria-hidden="true"><div class="track"><span>BARBERS <i></i></span><span>CAFÉS <i></i></span><span>PLUMBERS <i></i></span><span>FLORISTS <i></i></span><span>DENTISTS <i></i></span><span>GYMS <i></i></span><span>BAKERIES <i></i></span><span>SALONS <i></i></span><span>ROOFERS <i></i></span><span>TATTOO STUDIOS <i></i></span><span>AUTO REPAIR <i></i></span><span>RESTAURANTS <i></i></span><span>LANDSCAPERS <i></i></span><span>PHOTOGRAPHERS <i></i></span><span>ELECTRICIANS <i></i></span><span>PET GROOMERS <i></i></span><span>BARBERS <i></i></span><span>CAFÉS <i></i></span><span>PLUMBERS <i></i></span><span>FLORISTS <i></i></span><span>DENTISTS <i></i></span><span>GYMS <i></i></span><span>BAKERIES <i></i></span><span>SALONS <i></i></span><span>ROOFERS <i></i></span><span>TATTOO STUDIOS <i></i></span><span>AUTO REPAIR <i></i></span><span>RESTAURANTS <i></i></span><span>LANDSCAPERS <i></i></span><span>PHOTOGRAPHERS <i></i></span><span>ELECTRICIANS <i></i></span><span>PET GROOMERS <i></i></span></div></div>
 
 
-<section class="statwrap"><div class="wrap">
+<section class="statwrap">
+<div class="floatcards" aria-hidden="true">
+  <figure class="fcard" style="width:200px;left:1.5%;top:12%" data-depth="0.14"><img src="img/ex-hazel-and-rye.jpg" alt="" loading="lazy"></figure>
+  <figure class="fcard far" style="width:150px;left:5%;bottom:4%" data-depth="0.26"><img src="img/ex-cedar-dental.jpg" alt="" loading="lazy"></figure>
+  <figure class="fcard" style="width:210px;right:1.5%;top:8%" data-depth="0.11"><img src="img/ex-marigold-and-fern.jpg" alt="" loading="lazy"></figure>
+  <figure class="fcard far" style="width:150px;right:4.5%;bottom:8%" data-depth="0.22"><img src="img/ex-ironworks.jpg" alt="" loading="lazy"></figure>
+</div>
+<div class="wrap">
   <div class="chap-head">
     <h2 class="giant">The gap</h2>
     <hr class="chap-rule">
@@ -2321,7 +2376,9 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 </section>
 
 
-<section id="builds" class="alt light"><div class="wrap">
+<section id="builds" class="alt light">
+<div class="scrub" aria-hidden="true"><span>SIX REAL BUILDS &mdash; OPEN THEM LIVE &mdash; SIX REAL BUILDS &mdash; OPEN THEM LIVE &mdash; SIX REAL BUILDS &mdash; OPEN THEM LIVE &mdash;</span></div>
+<div class="wrap">
   <div class="chap-head">
     <h2 class="giant">Proof</h2>
     <hr class="chap-rule">
@@ -2790,6 +2847,92 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
     targets.forEach(function (t) { if (t) rio.observe(t); });
     dots[0].classList.add('on');
   }
+})();
+</script>
+<script>
+/* ================== the scroll engine (wave 9) ==========================
+   One rAF loop. Everything is scrubbed off scroll position or velocity —
+   nothing here runs on a timer, so the page moves exactly as fast as the
+   reader does. */
+(function () {
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+  var $$ = function (s) { return [].slice.call(document.querySelectorAll(s)); };
+
+  var tnames = $$('.trick .tname');
+  var fimgs = $$('.workrow .frame img');
+  var skewHosts = $$('.marquee, .amarq');
+  var scrubs = $$('.scrub span');
+  var fcards = $$('.fcard');
+  var statSec = document.querySelector('.statwrap');
+
+  // closer words rise
+  var ch2 = document.querySelector('.closer h2');
+  if (ch2 && 'IntersectionObserver' in window) {
+    var words = ch2.textContent.split(' ');
+    ch2.textContent = '';
+    words.forEach(function (w, i) {
+      var s = document.createElement('span');
+      s.className = 'wd'; s.textContent = w;
+      s.style.transitionDelay = (i * 70) + 'ms';
+      ch2.appendChild(s);
+      if (i < words.length - 1) ch2.appendChild(document.createTextNode(' '));
+    });
+    new IntersectionObserver(function (es, io) {
+      es.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('win'); io.unobserve(en.target); }
+      });
+    }, { threshold: .5 }).observe(ch2);
+  }
+
+  var lastY = scrollY, vel = 0, idle = 0;
+  function frame() {
+    var y = scrollY, vh = innerHeight;
+    vel += ((y - lastY) - vel) * 0.12;
+    if (Math.abs(y - lastY) < .5 && Math.abs(vel) < .1) { idle++; }
+    else idle = 0;
+    lastY = y;
+    if (idle < 30) {                       // settle, then stop touching the DOM
+      // amber names slide in from alternating sides as they enter
+      tnames.forEach(function (el, i) {
+        var r = el.getBoundingClientRect();
+        if (r.bottom < -80 || r.top > vh + 80) return;
+        var p = 1 - Math.min(Math.max((vh - r.top) / (vh * .9), 0), 1);
+        var dir = (i % 2 ? 1 : -1);
+        el.style.transform = 'translate(' + (dir * p * 18) + '%, 13%)';
+      });
+      // exhibit photos drift inside their frames
+      fimgs.forEach(function (img) {
+        var r = img.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) return;
+        var off = (r.top + r.height / 2 - vh / 2) * -0.055;
+        img.style.transform = 'scale(1.14) translateY(' + off.toFixed(1) + 'px)';
+      });
+      // marquees lean with scroll velocity
+      var skew = Math.max(-3.4, Math.min(3.4, vel * 0.05));
+      skewHosts.forEach(function (el) { el.style.transform = 'skewY(' + skew.toFixed(2) + 'deg)'; });
+      // outlined ticker strips scrub sideways
+      scrubs.forEach(function (el) {
+        var r = el.parentNode.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > vh) return;
+        el.style.transform = 'translateX(' + (-(vh - r.top) * 0.22).toFixed(1) + 'px)';
+      });
+      // floating cards ride at their own depths
+      if (statSec && fcards.length) {
+        var sr = statSec.getBoundingClientRect();
+        if (!(sr.bottom < 0 || sr.top > vh)) {
+          var c = sr.top + sr.height / 2 - vh / 2;
+          fcards.forEach(function (el, i) {
+            var d = parseFloat(el.dataset.depth || 0.15);
+            el.style.transform = 'translateY(' + (-c * d).toFixed(1) + 'px) rotate(' +
+              ((i % 2 ? 1 : -1) * (2 + d * 8)).toFixed(1) + 'deg)';
+          });
+        }
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
 })();
 </script>
 </body>
