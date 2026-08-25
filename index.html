@@ -455,9 +455,93 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
 .closer h2 { font-size: clamp(38px, 6.5vw, 84px); max-width: 16ch; margin: 0 auto 14px; }
 .closer .lead { margin-bottom: 30px; }
 .closer > * { position: relative; }
+
+/* ========== the print-shop pass (studied: runrobrun.com, otsuka-air.jp) ====
+   Film grain so pixels feel printed, registration marks like a proof sheet,
+   a chapter rail + scroll counter, and an ending that commits to one solid
+   brand-green world with the nameplate at full size. ======================= */
+
+/* 1. film grain over everything — the single cheapest "expensive" texture */
+#grain { position: fixed; inset: -60%; width: 220%; height: 220%; z-index: 90;
+  pointer-events: none; opacity: .05;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grainShift 1.2s steps(4) infinite; }
+@keyframes grainShift {
+  0% { transform: translate(0,0); } 25% { transform: translate(-1.2%, .8%); }
+  50% { transform: translate(.9%, -1.1%); } 75% { transform: translate(-.7%, -.6%); }
+  100% { transform: translate(0,0); } }
+@media (prefers-reduced-motion: reduce){ #grain { animation: none; } }
+
+/* 2. registration marks — fixed proof-sheet chrome, like a printed spread */
+#regmarks { position: fixed; inset: 12px; z-index: 40; pointer-events: none; }
+#regmarks i { position: absolute; width: 16px; height: 16px; opacity: .38; }
+#regmarks i::before, #regmarks i::after { content: ""; position: absolute; background: #94a69e; }
+#regmarks i::before { left: 0; right: 0; top: 50%; height: 1px; }
+#regmarks i::after { top: 0; bottom: 0; left: 50%; width: 1px; }
+#regmarks .tl { top: 0; left: 0; } #regmarks .tr { top: 0; right: 0; }
+#regmarks .bl { bottom: 0; left: 0; } #regmarks .br { bottom: 0; right: 0; }
+#regmarks .tc { top: 0; left: 50%; margin-left: -8px; }
+#regmarks .bc { bottom: 0; left: 50%; margin-left: -8px; }
+@media (max-width: 900px){ #regmarks { display: none; } }
+
+/* 3. chapter rail — dots that track where you are (the Otsuka move) */
+#rail { position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+  z-index: 55; display: flex; flex-direction: column; gap: 15px; }
+#rail a { width: 6px; height: 6px; border-radius: 50%; background: #94a69e;
+  opacity: .45; transition: opacity .25s ease, background .25s ease, box-shadow .25s ease; }
+#rail a.on { background: var(--jade); opacity: 1; box-shadow: 0 0 0 4px rgba(52,211,153,.16); }
+@media (max-width: 900px){ #rail { display: none; } }
+
+/* 4. scroll counter — a running readout, mono, like a plate number */
+#scrollnum { position: fixed; left: 22px; bottom: 18px; z-index: 55;
+  font: 600 10.5px/1 var(--mono); letter-spacing: .22em; color: #94a69e; opacity: .6;
+  user-select: none; pointer-events: none; }
+#scrollnum b { color: var(--jade); font-weight: 600; }
+@media (max-width: 900px){ #scrollnum { display: none; } }
+
+/* 5. hero meta line — real coordinates, real clock (their LOCATION: DENMARK · 04:16) */
+.herometa { display: flex; justify-content: space-between; gap: 18px; max-width: 780px;
+  margin: 40px auto -30px; font: 600 10.5px/1.6 var(--mono); letter-spacing: .16em;
+  color: var(--faint); text-transform: uppercase;
+  opacity: 0; animation: heroRise .9s cubic-bezier(.2,.7,.2,1) .55s forwards; }
+.herometa b { color: var(--jade); font-weight: 600; }
+@media (max-width: 720px){ .herometa span:nth-child(2){ display: none; } }
+@media (prefers-reduced-motion: reduce){ .herometa { animation: none; opacity: 1; } }
+
+/* 6. the ending commits: solid brand green, white monster nameplate
+   (the /zeroz footer and /APERIOS sign-off, in our color) */
+.endband { background: #0e8a63; color: #eafff5; }
+.endband .closer::before { background:
+  radial-gradient(700px 420px at 50% 115%, rgba(255,255,255,.14), transparent 70%); }
+.endband .closer .eyebrow { color: #a9f0d3; }
+.endband .closer h2 { color: #fff; }
+.endband .closer .lead { color: rgba(234,255,245,.78); }
+.endband .btn.big { background: #fff; color: #0a6b4b;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 16px 36px -16px rgba(0,0,0,.45); }
+.endband .btn.big.ghost { background: transparent; color: #fff;
+  border: 1px solid rgba(255,255,255,.45); box-shadow: none; }
+.endband .bigmark span { color: #fff; -webkit-text-stroke: 0;
+  font-weight: 640; font-size: clamp(90px, 18.5vw, 300px); letter-spacing: -.045em; }
+.endband .bigmark b { color: #063a29; }
+.endband footer { border-top: 1px solid rgba(255,255,255,.22); }
+.endband .foot { color: rgba(234,255,245,.75); }
+.endband .mark { background: #fff; color: #0a6b4b; }
 </style>
 </head>
 <body>
+
+<div id="grain" aria-hidden="true"></div>
+<div id="regmarks" aria-hidden="true"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i><i class="tc"></i><i class="bc"></i></div>
+<nav id="rail" aria-label="Chapters">
+  <a href="#top" title="Top"></a>
+  <a href="#map" title="01 — Live lead map"></a>
+  <a href="#how" title="02 — How it works"></a>
+  <a href="#builds" title="03 — Real output"></a>
+  <a href="#features" title="04 — What's inside"></a>
+  <a href="#compare" title="05 — Own it"></a>
+  <a href="#price" title="Pricing"></a>
+</nav>
+<div id="scrollnum" aria-hidden="true">SCROLL <b>000</b></div>
 
 <div class="announce" aria-hidden="true"><span>EARLY ACCESS OPEN &mdash; $39 WHILE IT'S NEW</span><i></i><span>SIX LIVE EXAMPLE BUILDS BELOW</span><i></i><span>BUILT BY A WORKING FREELANCER</span></div>
 <nav id="topnav"><div class="wrap nav">
@@ -473,7 +557,7 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
   </div>
 </div></nav>
 
-<header class="hero"><div class="wrap">
+<header class="hero" id="top"><div class="wrap">
   <div class="eyebrow">For freelance web designers</div>
   <h1>Find shops with <span class="u">no website</span>. Pitch them one you already built.</h1>
   <p class="sub">Unwebbed finds the local businesses near you that have no website,
@@ -484,6 +568,12 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
     <a class="btn big ghost" href="#how">See how it works</a>
   </div>
   <p class="microcopy">Runs on your Mac · no monthly fee · you bring your own AI key (costs pennies)</p>
+
+  <div class="herometa" aria-hidden="true">
+    <span>FIELD TOOL &mdash; MAC</span>
+    <span>LAST REAL RUN: <b>SAN RAFAEL, CA</b> &middot; AUG 2026</span>
+    <span>LOCAL <b id="clock">--:--</b></span>
+  </div>
 
   <div class="shot">
     <div class="chrome"><span class="d r"></span><span class="d y"></span><span class="d g"></span>
@@ -2126,6 +2216,7 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
   close the deals. That's the part no tool can do for you, and it's the part that makes the money.
 </div></div>
 
+<div class="endband">
 <section class="closer"><div class="wrap">
   <div class="eyebrow">The whole point</div>
   <h2>Show up with the work already done.</h2>
@@ -2139,6 +2230,7 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
   <div class="logo"><span class="mark">U</span> Unwebbed</div>
   <div>Data from OpenStreetMap · Runs locally · © 2026</div>
 </div></footer>
+</div>
 <script>
 /* One quiet reveal pattern. Classes are added here, from JS — so if JS never
    runs, nothing is ever hidden. */
@@ -2278,6 +2370,45 @@ nav.hidden { transform: translateY(-130%); opacity: 0; }
         mark.style.transform = 'translateY(' + (18 - k * 14) + '%)';
       }
     }, { passive: true });
+  }
+
+  // live local clock in the hero meta line
+  var clock = document.getElementById('clock');
+  if (clock) {
+    var tickClock = function () {
+      var d = new Date();
+      clock.textContent = String(d.getHours()).padStart(2, '0') + ':' +
+                          String(d.getMinutes()).padStart(2, '0');
+    };
+    tickClock(); setInterval(tickClock, 15000);
+  }
+
+  // scroll counter 000–100
+  var sn = document.querySelector('#scrollnum b');
+  if (sn) {
+    addEventListener('scroll', function () {
+      var h = document.documentElement.scrollHeight - innerHeight;
+      var pct = h > 0 ? Math.round((scrollY / h) * 100) : 0;
+      sn.textContent = String(pct).padStart(3, '0');
+    }, { passive: true });
+  }
+
+  // chapter rail: light the dot for the section on screen
+  var dots = [].slice.call(document.querySelectorAll('#rail a'));
+  if (dots.length && 'IntersectionObserver' in window) {
+    var targets = dots.map(function (a) {
+      return document.querySelector(a.getAttribute('href'));
+    });
+    var setOn = function (el) {
+      var i = targets.indexOf(el);
+      if (i < 0) return;
+      dots.forEach(function (d, j) { d.classList.toggle('on', j === i); });
+    };
+    var rio = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { if (en.isIntersecting) setOn(en.target); });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+    targets.forEach(function (t) { if (t) rio.observe(t); });
+    dots[0].classList.add('on');
   }
 })();
 </script>
