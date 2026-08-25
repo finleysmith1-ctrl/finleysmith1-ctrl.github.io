@@ -782,6 +782,24 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 /* navbar knows which chapter you're in */
 .navlinks a.cur { background: rgba(52,211,153,.14); color: var(--ink); }
 
+/* THE GRIND — before/after as two ruled ledgers under mono labels */
+.grindcols { display: grid; grid-template-columns: 1fr 1fr; gap: 46px; }
+.grindlabel { font: 700 12px/1 var(--mono); letter-spacing: .2em; color: #c8674a;
+  margin: 0 0 4px; }
+.grindlabel.jade { color: var(--jade); }
+@media (max-width: 760px){ .grindcols { grid-template-columns: 1fr; gap: 30px; } }
+
+/* THE CALL — the phone on a stage with mono annotations */
+.callstage { position: relative; max-width: 640px; margin: 0 auto; }
+.callstage .anno { position: absolute; z-index: 3; font: 600 10.5px/1.5 var(--mono);
+  letter-spacing: .14em; color: var(--ink); background: rgba(6,14,11,.72);
+  border: 1px solid rgba(52,211,153,.3); border-radius: 6px; padding: 7px 10px;
+  backdrop-filter: blur(4px); pointer-events: none; }
+.callstage .anno b { color: var(--jade); font-weight: 700; }
+.callstage .anno.c1 { top: 16%; left: 0; }
+.callstage .anno.c2 { bottom: 14%; right: 0; }
+@media (max-width: 700px){ .callstage .anno { display: none; } }
+
 /* the closer rises word by word */
 .closer h2 { overflow: hidden; padding-bottom: .06em; }
 .closer h2 .wd { display: inline-block; transform: translateY(115%);
@@ -2325,25 +2343,36 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
   </div>
 </div></section>
 
-<section id="problem" class="alt"><div class="wrap split">
-  <div>
-    <h2>Finding clients is the worst part of freelancing</h2>
-    <p class="lead" style="margin:0;text-align:left">You know you could build these shops a great site. The hard part is
-    finding them, working out who actually needs one, and writing something that gets a reply. Unwebbed does that part.</p>
+<section id="problem" class="alt"><div class="wrap">
+  <div class="chap-head">
+    <h2 class="giant">The grind</h2>
+    <hr class="chap-rule">
+    <div class="chap-meta">
+      <p>Finding clients is the worst part of freelancing. You could build these
+      shops a great site &mdash; the hard part is finding them and getting a reply.
+      Unwebbed does that part.</p>
+      <span class="no">BEFORE &rarr; AFTER</span>
+    </div>
   </div>
-  <div>
-    <ul class="before">
-      <li>Scrolling Google Maps guessing who has a website</li>
-      <li>Pitching businesses that already have one</li>
-      <li>Writing the same cold message thirty times</li>
-      <li>"You should get a website" — and getting ignored</li>
-    </ul>
-    <ul class="before after" style="margin-top:14px">
-      <li>A scored list of shops that genuinely have no site</li>
-      <li>Each one verified against the live web first</li>
-      <li>A pitch written for that specific business</li>
-      <li>"Here's the site I already built you" — hard to ignore</li>
-    </ul>
+  <div class="grindcols">
+    <div>
+      <h3 class="grindlabel">WITHOUT &mdash; THE OLD WAY</h3>
+      <ul class="before">
+        <li>Scrolling Google Maps guessing who has a website</li>
+        <li>Pitching businesses that already have one</li>
+        <li>Writing the same cold message thirty times</li>
+        <li>"You should get a website" — and getting ignored</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="grindlabel jade">WITH UNWEBBED</h3>
+      <ul class="before after">
+        <li>A scored list of shops that genuinely have no site</li>
+        <li>Each one verified against the live web first</li>
+        <li>A pitch written for that specific business</li>
+        <li>"Here's the site I already built you" — hard to ignore</li>
+      </ul>
+    </div>
   </div>
 </div></section>
 
@@ -2451,13 +2480,19 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 </div></section>
 
 <section><div class="wrap">
-  <div class="split" style="align-items:center">
-    <div>
-      <div class="eyebrow">On the phone</div>
-      <h2 style="text-align:left">Then pitch from your phone.</h2>
-      <p class="lead" style="text-align:left;margin:0">A call sheet, best leads first. Tap to call, a line to say, one tap to log what
-      happened. Calling is the main channel — the tool is built around it.</p>
+  <div class="chap-head">
+    <h2 class="giant">The call</h2>
+    <hr class="chap-rule">
+    <div class="chap-meta">
+      <p>Then pitch from your phone. A call sheet, best leads first &mdash; tap to
+      call, a line to say, one tap to log what happened. Calling is the main
+      channel, and the tool is built around it.</p>
+      <span class="no">ON YOUR PHONE</span>
     </div>
+  </div>
+  <div class="callstage">
+    <span class="anno c1">BEST LEADS FIRST &mdash; <b>SCORED</b></span>
+    <span class="anno c2">ONE TAP &mdash; <b>CALL &middot; LOG</b></span>
     <div class="phoneshot" style="margin:0 auto"><img src="img/callsheet.png" alt="The Unwebbed call sheet on a phone" loading="lazy"></div>
   </div>
 </div></section>
