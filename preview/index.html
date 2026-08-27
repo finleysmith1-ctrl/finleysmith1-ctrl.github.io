@@ -137,6 +137,35 @@ section.alt .step { background: var(--paper); }
   letter-spacing: .1em; color: var(--jade); background: var(--wash);
   border-radius: 99px; padding: 4px 8px; vertical-align: 2px; }
 
+/* --------------------------------------------------- try-it live browser */
+.tryit { max-width: 980px; margin: 0 auto 34px; background: var(--card);
+  border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+  box-shadow: 0 2px 6px rgba(23,33,28,.06), 0 30px 80px -30px rgba(23,33,28,.25); }
+.trybar { display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+  border-bottom: 1px solid var(--line); background: #f4f2ec; flex-wrap: wrap; }
+.trytabs { display: flex; gap: 4px; }
+.trytabs button { border: 1px solid transparent; background: transparent; cursor: pointer;
+  font: 650 13px/1 var(--sans); color: var(--soft); padding: 8px 14px; border-radius: 8px;
+  transition: all .14s ease; }
+.trytabs button:hover { color: var(--ink); }
+.trytabs button.on { background: var(--card); border-color: var(--line); color: var(--ink);
+  box-shadow: 0 1px 2px rgba(23,33,28,.08); }
+.tryhint { margin-left: auto; font: 600 11px/1 var(--mono); letter-spacing: .08em;
+  text-transform: uppercase; color: var(--faint); }
+.tryview { display: flex; gap: 1px; border: 1px solid var(--line); border-radius: 7px;
+  overflow: hidden; }
+.tryview button { border: 0; background: var(--card); color: var(--faint); cursor: pointer;
+  font-size: 13px; padding: 6px 10px; }
+.tryview button.on { color: var(--jade); background: var(--wash); }
+.tryframe { height: 560px; display: grid; background: var(--paper); }
+.tryframe iframe { width: 100%; height: 100%; border: 0; background: #fff;
+  justify-self: center; transition: width .25s ease; }
+.tryit.mob .tryframe iframe { width: 390px; border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line); }
+.trymore { text-align: center; font: 600 11.5px/1 var(--mono); letter-spacing: .1em;
+  text-transform: uppercase; color: var(--faint); margin: 0 0 22px; }
+@media (max-width: 700px) { .tryhint { display: none; } .tryframe { height: 440px; } }
+
 /* ----------------------------------------------------------- examples */
 .exgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
 @media (max-width: 820px) { .exgrid { grid-template-columns: 1fr 1fr; } }
@@ -144,7 +173,16 @@ section.alt .step { background: var(--paper); }
 .ex { display: block; border-radius: 12px; overflow: hidden; position: relative;
   border: 1px solid var(--line); box-shadow: 0 1px 3px rgba(23,33,28,.06);
   transition: transform .15s ease, box-shadow .15s ease; }
-.ex:hover { transform: translateY(-3px); box-shadow: 0 14px 34px -16px rgba(23,33,28,.3); }
+.ex:nth-child(odd) { transform: rotate(-.4deg); }
+.ex:nth-child(even) { transform: rotate(.4deg); }
+.ex:hover { transform: translateY(-3px) rotate(0); box-shadow: 0 14px 34px -16px rgba(23,33,28,.3); }
+.ex::after { content: "LIVE"; position: absolute; top: 10px; right: 10px;
+  font: 700 9px/1 var(--mono); letter-spacing: .12em; color: #fff;
+  background: rgba(10,18,14,.55); backdrop-filter: blur(3px);
+  border: 1px solid rgba(255,255,255,.25); border-radius: 99px; padding: 5px 8px 5px 16px; }
+.ex::before { content: ""; position: absolute; top: 16px; right: 64px; width: 6px; height: 6px;
+  border-radius: 50%; background: #4ade80; z-index: 1; animation: livedot 2s ease infinite; }
+@keyframes livedot { 50% { opacity: .4; } }
 .ex img { aspect-ratio: 16/10; object-fit: cover; object-position: top; width: 100%; }
 .ex b { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 14px 12px;
   background: linear-gradient(transparent, rgba(10,18,14,.82));
@@ -213,6 +251,18 @@ section.alt .step { background: var(--paper); }
 .endcta .btn { background: #fff; color: var(--jade-dk); border-color: #fff;
   box-shadow: 0 2px 6px rgba(0,0,0,.18), 0 14px 34px -14px rgba(0,0,0,.35); }
 .endcta .btn:hover { filter: brightness(.97); }
+/* sticky CTA — phones only, appears once the hero CTA has scrolled away */
+.stickycta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+  display: none; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  background: rgba(250,249,246,.94); backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line); font-size: 13px; color: var(--soft);
+  transform: translateY(100%); transition: transform .25s ease; }
+.stickycta b { color: var(--ink); }
+.stickycta .btn { padding: 11px 18px; font-size: 14px; white-space: nowrap; }
+.stickycta.show { transform: none; }
+@media (max-width: 700px) { .stickycta { display: flex; } }
+
 footer { padding: 30px 0 40px; color: var(--faint); font-size: 13.5px; }
 footer .wrap { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
 .footcols { display: grid !important; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 26px; }
@@ -290,6 +340,22 @@ footer a:hover { color: var(--ink); }
   <h2>This is what you'll be showing clients.</h2>
   <p class="sub">Every one of these is live — click through, resize it, tap the
   call button. Each took one build: no code, no design degree.</p>
+  <div class="tryit rise">
+    <div class="trybar">
+      <span class="trytabs">
+        <button class="on" data-ex="/examples/hazel-and-rye/">Bakery</button>
+        <button data-ex="/examples/rapid-rooter/">Plumber</button>
+        <button data-ex="/examples/marigold-and-fern/">Florist</button>
+      </span>
+      <span class="tryhint">a real build &mdash; scroll it, tap things</span>
+      <span class="tryview">
+        <button class="on" id="tvDesk" title="Desktop">&#9707;</button>
+        <button id="tvMob" title="Phone">&#9645;</button>
+      </span>
+    </div>
+    <div class="tryframe"><iframe id="tryFrame" title="A live Unwebbed build" loading="lazy" src="/examples/hazel-and-rye/"></iframe></div>
+  </div>
+  <p class="trymore">More one-build sites, all live &darr;</p>
   <div class="exgrid">
     <a class="ex rise" href="/examples/marin-auto-glass/"><img src="/img/ex-marin-auto-glass.jpg" alt="Auto glass site" loading="lazy"><b>Marin Auto Glass<small>Auto repair</small></b></a>
     <a class="ex rise" href="/examples/hazel-and-rye/"><img src="/img/ex-hazel-and-rye.jpg" alt="Bakery site" loading="lazy"><b>Hazel &amp; Rye<small>Bakery</small></b></a>
@@ -316,8 +382,8 @@ footer a:hover { color: var(--ink); }
       <div class="cb them">okay&hellip; send it over</div>
     </div>
     <div class="mathcard rise">
-      <div class="mrow"><span>What a build costs you</span><b>30&ndash;60&cent;</b></div>
-      <div class="mrow"><span>What freelancers typically charge for a simple site</span><b>$200&ndash;$500</b></div>
+      <div class="mrow"><span>What a build costs you</span><b><span data-count="60" data-pre="30&ndash;">60</span>&cent;</b></div>
+      <div class="mrow"><span>What freelancers typically charge for a simple site</span><b>$<span data-count="200">200</span>&ndash;$<span data-count="500">500</span></b></div>
       <div class="mrow total"><span>The difference</span><b>yours</b></div>
       <p>That's the whole business. What you charge is up to you — one yes a
       month pays for Unwebbed many times over.</p>
@@ -434,6 +500,11 @@ footer a:hover { color: var(--ink); }
   &copy; 2026 Unwebbed &middot; data from OpenStreetMap &middot; payments by Stripe</div>
 </footer>
 
+<div class="stickycta" id="stickycta">
+  <span><b>Unwebbed</b> &middot; find clients, build sites</span>
+  <a class="btn" href="https://app.unwebbed.app/signup">Start free &rarr;</a>
+</div>
+
 <script>
 document.documentElement.classList.add('js');
 (function () {
@@ -444,6 +515,54 @@ document.documentElement.classList.add('js');
     });
   }, { threshold: .12 });
   document.querySelectorAll('.rise').forEach(function (el) { io.observe(el); });
+})();
+
+/* live-site browser: tabs + phone toggle */
+(function () {
+  var frame = document.getElementById('tryFrame');
+  document.querySelectorAll('.trytabs button').forEach(function (b) {
+    b.onclick = function () {
+      document.querySelectorAll('.trytabs button').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      frame.src = b.dataset.ex;
+    };
+  });
+  var box = document.querySelector('.tryit');
+  document.getElementById('tvDesk').onclick = function () {
+    box.classList.remove('mob'); this.classList.add('on');
+    document.getElementById('tvMob').classList.remove('on'); };
+  document.getElementById('tvMob').onclick = function () {
+    box.classList.add('mob'); this.classList.add('on');
+    document.getElementById('tvDesk').classList.remove('on'); };
+})();
+
+/* numbers that count up when the math card scrolls in */
+(function () {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var els = document.querySelectorAll('[data-count]');
+  if (!els.length) return;
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      io.unobserve(e.target);
+      var el = e.target, target = +el.dataset.count, t0 = performance.now();
+      (function tick(t) {
+        var p = Math.min(1, (t - t0) / 800), ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * ease);
+        if (p < 1) requestAnimationFrame(tick);
+      })(t0);
+    });
+  }, { threshold: .6 });
+  els.forEach(function (el) { io.observe(el); });
+})();
+
+/* sticky mobile CTA once the hero is gone */
+(function () {
+  var bar = document.getElementById('stickycta'), hero = document.querySelector('.hero');
+  if (!bar || !hero) return;
+  new IntersectionObserver(function (es) {
+    bar.classList.toggle('show', !es[0].isIntersecting);
+  }, { threshold: 0 }).observe(hero);
 })();
 </script>
 </body>
