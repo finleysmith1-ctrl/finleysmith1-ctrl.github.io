@@ -1,0 +1,6 @@
+# Unwebbed — the marketing site is open to crawlers; the app is not.
+User-agent: *
+Allow: /
+Disallow: /preview/
+
+Sitemap: https://unwebbed.app/sitemap.xml
