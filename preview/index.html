@@ -168,6 +168,10 @@ section.alt .step { background: var(--paper); }
 
 /* ----------------------------------------------------------- examples */
 .exgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.exgrid .ex:first-child { grid-column: span 2; }
+.exgrid .ex:first-child img { aspect-ratio: auto; height: 100%; min-height: 300px; }
+@media (max-width: 820px) { .exgrid .ex:first-child { grid-column: span 2; } }
+@media (max-width: 540px) { .exgrid .ex:first-child { grid-column: auto; } }
 @media (max-width: 820px) { .exgrid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 540px) { .exgrid { grid-template-columns: 1fr; } }
 .ex { display: block; border-radius: 12px; overflow: hidden; position: relative;
