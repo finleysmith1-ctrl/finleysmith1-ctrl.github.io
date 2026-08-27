@@ -164,7 +164,15 @@ section.alt .step { background: var(--paper); }
   border-right: 1px solid var(--line); }
 .trymore { text-align: center; font: 600 11.5px/1 var(--mono); letter-spacing: .1em;
   text-transform: uppercase; color: var(--faint); margin: 0 0 22px; }
-@media (max-width: 700px) { .tryhint { display: none; } .tryframe { height: 440px; } }
+@media (max-width: 700px) {
+  .tryhint { display: none; }
+  .tryframe { height: 440px; }
+  /* thumb-sized: QA found these at ~30px on a phone */
+  .trytabs button { padding: 11px 16px; }
+  .tryview button { padding: 10px 13px; }
+  .btn { padding: 15px 22px; }
+  nav .btn { padding: 12px 18px; }
+}
 
 /* ----------------------------------------------------------- examples */
 .exgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
