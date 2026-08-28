@@ -345,7 +345,23 @@ footer a:hover { color: var(--ink); }
   </div>
   <div class="shot" id="demo">
     <div class="bar"><i></i><i></i><i></i><span>unwebbed &mdash; a real build, condensed</span></div>
-    <video src="/img/demo-hd.mp4" autoplay muted loop playsinline preload="auto" poster="/img/demo-poster.jpg"></video>
+    <!-- Source chosen by screen size. The HD file is 7.6MB and the video is
+         displayed at 344px wide on a phone — sending 1600px of video over
+         cellular to fill 344px is most of this page's weight for no visible
+         gain. The mobile cut is 0.81MB and is still 2x its display size.
+         With JS off there is no src and the poster shows, which is a real
+         frame of the product rather than a blank box. -->
+    <video id="demovid" autoplay muted loop playsinline preload="auto"
+           poster="/img/demo-poster.jpg"></video>
+    <script>
+      (function () {
+        var v = document.getElementById('demovid');
+        v.src = (innerWidth < 900 ? '/img/demo-mobile.mp4' : '/img/demo-hd.mp4');
+        // autoplay can be refused (low power mode, data saver). Try once, and
+        // if it is refused leave the poster up rather than an empty frame.
+        var go = v.play(); if (go && go.catch) go.catch(function () {});
+      })();
+    </script>
   </div>
 </div></header>
 
