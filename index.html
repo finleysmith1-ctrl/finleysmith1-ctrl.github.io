@@ -594,6 +594,74 @@ document.documentElement.classList.add('js');
     bar.classList.toggle('show', !es[0].isIntersecting);
   }, { threshold: 0 }).observe(hero);
 })();
+
+/* ---------------------------------------------------------------- tracking
+   First-party, anonymous, no cookies set here and no third-party script.
+   Fire-and-forget: if the endpoint is down or blocked, the page is unaffected.
+   sendBeacon survives the page being closed mid-click, which a plain fetch
+   does not — a click that navigates away is exactly the event we most need. */
+(function () {
+  var EP = 'https://app.unwebbed.app/px';
+  var q = new URLSearchParams(location.search);
+  var ref = document.referrer || '';
+  var src = q.get('utm_source') ||
+            (ref && ref.indexOf('unwebbed.app') < 0 ? (ref.split('/')[2] || '') : '');
+
+  function px(n, x) {
+    try {
+      var b = JSON.stringify({ n: n, p: location.pathname, r: ref,
+        s: src, m: q.get('utm_medium'), c: q.get('utm_campaign'), x: x || null });
+      if (navigator.sendBeacon) navigator.sendBeacon(EP, new Blob([b], { type: 'application/json' }));
+      else fetch(EP, { method: 'POST', body: b, keepalive: true,
+                       headers: { 'content-type': 'application/json' } });
+    } catch (e) {}
+  }
+  px('view');
+
+  /* Carry the campaign across to the app, which is a different origin and so
+     cannot read this page's URL. Without this hand-off every signup would be
+     attributed to "direct" and no channel could ever be judged. */
+  if (src) {
+    document.querySelectorAll('a[href*="app.unwebbed.app"]').forEach(function (a) {
+      try {
+        var u = new URL(a.href);
+        u.searchParams.set('utm_source', src);
+        if (q.get('utm_medium')) u.searchParams.set('utm_medium', q.get('utm_medium'));
+        if (q.get('utm_campaign')) u.searchParams.set('utm_campaign', q.get('utm_campaign'));
+        a.href = u.toString();
+      } catch (e) {}
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a');
+    if (!a) return;
+    if (a.href && a.href.indexOf('app.unwebbed.app') > -1)
+      px('cta', (a.textContent || '').trim().slice(0, 40));
+    else if (a.href && a.href.indexOf('/examples/') > -1)
+      px('example_open', a.href.split('/examples/')[1].replace(/\/$/, ''));
+  }, true);
+
+  var pr = document.getElementById('pricing');
+  if (pr && window.IntersectionObserver) {
+    var seen = false;
+    new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting && !seen) { seen = true; px('pricing_view'); }
+    }, { threshold: .3 }).observe(pr);
+  }
+
+  document.querySelectorAll('details').forEach(function (d) {
+    d.addEventListener('toggle', function () {
+      if (d.open) px('faq_open', (d.querySelector('summary') || {}).textContent
+        ? d.querySelector('summary').textContent.trim().slice(0, 50) : '');
+    });
+  });
+
+  var v = document.querySelector('#demo video, video');
+  if (v) v.addEventListener('play', function once() {
+    px('demo_play'); v.removeEventListener('play', once);
+  });
+})();
 </script>
 </body>
 </html>
