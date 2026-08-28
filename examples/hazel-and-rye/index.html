@@ -492,5 +492,35 @@
   <a href="tel:5035550177"><svg data-icon="phone" class="ic" style="width:1.2em;height:1.2em;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" /></svg> Call now — (503) 555-0177</a>
 </div>
 
+<!-- Sample-site notice. Two reasons this exists:
+     1. These pages are in the sitemap and rank on their own. Someone arriving
+        from a search saw a complete business site with a phone number and no
+        indication it was a demo — for a made-up business. The numbers are
+        fictional (555-01xx) but the page never said so.
+     2. It was a dead end. A visitor who liked the site had no way to find out
+        who made it.
+     Hidden inside an iframe, because the landing page embeds these as a live
+     demo and the notice would just be clutter there. -->
+<div id="uw-demo-note" style="display:none;position:fixed;left:0;right:0;bottom:0;
+  z-index:2147483647;background:#0d7a5f;color:#fff;font:600 13px/1.45 -apple-system,
+  'Segoe UI',system-ui,sans-serif;padding:11px 16px;text-align:center;
+  box-shadow:0 -2px 14px rgba(0,0,0,.22)">
+  This is a <b>sample site</b> for a business that doesn't exist &mdash; built in
+  about three minutes by
+  <a href="https://unwebbed.app/?utm_source=example&utm_medium=sample_site"
+     style="color:#fff;text-decoration:underline">Unwebbed</a>.
+  <a href="https://unwebbed.app/?utm_source=example&utm_medium=sample_site"
+     style="color:#0d7a5f;background:#fff;text-decoration:none;border-radius:7px;
+     padding:5px 11px;margin-left:8px;display:inline-block;font-weight:700">
+    Make one &rarr;</a>
+</div>
+<script>
+  // Only for someone who landed here directly; inside the landing page's
+  // demo frame it would be noise.
+  if (window.self === window.top) {
+    document.getElementById('uw-demo-note').style.display = 'block';
+    document.body.style.paddingBottom = '62px';
+  }
+</script>
 </body>
 </html>
