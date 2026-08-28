@@ -611,9 +611,13 @@ document.documentElement.classList.add('js');
     try {
       var b = JSON.stringify({ n: n, p: location.pathname, r: ref,
         s: src, m: q.get('utm_medium'), c: q.get('utm_campaign'), x: x || null });
-      if (navigator.sendBeacon) navigator.sendBeacon(EP, new Blob([b], { type: 'application/json' }));
+      /* text/plain is a CORS-SAFELISTED content type, so this sends with NO
+         preflight round trip at all. application/json is not, and its
+         preflight is a second thing that can fail — it already did once. The
+         server reads the raw body and parses it regardless of the label. */
+      if (navigator.sendBeacon) navigator.sendBeacon(EP, new Blob([b], { type: 'text/plain' }));
       else fetch(EP, { method: 'POST', body: b, keepalive: true,
-                       headers: { 'content-type': 'application/json' } });
+                       headers: { 'content-type': 'text/plain' } });
     } catch (e) {}
   }
   px('view');
