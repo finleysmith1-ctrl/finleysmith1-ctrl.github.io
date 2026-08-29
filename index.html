@@ -257,6 +257,32 @@ section.alt .step { background: var(--paper); }
    control that reveals the cheaper option. */
 @media (max-width: 900px) { .cycle button { padding: 14px 18px; } }
 .plusof { color: var(--jade); font: 700 12px/1.4 inherit; margin: 4px 0 -4px; }
+
+/* Free town check — the acquisition hook. Sits directly under the hero so the
+   pitch stops being abstract before anyone has to decide anything. */
+#towncheck { text-align: center; }
+.tcform { display: flex; gap: 10px; max-width: 560px; margin: 26px auto 0;
+  flex-wrap: wrap; justify-content: center; }
+.tcform input { flex: 1 1 300px; min-width: 0; padding: 15px 18px; font: inherit;
+  font-size: 16px; border: 1px solid var(--line); border-radius: 12px;
+  background: #fff; color: var(--ink); }
+.tcform input:focus { outline: 2px solid var(--jade); outline-offset: 1px; }
+.tcform button { flex: 0 0 auto; }
+.tcout { max-width: 620px; margin: 26px auto 0; }
+.tcout[hidden] { display: none !important; }
+.tcbig { font-family: var(--display); font-weight: 800; letter-spacing: -.02em;
+  font-size: clamp(30px, 6vw, 46px); line-height: 1.1; }
+.tcbig b { color: var(--jade); }
+.tcsub { color: var(--ink-soft, #5b6b66); margin-top: 10px; font-size: 15px; }
+.tctrades { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+  margin: 20px 0 4px; }
+.tctrade { border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px;
+  font-size: 13.5px; background: #fff; }
+.tctrade b { font-weight: 700; }
+.tcnote { color: var(--ink-soft, #5b6b66); font-size: 13px; margin-top: 16px;
+  line-height: 1.6; max-width: 48ch; margin-inline: auto; }
+.tcerr { color: #b4462a; font-size: 15px; }
+.tccta { margin-top: 22px; }
 .freenote { text-align: center; color: var(--ink-soft, #5b6b66); font-size: 14px;
   max-width: 46ch; margin: 26px auto 0; line-height: 1.6; }
 .pnote { color: var(--ink-soft, #6b7c76); font-size: 12px; text-align: center; margin-top: 10px; }
@@ -383,6 +409,21 @@ footer a:hover { color: var(--ink); }
     </script>
   </div>
 </div></header>
+
+<section id="towncheck"><div class="wrap">
+  <div class="eyebrow">Try it right now</div>
+  <h2>How many businesses near you have no website?</h2>
+  <p class="sub">Type your town. No sign-up, no card &mdash; this is the same
+  search the tool runs, and it takes a few seconds.</p>
+
+  <form class="tcform" id="tcform" autocomplete="off">
+    <input id="tctown" type="text" placeholder="Your town or city — e.g. Petaluma, CA"
+           aria-label="Town or city" maxlength="60">
+    <button class="btn" type="submit" id="tcgo">Check my town <span class="ar">&rarr;</span></button>
+  </form>
+
+  <div id="tcout" class="tcout" hidden></div>
+</div></section>
 
 <section id="how" class="alt"><div class="wrap">
   <div class="eyebrow">How it works</div>
@@ -817,6 +858,59 @@ document.documentElement.classList.add('js');
         g.hidden = g.dataset.plans !== want;
       });
     });
+  });
+})();
+
+/* Free town check. Public endpoint, cached server-side for a week. */
+(function () {
+  var form = document.getElementById('tcform');
+  if (!form) return;
+  var input = document.getElementById('tctown');
+  var btn = document.getElementById('tcgo');
+  var out = document.getElementById('tcout');
+
+  function esc(t) { return String(t == null ? '' : t)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var town = (input.value || '').trim();
+    if (!town) { input.focus(); return; }
+    btn.disabled = true;
+    var label = btn.innerHTML;
+    btn.textContent = 'Checking…';
+    out.hidden = false;
+    out.innerHTML = '<div class="tcsub">Searching ' + esc(town) + '…</div>';
+    try {
+      var r = await fetch('https://app.unwebbed.app/towncheck?town=' +
+                          encodeURIComponent(town));
+      var d = await r.json();
+      if (d.error) {
+        out.innerHTML = '<div class="tcerr">' + esc(d.error) + '</div>';
+      } else if (!d.total) {
+        out.innerHTML = '<div class="tcbig">Every business we can see in ' +
+          esc(d.place) + ' already lists a website.</div>' +
+          '<div class="tcsub">Try a neighbouring town — most have plenty.</div>';
+      } else {
+        var chips = (d.trades || []).map(function (t) {
+          return '<span class="tctrade"><b>' + t.count + '</b> ' + esc(t.trade) + '</span>';
+        }).join('');
+        out.innerHTML =
+          '<div class="tcbig"><b>' + d.total + '</b> businesses in ' + esc(d.place) +
+          ' have no website listed.</div>' +
+          '<div class="tctrades">' + chips + '</div>' +
+          '<div class="tcnote">That is ' + d.total + ' people who could be paying ' +
+          'someone to build them one. Unwebbed finds them, checks each against ' +
+          'the live web, and builds the site before you call.</div>' +
+          '<div class="tccta"><a class="btn big" href="https://app.unwebbed.app/signup' +
+          '?utm_source=towncheck&utm_medium=site">See who they are &rarr;</a></div>';
+      }
+    } catch (err) {
+      out.innerHTML = '<div class="tcerr">Could not reach the search just now — ' +
+        'try again in a moment.</div>';
+    }
+    btn.disabled = false;
+    btn.innerHTML = label;
   });
 })();
 </script>
