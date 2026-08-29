@@ -241,6 +241,21 @@ section.alt .step { background: var(--paper); }
 .plan h3 { font: 750 22px/1.2 var(--display); margin: 8px 0 2px; }
 .plan .pr { font: 800 34px/1.1 var(--display); letter-spacing: -.02em; margin: 8px 0 2px; }
 .plan .pr small { font: 600 14px/1 var(--sans); color: var(--faint); letter-spacing: 0; }
+/* 🔴 .plans sets an explicit display, which outranks the browser's built-in
+   [hidden] rule — without this line the annual cards render underneath the
+   monthly ones. Same bug bit the app's billing page tonight. */
+.plans[hidden] { display: none !important; }
+.cycle { display: flex; gap: 6px; justify-content: center; margin: 26px auto 30px;
+  background: #fff; border: 1px solid var(--line); border-radius: 999px;
+  padding: 5px; width: max-content; }
+.cycle button { background: none; border: 0; border-radius: 999px; cursor: pointer;
+  color: var(--ink-soft, #5b6b66); font: 700 14px/1 inherit; padding: 10px 18px; }
+.cycle button.on { background: var(--jade); color: #fff; }
+.cycle .save { font: 700 10px/1 var(--mono, ui-monospace); letter-spacing: .08em;
+  text-transform: uppercase; opacity: .85; margin-left: 6px; }
+/* thumb-sized on touch: 35px is under the 44pt minimum and this is the
+   control that reveals the cheaper option. */
+@media (max-width: 900px) { .cycle button { padding: 14px 18px; } }
 .plusof { color: var(--jade); font: 700 12px/1.4 inherit; margin: 4px 0 -4px; }
 .pnote { color: var(--ink-soft, #6b7c76); font-size: 12px; text-align: center; margin-top: 10px; }
 .plan ul { list-style: none; padding: 0; margin: 16px 0 22px; display: flex;
@@ -450,7 +465,11 @@ footer a:hover { color: var(--ink); }
   every plan. What goes up is how much you can build, how fast it builds, and
   how you hand it over. <b>Start free, no card needed</b> &mdash; one client win
   covers a year of any plan.</p>
-  <div class="plans">
+  <div class="cycle" role="tablist">
+    <button type="button" class="on" data-cycle="month">Monthly</button>
+    <button type="button" data-cycle="year">Annual <span class="save">2 months free</span></button>
+  </div>
+  <div class="plans" data-plans="month">
     <div class="plan rise">
       <span class="pt">Getting started</span>
       <h3>Solo</h3>
@@ -492,7 +511,54 @@ footer a:hover { color: var(--ink); }
       <a class="btn ghost" href="https://app.unwebbed.app/signup">Start free &rarr;</a>
       <div class="pnote">Cancel anytime</div>
     </div>
-  </div>
+    </div>
+  <div class="plans" data-plans="year" hidden>
+    <div class="plan rise">
+      <span class="pt">Getting started</span>
+      <h3>Solo</h3>
+      <div class="pr">$190 <small>/ year</small></div>
+      <ul>
+        <li><b>$72</b> of build budget &mdash; about <b>114 finished sites</b></li>
+        <li>Unlimited searching, pitches and the call sheet</li>
+        <li>Prepare 5 leads in one run</li>
+        <li>Builds one site at a time</li>
+        <li>Download any site to hand to your client</li>
+      <li>Your whole year&rsquo;s budget on <b>day one</b></li>
+      </ul>
+      <a class="btn ghost" href="https://app.unwebbed.app/signup">Start free &rarr;</a>
+      <div class="pnote">Cancel anytime</div>
+    </div>
+    <div class="plan feat rise">
+      <span class="pt">For regulars</span>
+      <h3>Studio</h3>
+      <div class="pr">$490 <small>/ year</small></div>
+      <div class="plusof">Everything in Solo, plus:</div>
+      <ul>
+        <li><b>$216</b> of build budget &mdash; about <b>342 finished sites</b></li>
+        <li>Prepare <b>15 leads</b> in one run</li>
+        <li><b>4 sites building at once</b> &mdash; no more waiting through them one by one</li>
+        <li><b>One-click publish</b> &mdash; put the site live for your client</li>
+      <li>Your whole year&rsquo;s budget on <b>day one</b></li>
+      </ul>
+      <a class="btn" href="https://app.unwebbed.app/signup">Start free <span class="ar">&rarr;</span></a>
+      <div class="pnote">Cancel anytime</div>
+    </div>
+    <div class="plan rise">
+      <span class="pt">High volume</span>
+      <h3>Agency</h3>
+      <div class="pr">$990 <small>/ year</small></div>
+      <div class="plusof">Everything in Studio, plus:</div>
+      <ul>
+        <li><b>$456</b> of build budget &mdash; about <b>723 finished sites</b></li>
+        <li>Prepare <b>40 leads</b> in one run &mdash; a whole town in one go</li>
+        <li><b>10 sites building at once</b> &mdash; a batch takes minutes, not an hour</li>
+      <li>Your whole year&rsquo;s budget on <b>day one</b></li>
+      </ul>
+      <a class="btn ghost" href="https://app.unwebbed.app/signup">Start free &rarr;</a>
+      <div class="pnote">Cancel anytime</div>
+    </div>
+    </div>
+</div>
 </div></section>
 
 <section><div class="wrap">
@@ -730,6 +796,22 @@ document.documentElement.classList.add('js');
   var v = document.querySelector('#demo video, video');
   if (v) v.addEventListener('play', function once() {
     px('demo_play'); v.removeEventListener('play', once);
+  });
+})();
+
+/* Monthly / Annual toggle. Plain attribute swap — no framework, and the
+   [hidden] guard above is what makes it actually hide. */
+(function () {
+  var btns = document.querySelectorAll('[data-cycle]');
+  if (!btns.length) return;
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var want = b.dataset.cycle;
+      btns.forEach(function (x) { x.classList.toggle('on', x === b); });
+      document.querySelectorAll('[data-plans]').forEach(function (g) {
+        g.hidden = g.dataset.plans !== want;
+      });
+    });
   });
 })();
 </script>
