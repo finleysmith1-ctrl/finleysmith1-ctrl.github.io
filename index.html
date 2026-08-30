@@ -22,8 +22,7 @@
  "description":"Finds local businesses with no website and builds each one a real website with AI, so freelance web designers can pitch with the work already done.",
  "url":"https://unwebbed.app/",
  "offers":[{"@type":"Offer","name":"Solo","price":"19","priceCurrency":"USD"},
-           {"@type":"Offer","name":"Studio","price":"49","priceCurrency":"USD"},
-           {"@type":"Offer","name":"Agency","price":"99","priceCurrency":"USD"}]}
+           {"@type":"Offer","name":"Studio","price":"49","priceCurrency":"USD"}]}
 </script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d7a5f'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='38' font-weight='800' fill='white' text-anchor='middle'%3EU%3C/text%3E%3C/svg%3E">
 <style>
@@ -226,7 +225,12 @@ section.alt .step { background: var(--paper); }
   text-transform: uppercase; opacity: .75; margin-top: 4px; }
 
 /* ------------------------------------------------------------ pricing */
-.plans { display: grid; grid-template-columns: 1fr 1.12fr 1fr; gap: 18px; align-items: stretch; }
+/* Two tiers, not three — Agency was removed because it sold volume to a customer
+   who wants white-label, which this product does not have. A 3-column grid with
+   two cards leaves a hole, so the grid follows the ladder. max-width keeps two
+   cards from stretching absurdly wide on a large screen. */
+.plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px;
+  align-items: stretch; max-width: 720px; margin-inline: auto; }
 @media (max-width: 880px) { .plans { grid-template-columns: 1fr; } }
 .plan { background: var(--card); border: 1px solid var(--line); border-radius: 16px;
   padding: 30px 28px; display: flex; flex-direction: column;
@@ -541,25 +545,13 @@ footer a:hover { color: var(--ink); }
       <a class="btn" href="https://app.unwebbed.app/signup?plan=studio">Choose Studio <span class="ar">&rarr;</span></a>
       <div class="pnote">Cancel anytime</div>
     </div>
-    <div class="plan rise">
-      <span class="pt">High volume</span>
-      <h3>Agency</h3>
-      <div class="pr">$99 <small>/ month</small></div>
-      <div class="plusof">Everything in Studio, plus:</div>
-      <ul>
-        <li><b>$38</b> of build budget &mdash; about <b>60 finished sites</b></li>
-        <li>Prepare <b>40 leads</b> in one run &mdash; a whole town in one go</li>
-        <li><b>10 sites building at once</b> &mdash; a batch takes minutes, not an hour</li>
-      </ul>
-      <a class="btn ghost" href="https://app.unwebbed.app/signup?plan=agency">Choose Agency &rarr;</a>
-      <div class="pnote">Cancel anytime</div>
-    </div>
+    
     </div>
   <div class="plans" data-plans="year" hidden>
     <div class="plan rise">
       <span class="pt">Getting started</span>
       <h3>Solo</h3>
-      <div class="pr">$190 <small>/ year</small></div>
+      <div class="pr">$150 <small>/ year</small></div>
       <ul>
         <li><b>$72</b> of build budget &mdash; about <b>114 finished sites</b></li>
         <li>Unlimited searching, pitches and the call sheet</li>
@@ -574,7 +566,7 @@ footer a:hover { color: var(--ink); }
     <div class="plan feat rise">
       <span class="pt">For regulars</span>
       <h3>Studio</h3>
-      <div class="pr">$490 <small>/ year</small></div>
+      <div class="pr">$390 <small>/ year</small></div>
       <div class="plusof">Everything in Solo, plus:</div>
       <ul>
         <li><b>$216</b> of build budget &mdash; about <b>342 finished sites</b></li>
@@ -586,20 +578,7 @@ footer a:hover { color: var(--ink); }
       <a class="btn" href="https://app.unwebbed.app/signup?plan=studio">Choose Studio <span class="ar">&rarr;</span></a>
       <div class="pnote">Cancel anytime</div>
     </div>
-    <div class="plan rise">
-      <span class="pt">High volume</span>
-      <h3>Agency</h3>
-      <div class="pr">$990 <small>/ year</small></div>
-      <div class="plusof">Everything in Studio, plus:</div>
-      <ul>
-        <li><b>$456</b> of build budget &mdash; about <b>723 finished sites</b></li>
-        <li>Prepare <b>40 leads</b> in one run &mdash; a whole town in one go</li>
-        <li><b>10 sites building at once</b> &mdash; a batch takes minutes, not an hour</li>
-      <li>Your whole year&rsquo;s budget on <b>day one</b></li>
-      </ul>
-      <a class="btn ghost" href="https://app.unwebbed.app/signup?plan=agency">Choose Agency &rarr;</a>
-      <div class="pnote">Cancel anytime</div>
-    </div>
+    
     </div>
   <p class="freenote">Signing up is free and takes a minute &mdash; no card.
   You get free credit to build your first couple of sites, and searching stays
@@ -643,7 +622,7 @@ footer a:hover { color: var(--ink); }
       sites, write the pitches, work the call sheet &mdash; and you hand the
       finished file to your client. Move up when waiting starts to annoy you:
       Studio builds four sites at once and publishes them live in a click,
-      Agency does ten at a time and preps a whole town in one run. Upgrading
+      Studio does four at a time and preps fifteen leads in one run. Upgrading
       takes one click and nothing changes about how you work.</p></details>
     <details><summary>Can the client change the site later?</summary>
       <p>Yes — you stay their designer. Open the project, tell the builder what
