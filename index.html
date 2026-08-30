@@ -303,6 +303,18 @@ section.alt .step { background: var(--paper); }
   line-height: 1.6; max-width: 48ch; margin-inline: auto; }
 .tcerr { color: #b4462a; font-size: 15px; }
 .tccta { margin-top: 22px; }
+/* One person, named. There was no human anywhere on this page — you cannot ask
+   freelancers to route their client work through a brand with no face and no
+   name on it. Deliberately plain: a story told straight beats a polished
+   founder photo on a site like this. */
+.who { max-width: 620px; }
+.whoP { font-size: 16.5px; line-height: 1.68; color: var(--ink-soft, #5b6b66);
+  margin-top: 14px; }
+.whoP b { color: var(--ink); font-weight: 650; }
+.whoSig { margin-top: 20px; font: 600 13px/1.5 var(--mono, ui-monospace);
+  letter-spacing: .02em; color: var(--ink-faint, #8a978f); }
+#who h2 { max-width: 16ch; }
+
 .freenote { text-align: center; color: var(--ink-soft, #5b6b66); font-size: 14px;
   max-width: 46ch; margin: 26px auto 0; line-height: 1.6; }
 /* The reader should not have to do this arithmetic themselves. A freelancer
@@ -531,6 +543,22 @@ footer a:hover { color: var(--ink); }
   </div>
 </div></section>
 
+<section id="who"><div class="wrap who">
+  <div class="eyebrow">Who's behind this</div>
+  <h2>Made by one person, in Marin County.</h2>
+  <p class="whoP">I'm <b>Finley</b>, and I built Unwebbed on my own.</p>
+  <p class="whoP">It started when I looked up my own town and found dozens of
+  businesses with no website &mdash; auto shops, barbers, bakeries &mdash; all
+  running on a phone number and a Google listing. The work was obvious. Finding
+  the people who needed it was the hard part.</p>
+  <p class="whoP">So I built the thing that finds them, and made it build the
+  site too, because turning up with the work already done beats asking for a
+  meeting.</p>
+  <p class="whoP">I use it myself before I ask anyone else to. Every part of
+  this is something I've actually run.</p>
+  <p class="whoSig">&mdash; Finley &middot; Marin County, California</p>
+</div></section>
+
 <section id="pricing" class="alt"><div class="wrap">
   <div class="eyebrow">Pricing</div>
   <h2>Searching is free forever. Pick a plan when you start building.</h2>
@@ -679,7 +707,8 @@ footer a:hover { color: var(--ink); }
   <div class="fcol"><b>Product</b>
     <a href="#how">How it works</a>
     <a href="#examples">Examples</a>
-    <a href="#pricing">Pricing</a>
+    <a href="#who">Who made it</a>
+      <a href="#pricing">Pricing</a>
     <a href="https://app.unwebbed.app/signup">Start free</a>
   </div>
   <div class="fcol"><b>Account</b>
