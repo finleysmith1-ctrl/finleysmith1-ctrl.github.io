@@ -283,12 +283,36 @@ section.alt .step { background: var(--paper); }
 .tctrade { border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px;
   font-size: 13.5px; background: #fff; }
 .tctrade b { font-weight: 700; }
+/* Five masked records. A bare count proves an opportunity exists but not that
+   this tool actually holds the businesses — it could be an estimate. The shape
+   of a real name proves the data is real and is useless for contacting anyone,
+   which is exactly the gap an account fills. */
+.tcsample { max-width: 380px; margin: 22px auto 0; text-align: left;
+  border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.tcsamplehead { font: 600 10.5px/1 var(--mono, monospace); letter-spacing: .13em;
+  text-transform: uppercase; color: var(--ink-soft, #6b7c76);
+  padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.tcrow { display: flex; align-items: baseline; gap: 12px; padding: 11px 14px;
+  border-bottom: 1px solid var(--line); }
+.tcname { flex: 1; font-weight: 600; letter-spacing: .06em; }
+.tctrade2 { font-size: 12.5px; color: var(--ink-soft, #6b7c76); }
+.tcsamplenote { padding: 12px 14px; font-size: 12.5px; line-height: 1.5;
+  color: var(--ink-soft, #6b7c76); }
+
 .tcnote { color: var(--ink-soft, #5b6b66); font-size: 13px; margin-top: 16px;
   line-height: 1.6; max-width: 48ch; margin-inline: auto; }
 .tcerr { color: #b4462a; font-size: 15px; }
 .tccta { margin-top: 22px; }
 .freenote { text-align: center; color: var(--ink-soft, #5b6b66); font-size: 14px;
   max-width: 46ch; margin: 26px auto 0; line-height: 1.6; }
+/* The reader should not have to do this arithmetic themselves. A freelancer
+   charges a few hundred for a site; saying what one sale covers turns a price
+   into an investment, and it is the single most persuasive sentence available
+   on this page. */
+.payback { margin-top: 14px; padding: 10px 12px; border-radius: 9px;
+  background: var(--jade-soft, #edf5f1); color: var(--jade-ink, #0a5b47);
+  font-size: 13px; text-align: center; line-height: 1.45; }
+.payback b { font-weight: 700; }
 .pnote { color: var(--ink-soft, #6b7c76); font-size: 12px; text-align: center; margin-top: 10px; }
 .plan ul { list-style: none; padding: 0; margin: 16px 0 22px; display: flex;
   flex-direction: column; gap: 9px; color: var(--soft); font-size: 14.5px; }
@@ -529,7 +553,8 @@ footer a:hover { color: var(--ink); }
         <li>Download any site to hand to your client</li>
       </ul>
       <a class="btn ghost" href="https://app.unwebbed.app/signup?plan=solo">Choose Solo &rarr;</a>
-      <div class="pnote">Cancel anytime</div>
+      <div class="payback">One site you sell at $350 pays for <b>18 months</b></div>
+         <div class="pnote">Cancel anytime &middot; 30-day refund</div>
     </div>
     <div class="plan feat rise">
       <span class="pt">For regulars</span>
@@ -543,7 +568,8 @@ footer a:hover { color: var(--ink); }
         <li><b>One-click publish</b> &mdash; put the site live for your client</li>
       </ul>
       <a class="btn" href="https://app.unwebbed.app/signup?plan=studio">Choose Studio <span class="ar">&rarr;</span></a>
-      <div class="pnote">Cancel anytime</div>
+      <div class="payback">One site you sell at $350 pays for <b>7 months</b></div>
+         <div class="pnote">Cancel anytime &middot; 30-day refund</div>
     </div>
     
     </div>
@@ -561,7 +587,8 @@ footer a:hover { color: var(--ink); }
       <li>Your whole year&rsquo;s budget on <b>day one</b></li>
       </ul>
       <a class="btn ghost" href="https://app.unwebbed.app/signup?plan=solo">Choose Solo &rarr;</a>
-      <div class="pnote">Cancel anytime</div>
+      <div class="payback">One site you sell at $350 pays for <b>over two years</b></div>
+         <div class="pnote">Cancel anytime &middot; 30-day refund</div>
     </div>
     <div class="plan feat rise">
       <span class="pt">For regulars</span>
@@ -576,7 +603,8 @@ footer a:hover { color: var(--ink); }
       <li>Your whole year&rsquo;s budget on <b>day one</b></li>
       </ul>
       <a class="btn" href="https://app.unwebbed.app/signup?plan=studio">Choose Studio <span class="ar">&rarr;</span></a>
-      <div class="pnote">Cancel anytime</div>
+      <div class="payback">One site you sell at $350 pays for <b>almost a year</b></div>
+         <div class="pnote">Cancel anytime &middot; 30-day refund</div>
     </div>
     
     </div>
@@ -881,10 +909,18 @@ document.documentElement.classList.add('js');
         var chips = (d.trades || []).map(function (t) {
           return '<span class="tctrade"><b>' + t.count + '</b> ' + esc(t.trade) + '</span>';
         }).join('');
+        var sample = (d.sample || []).map(function (x) {
+          return '<div class="tcrow"><span class="tcname">' + esc(x.name) +
+                 '</span><span class="tctrade2">' + esc(x.trade) + '</span></div>';
+        }).join('');
         out.innerHTML =
           '<div class="tcbig"><b>' + d.total + '</b> businesses in ' + esc(d.place) +
           ' have no website listed.</div>' +
           '<div class="tctrades">' + chips + '</div>' +
+          (sample ? '<div class="tcsample"><div class="tcsamplehead">A few of them</div>' +
+                    sample +
+                    '<div class="tcsamplenote">Names are hidden here. Sign up free to ' +
+                    'see who they are, with phone numbers.</div></div>' : '') +
           '<div class="tcnote">That is ' + d.total + ' people who could be paying ' +
           'someone to build them one. Unwebbed finds them, checks each against ' +
           'the live web, and builds the site before you call.</div>' +
