@@ -303,6 +303,34 @@ section.alt .step { background: var(--paper); }
   line-height: 1.6; max-width: 48ch; margin-inline: auto; }
 .tcerr { color: #b4462a; font-size: 15px; }
 .tccta { margin-top: 22px; }
+
+/* The email offer. It sits ABOVE the signup button on purpose: typing an
+   address is a far smaller ask than making an account, and what arrives is
+   ten phone numbers someone can start calling — real value that stands on its
+   own whether or not they ever sign up. Searching is free in the app anyway,
+   so nothing is being given away that would otherwise be charged for. */
+.tcmail { max-width: 480px; margin: 24px auto 0; padding: 18px;
+  border: 1px solid var(--line); border-radius: 12px;
+  background: var(--paper-2, rgba(0,0,0,.015)); }
+.tcmailhead { font-family: var(--display); font-weight: 700; font-size: 17px;
+  letter-spacing: -.01em; margin-bottom: 4px; }
+.tcmailsub { font-size: 13px; line-height: 1.55; color: var(--ink-soft, #6b7c76);
+  margin-bottom: 14px; }
+.tcmailform { display: flex; gap: 8px; flex-wrap: wrap; }
+.tcmailform input[type=email] { flex: 1 1 220px; min-width: 0; padding: 12px 14px;
+  font: inherit; font-size: 15px; border: 1px solid var(--line); border-radius: 9px;
+  background: var(--paper, #fff); color: inherit; }
+.tcmailform input[type=email]:focus { outline: 2px solid var(--jade); outline-offset: 1px; }
+.tcmailform button { flex: 0 0 auto; }
+/* The honeypot. Off-screen rather than display:none — a form-filler that skips
+   hidden fields would walk straight past a display:none trap, and this one is
+   meant to be filled in. Never focusable, never announced. */
+.tchp { position: absolute; left: -9999px; width: 1px; height: 1px;
+  opacity: 0; pointer-events: none; }
+.tcmailnote { font-size: 12px; line-height: 1.5; color: var(--ink-soft, #6b7c76);
+  margin-top: 10px; }
+.tcmailok { font-size: 14.5px; line-height: 1.6; }
+.tcmailok b { color: var(--jade); }
 /* One person, named — and written as an invitation rather than a bio. The
    customer here IS a solo freelancer cold-calling local businesses, which is
    literally what Finley is doing, so the strongest thing available is "I'm
@@ -951,6 +979,54 @@ document.documentElement.classList.add('js');
   function esc(t) { return String(t == null ? '' : t)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
+  /* Sends the town the visitor actually typed, not the tidied-up place name
+     the server resolved. The server keys its stored rows off the raw query,
+     so echoing back its display name would look right and find nothing. */
+  function wireMail(place, rawTown) {
+    var mf = document.getElementById('tcmailform');
+    if (!mf) return;
+    mf.addEventListener('submit', async function (ev) {
+      ev.preventDefault();
+      var em = document.getElementById('tcemail');
+      var hp = document.getElementById('tccompany');
+      var go = document.getElementById('tcmailgo');
+      var note = document.getElementById('tcmailnote');
+      var addr = (em.value || '').trim();
+      if (!addr) { em.focus(); return; }
+      go.disabled = true; go.textContent = 'Sending…';
+      try {
+        /* Form-encoded on purpose: it is a CORS-safelisted content type, so
+           the browser sends it without a preflight. A JSON body would need an
+           OPTIONS round trip on every submit. */
+        var body = new URLSearchParams({ email: addr, town: rawTown,
+                                         company: hp ? hp.value : '' });
+        var res = await fetch('https://app.unwebbed.app/towncheck/email',
+          { method: 'POST', body: body });
+        var j = await res.json();
+        if (j.error) {
+          note.innerHTML = '<span class="tcerr">' + esc(j.error) + '</span>';
+          go.disabled = false; go.textContent = 'Email me the list';
+          return;
+        }
+        /* Replace the whole ask, not just the form. Leaving "Want 10 of them,
+           with phone numbers?" above the word "Sent." reads as if it did not
+           work. */
+        var box = mf.closest('.tcmail');
+        box.innerHTML = '<div class="tcmailhead">' +
+          (j.sent === false ? 'Already sent.' : 'On its way.') + '</div>' +
+          '<div class="tcmailok">' + (j.sent === false
+            ? esc(j.note || 'Check your inbox, and your spam folder.')
+            : 'Check your inbox for the ' + esc(place) + ' list — and your ' +
+              'spam folder, just in case. It should arrive within a minute.') +
+          '</div>';
+      } catch (e) {
+        note.innerHTML = '<span class="tcerr">Could not send just now — ' +
+          'try again in a moment.</span>';
+        go.disabled = false; go.textContent = 'Email me the list';
+      }
+    });
+  }
+
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
     var town = (input.value || '').trim();
@@ -978,19 +1054,42 @@ document.documentElement.classList.add('js');
           return '<div class="tcrow"><span class="tcname">' + esc(x.name) +
                  '</span><span class="tctrade2">' + esc(x.trade) + '</span></div>';
         }).join('');
+        // A capped search hit the row ceiling, so the true number is higher.
+        // Printing the ceiling as if it were the answer would put a made-up
+        // figure on the homepage.
+        var count = d.total + (d.capped ? '+' : '');
+        // Only offer the email if there is really a list to send. Offering ten
+        // and delivering three is the one thing this page cannot afford.
+        var mail = (d.callable > 0) ?
+          '<div class="tcmail">' +
+            '<div class="tcmailhead">Want ' + d.callable + ' of them, with phone numbers?</div>' +
+            '<div class="tcmailsub">Free, no account. We\'ll email you ' + d.callable +
+            ' businesses in ' + esc(d.place) + ' you can start calling this morning.</div>' +
+            '<form class="tcmailform" id="tcmailform">' +
+              '<input id="tcemail" type="email" required placeholder="you@example.com" ' +
+                'aria-label="Your email address" maxlength="254" autocomplete="email">' +
+              '<input class="tchp" id="tccompany" type="text" tabindex="-1" ' +
+                'autocomplete="off" aria-hidden="true" placeholder="Company">' +
+              '<button class="btn" type="submit" id="tcmailgo">Email me the list</button>' +
+            '</form>' +
+            '<div class="tcmailnote" id="tcmailnote">One email, once. No newsletter, ' +
+            'no follow-ups unless you ask for another town.</div>' +
+          '</div>' : '';
         out.innerHTML =
-          '<div class="tcbig"><b>' + d.total + '</b> businesses in ' + esc(d.place) +
+          '<div class="tcbig"><b>' + count + '</b> businesses in ' + esc(d.place) +
           ' have no website listed.</div>' +
           '<div class="tctrades">' + chips + '</div>' +
           (sample ? '<div class="tcsample"><div class="tcsamplehead">A few of them</div>' +
                     sample +
                     '<div class="tcsamplenote">Names are hidden here. Sign up free to ' +
                     'see who they are, with phone numbers.</div></div>' : '') +
-          '<div class="tcnote">That is ' + d.total + ' people who could be paying ' +
+          mail +
+          '<div class="tcnote">That is ' + count + ' people who could be paying ' +
           'someone to build them one. Unwebbed finds them, checks each against ' +
           'the live web, and builds the site before you call.</div>' +
           '<div class="tccta"><a class="btn big" href="https://app.unwebbed.app/signup' +
           '?utm_source=towncheck&utm_medium=site">See who they are &rarr;</a></div>';
+        wireMail(d.place, town);
       }
     } catch (err) {
       out.innerHTML = '<div class="tcerr">Could not reach the search just now — ' +
