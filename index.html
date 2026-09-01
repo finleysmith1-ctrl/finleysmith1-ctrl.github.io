@@ -103,21 +103,17 @@ nav .btn { padding: 11px 18px; font-size: 14px; }
               radial-gradient(520px 320px at 82% 18%, rgba(13,122,95,.05), transparent 60%);
   pointer-events: none; }
 .hero .wrap { position: relative; }
-.kick { display: inline-block; font: 650 11px/1 var(--mono); letter-spacing: .16em;
-  text-transform: uppercase; color: var(--jade); background: var(--wash);
-  border: 1px solid #d8e8e0; border-radius: 99px; padding: 8px 14px; margin-bottom: 22px; }
-h1 { font: 800 clamp(34px, 5.4vw, 62px)/1.06 var(--display); letter-spacing: -.03em;
-  max-width: 820px; margin: 0 auto 18px; text-wrap: balance; }
-h1 em { font-style: normal; color: var(--jade); }
+.kick { display: block; font: 600 14px/1 inherit; color: var(--soft);
+  margin-bottom: 20px; }
+h1 { font: 800 clamp(34px, 5.2vw, 58px)/1.07 var(--display); letter-spacing: -.03em;
+  max-width: 900px; margin: 0 auto 18px; text-wrap: balance; }
+h1 em { font-style: normal; color: inherit; }
 .lede { font-size: clamp(16px, 2vw, 19px); color: var(--soft); max-width: 640px;
   margin: 0 auto 30px; text-wrap: balance; }
 .ctarow { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; align-items: center; }
-.ctanote { width: 100%; margin-top: 12px; font: 600 12.5px/1 var(--mono);
-  letter-spacing: .04em; color: var(--faint); }
-.herostats { display: flex; justify-content: center; align-items: center; gap: 18px;
-  margin-top: 40px; flex-wrap: wrap; color: var(--soft); font-size: 14px; }
-.herostats b { color: var(--ink); font-weight: 750; }
-.herostats i { width: 4px; height: 4px; border-radius: 50%; background: var(--line); }
+.ctanote { width: 100%; margin-top: 14px; font: 400 13.5px/1 inherit; color: var(--faint); }
+.herostats { max-width: 520px; margin: 34px auto 0; color: var(--soft); font-size: 14.5px; }
+.herostats b { color: var(--ink); font-weight: 700; }
 
 /* the product, in a browser frame — proof beats promises */
 .shot { max-width: 940px; margin: 46px auto 0; background: var(--card);
@@ -125,17 +121,15 @@ h1 em { font-style: normal; color: var(--jade); }
   box-shadow: 0 2px 6px rgba(23,33,28,.06), 0 30px 80px -30px rgba(23,33,28,.25); }
 .shot .bar { display: flex; align-items: center; gap: 6px; padding: 11px 14px;
   border-bottom: 1px solid var(--line); background: #f4f2ec; }
-.shot .bar i { width: 10px; height: 10px; border-radius: 50%; }
-.shot .bar i:nth-child(1){background:#f45b4d}.shot .bar i:nth-child(2){background:#f5bd4f}.shot .bar i:nth-child(3){background:#5ac26a}
-.shot .bar span { margin-left: 8px; font: 600 12px/1 var(--mono); color: var(--faint); }
+.shot .bar span { font: 500 12.5px/1 inherit; color: var(--faint); }
 .shot video { width: 100%; }
 
 /* ------------------------------------------------------------- shared */
 section { padding: 78px 0; }
 section.alt { background: var(--card); border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line); }
-.eyebrow { text-align: center; font: 650 11px/1 var(--mono); letter-spacing: .16em;
-  text-transform: uppercase; color: var(--jade); margin-bottom: 12px; }
+.eyebrow { text-align: center; font: 600 13px/1 inherit; color: var(--soft);
+  margin-bottom: 10px; }
 h2 { font: 800 clamp(26px, 3.6vw, 40px)/1.12 var(--display); letter-spacing: -.025em;
   text-align: center; margin-bottom: 12px; text-wrap: balance; }
 .sub { text-align: center; color: var(--soft); max-width: 560px; margin: 0 auto 44px; }
@@ -461,15 +455,12 @@ footer a:hover { color: var(--ink); }
   <div class="ctarow">
     <a class="btn big" href="https://app.unwebbed.app/signup">Start free <span class="ar">&rarr;</span></a>
     <a class="btn big ghost" href="#demo">Watch the 60-second demo</a>
-    <div class="ctanote">FREE TO SEARCH &middot; NO CARD TO START &middot; CANCEL ANYTIME</div>
+    <div class="ctanote">Free to search &middot; no card to start &middot; cancel anytime</div>
   </div>
-  <div class="herostats">
-    <span><b>&asymp;3 min</b> per build</span><i></i>
-    <span><b>40&ndash;80&cent;</b> AI cost per site</span><i></i>
-    <span><b>Free</b> hosting to start</span>
-  </div>
+  <p class="herostats">Each site takes about three minutes and costs
+  <b>40&ndash;80&cent;</b> in AI to build. Hosting is free to start.</p>
   <div class="shot" id="demo">
-    <div class="bar"><i></i><i></i><i></i><span>unwebbed &mdash; a real build, condensed</span></div>
+    <div class="bar"><span>A real build, condensed &mdash; no cuts, just sped up</span></div>
     <!-- Source chosen by screen size. The HD file is 7.6MB and the video is
          displayed at 344px wide on a phone — sending 1600px of video over
          cellular to fill 344px is most of this page's weight for no visible
