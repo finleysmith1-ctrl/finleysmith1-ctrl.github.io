@@ -25,442 +25,743 @@
            {"@type":"Offer","name":"Studio","price":"49","priceCurrency":"USD"}]}
 </script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d7a5f'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='38' font-weight='800' fill='white' text-anchor='middle'%3EU%3C/text%3E%3C/svg%3E">
+<link rel="preload" href="/fonts/bricolage-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/plex-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/plex-sans-italic.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 /* ============================================================ CONVERSION
    One job: a visitor understands the product in five seconds and the next
    click is always obvious. Light + warm, jade kept as the single action
    color — if it's jade, clicking it moves you forward. */
-:root {
-  --paper:   #faf9f6;
-  --card:    #ffffff;
-  --ink:     #17211c;
-  --soft:    #55645d;
-  --faint:   #8a968f;
-  --line:    #e7e4dc;
-  --jade:    #0d7a5f;
-  --jade-hi: #12996f;
-  --jade-dk: #0a5c48;
-  --wash:    #eef4f0;
-  --mono: ui-monospace, "SF Mono", Menlo, monospace;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  --display: "Bricolage Grotesque", var(--sans);
-}
+/* == fonts (site: /fonts/) == */
 @font-face {
   font-family: "Bricolage Grotesque";
   font-style: normal; font-weight: 200 800; font-display: swap;
   src: url(/fonts/bricolage-var.woff2) format("woff2");
 }
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal; font-weight: 100 700; font-display: swap;
+  src: url(/fonts/plex-sans-var.woff2) format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: italic; font-weight: 400; font-display: swap;
+  src: url(/fonts/plex-sans-italic.woff2) format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal; font-weight: 400; font-display: swap;
+  src: url(/fonts/plex-mono.woff2) format("woff2");
+}
+/* ==== TOKENS (mirror of unwebbed-cloud/static/tokens.css — keep identical) ==== */
+:root {
+  /* colour — warm neutral ramp, one accent, two supporting tones */
+  --paper-0: #FAF9F6;
+  --paper-1: #F3F1EB;
+  --paper-2: #EAE7DF;
+  --rule:    #E3E0D7;
+  --rule-2:  #CFCBC0;
+  --ink-4:   #A9ACA3;
+  --ink-3:   #676C64;   /* 5.1:1 on paper-0, 4.8:1 on paper-1 — the floor for secondary text */
+  --ink-2:   #4A4E47;
+  --ink:     #1C1E1A;
+  --accent-700: #0B5E47; /* hover of the primary */
+  --accent-600: #0F7A5C; /* the accent: primary fill, links, money earned (5.2:1 on paper-0) */
+  --accent-500: #1A946F; /* fills behind white text only */
+  --accent-100: #D9EDE3;
+  --accent-50:  #EEF6F1;
+  --amber:    #8A5A12;   /* needs a look · contacted — usable as text on every paper: 5.6:1 paper-0, 5.2 paper-1, 4.8 paper-2, 5.4 amber-50 */
+  --amber-50: #FBF3E3;
+  --brick:    #B0432B;   /* errors · money out */
+  --brick-50: #F9ECE8;
+
+  /* type */
+  --display: "Bricolage Grotesque", "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --text:    "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --mono:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* type scale (px) — 12 · 13.5 · 15 · 17 · 19 · 24 · 28 · 36 · 48 · 56 · 68 */
+  --t-12: 12px;
+  --t-13: 13.5px;
+  --t-15: 15px;
+  --t-17: 17px;
+  --t-19: 19px;
+  --t-24: 24px;
+  --t-28: 28px;
+  --t-36: 36px;
+  --t-48: 48px;
+  --t-56: 56px;
+  --t-68: 68px;
+
+  /* tracking — negative only at 24px and up; the one positive value is column headers */
+  --track-1: -0.015em;  /* 24–28px */
+  --track-2: -0.02em;   /* 36–48px */
+  --track-3: -0.025em;  /* 56px and up */
+  --track-label: 0.03em; /* 12px table column headers only */
+  --measure: 68ch;
+
+  /* space — 4px base, ten stops */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+  --s-10: 128px;
+
+  /* radius — three values */
+  --r-sm: 4px;     /* inputs, chips, small controls */
+  --r-md: 8px;     /* buttons, cards, panels, the product frame */
+  --r-full: 999px; /* status dots and avatars only */
+
+  /* elevation — level 0 is a 1px rule and no shadow */
+  --sh-1: 0 1px 2px rgba(28, 30, 26, .06);          /* raised controls */
+  --sh-2: 0 12px 32px -12px rgba(28, 30, 26, .28);  /* things that float */
+
+  /* motion */
+  --dur-1: 120ms; /* hover, focus */
+  --dur-2: 180ms; /* open, close */
+  --dur-3: 240ms; /* sticky CTA, phone-width toggle */
+  --ease-out: cubic-bezier(.2, .7, .3, 1);
+  --ease-io: cubic-bezier(.45, 0, .25, 1);
+}
+
+/* == base == */
+html { color-scheme: light; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--paper-0); color: var(--ink);
+  font: 400 var(--t-15)/1.5 var(--text);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+::placeholder { color: var(--ink-4); opacity: 1; }
+:focus-visible { outline: 2px solid var(--accent-600); outline-offset: 2px; }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 600; line-height: 1.1; }
+h1 { letter-spacing: var(--track-3); }
+h2 { letter-spacing: var(--track-2); }
+h3 { letter-spacing: var(--track-1); }
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+.tnum { font-variant-numeric: tabular-nums; }
+.measure { max-width: var(--measure); }
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; }
+  *, *::before, *::after {
+    transition-duration: 0ms !important; animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important; scroll-behavior: auto !important;
+  }
+}
+
+/* == components == */
+/* buttons — one primary per screen; hover goes darker, never brighter */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
+  min-height: 40px; padding: 0 var(--s-4); border-radius: var(--r-md);
+  border: 1px solid transparent; background: transparent; color: var(--ink);
+  font: 500 var(--t-15)/1 var(--text); text-decoration: none; white-space: nowrap;
+  cursor: pointer; user-select: none;
+  transition: background-color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out),
+              color var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out);
+}
+.btn .ar { font-family: var(--text); position: relative; top: -.5px; }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+.btn-primary { background: var(--accent-600); border-color: var(--accent-600); color: var(--paper-0); }
+.btn-primary:hover { background: var(--accent-700); border-color: var(--accent-700); }
+.btn-secondary { background: var(--paper-0); border-color: var(--rule-2); color: var(--ink); box-shadow: var(--sh-1); }
+.btn-secondary:hover { background: var(--paper-1); border-color: var(--ink-4); }
+.btn-text { color: var(--ink-2); padding-inline: var(--s-2); }
+.btn-text:hover { color: var(--ink); background: var(--paper-1); }
+.btn-danger { color: var(--brick); }
+.btn-danger:hover { background: var(--brick-50); }
+.btn-sm { min-height: 32px; padding: 0 var(--s-3); font-size: var(--t-13); }
+.btn-lg { min-height: 48px; padding: 0 var(--s-5); font-size: var(--t-17); }
+
+/* inputs — the focus ring sits inside the border */
+.input {
+  display: block; width: 100%; min-height: 40px; padding: 0 var(--s-3);
+  border: 1px solid var(--rule-2); border-radius: var(--r-sm);
+  background: var(--paper-0); color: var(--ink);
+  font: 400 var(--t-15)/1 var(--text);
+  transition: border-color var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out);
+}
+.input:hover { border-color: var(--ink-4); }
+.input:focus, .input:focus-visible { outline: none; border-color: var(--accent-600); box-shadow: inset 0 0 0 1px var(--accent-600); }
+.input:disabled { background: var(--paper-1); color: var(--ink-3); cursor: not-allowed; }
+.input[aria-invalid="true"], .input.invalid { border-color: var(--brick); }
+textarea.input { min-height: 96px; padding: var(--s-3); line-height: 1.5; resize: vertical; }
+select.input {
+  appearance: none; -webkit-appearance: none; padding-right: var(--s-6);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%23787D74' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right var(--s-3) center;
+}
+
+/* segmented control — selected is ink on paper, not accent */
+.seg {
+  display: inline-flex; align-items: center; gap: 2px; padding: 2px;
+  background: var(--paper-1); border: 1px solid var(--rule); border-radius: var(--r-md);
+}
+.seg > * {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s-1);
+  min-height: 32px; padding: 0 var(--s-3); border: 0; border-radius: var(--r-sm);
+  background: transparent; color: var(--ink-2); font: 500 var(--t-13)/1 var(--text);
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: background-color var(--dur-1) var(--ease-out), color var(--dur-1) var(--ease-out),
+              box-shadow var(--dur-1) var(--ease-out);
+}
+.seg > *:hover { color: var(--ink); }
+.seg > .on, .seg > [aria-pressed="true"], .seg > [aria-selected="true"] {
+  background: var(--paper-0); color: var(--ink); box-shadow: var(--sh-1);
+}
+.seg > *:focus-visible { outline-offset: -2px; }
+
+/* chips and status dots */
+.chip {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  min-height: 24px; padding: 0 var(--s-2); border: 1px solid var(--rule); border-radius: var(--r-sm);
+  background: var(--paper-1); color: var(--ink-2);
+  font: 500 var(--t-12)/1 var(--text); white-space: nowrap;
+}
+.dot {
+  display: inline-block; flex: none; width: 8px; height: 8px; border-radius: var(--r-full);
+  background: var(--ink-4); vertical-align: middle;
+}
+.dot-accent { background: var(--accent-600); }
+.dot-amber  { background: var(--amber); }
+.dot-brick  { background: var(--brick); }
+
+/* tables — 44px rows, sentence-case headers, hover paper-1, selected paper-2 */
+.table { width: 100%; border-collapse: collapse; font-size: var(--t-13); line-height: 1.45; }
+.table th {
+  text-align: left; padding: var(--s-2) var(--s-4); border-bottom: 1px solid var(--rule);
+  font: 500 var(--t-12)/1.2 var(--text); letter-spacing: var(--track-label); color: var(--ink-3);
+  white-space: nowrap;
+}
+.table td {
+  height: 44px; padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--rule);
+  vertical-align: middle;
+}
+.table tbody tr { transition: background-color var(--dur-1) var(--ease-out); }
+.table tbody tr:hover { background: var(--paper-1); }
+.table tbody tr.on, .table tbody tr[aria-selected="true"] { background: var(--paper-2); }
+.table .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* surfaces */
+.panel { background: var(--paper-0); border: 1px solid var(--rule); border-radius: var(--r-md); box-shadow: var(--sh-2); }
+.rule { border: 0; height: 0; border-top: 1px solid var(--rule); margin: var(--s-6) 0; }
+/* ==== END TOKENS ==== */
+/* legacy aliases — the old names resolved on the tokens so every existing rule
+   keeps working on the light palette. Delete each alias once nothing uses it. */
+:root {
+  --paper: var(--paper-0);
+  --card:  var(--paper-0);
+  --soft:  var(--ink-2);
+  --faint: var(--ink-3);
+  --line:  var(--rule);
+  --jade:    var(--accent-600);
+  --jade-hi: var(--accent-500);
+  --jade-dk: var(--accent-700);
+  --wash:    var(--accent-50);
+  --ink-soft:  var(--ink-2);   /* were referenced but never defined */
+  --ink-faint: var(--ink-3);
+  --jade-soft: var(--accent-50);
+  --jade-ink:  var(--accent-700);
+}
 * { box-sizing: border-box; margin: 0; }
-::selection { background: var(--jade); color: #fff; }
+::selection { background: var(--accent-600); color: var(--paper-0); }
 html { scroll-behavior: smooth; }
-body { background: var(--paper); color: var(--ink);
-  font: 16.5px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+body { background: var(--paper-0); color: var(--ink);
+  font: 400 var(--t-17)/1.5 var(--text); -webkit-font-smoothing: antialiased; }
 img, video { max-width: 100%; display: block; }
-.wrap { max-width: 1080px; margin: 0 auto; padding: 0 22px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 var(--s-5); }
 
-/* ------------------------------------------------------------ buttons */
-.btn { display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
-  font: 700 15px/1 var(--sans); padding: 14px 22px; border-radius: 10px;
-  color: #fff; background: linear-gradient(180deg, var(--jade-hi), var(--jade));
-  border: 1px solid var(--jade-dk); cursor: pointer;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 1px 2px rgba(23,33,28,.18),
-              0 6px 16px -8px rgba(13,122,95,.45);
-  transition: filter .14s ease, box-shadow .14s ease, transform .14s ease; }
-.btn:hover { filter: brightness(1.06);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.22), 0 2px 4px rgba(23,33,28,.2),
-              0 10px 24px -10px rgba(13,122,95,.55); }
-.btn:active { transform: translateY(1px); filter: brightness(.98);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.14), 0 1px 2px rgba(23,33,28,.15); }
-.btn .ar { transition: transform .14s ease; }
-.btn:hover .ar { transform: translateX(3px); }
-.btn.ghost { background: var(--card); color: var(--ink); border: 1px solid var(--line);
-  box-shadow: 0 1px 2px rgba(23,33,28,.06); }
-.btn.ghost:hover { border-color: var(--faint); filter: none; }
-.btn.big { font-size: 16.5px; padding: 17px 28px; border-radius: 12px; }
+/* ------------------------------------------------------------ buttons
+   Buttons are the token components (.btn + .btn-primary / -secondary / -text,
+   .btn-lg). Three legacy spellings are still in markup other slices own
+   (plain .btn, .btn.ghost, .btn.big); they resolve onto the same components
+   here so nothing looks broken mid-migration. Delete each alias once no
+   markup uses it. */
+.btn.ghost { background: var(--paper-0); border-color: var(--rule-2); color: var(--ink); box-shadow: var(--sh-1); }
+.btn.ghost:hover { background: var(--paper-1); border-color: var(--ink-4); }
+.btn.big { min-height: 48px; padding: 0 var(--s-5); font-size: var(--t-17); }
+.btn:not([class*="btn-"]):not(.ghost) { background: var(--accent-600); border-color: var(--accent-600); color: var(--paper-0); }
+.btn:not([class*="btn-"]):not(.ghost):hover { background: var(--accent-700); border-color: var(--accent-700); }
+.btn .ar { transition: transform var(--dur-1) var(--ease-out); }
+.btn:hover .ar { transform: translateX(2px); }
 
-/* ---------------------------------------------------------------- nav */
+/* ---------------------------------------------------------------- nav
+   64px, a rule underneath (not a shadow), links at 500, one primary button.
+   The mark is nudged −1px so it sits on the wordmark's baseline. */
 nav { position: sticky; top: 0; z-index: 50;
-  background: rgba(250,249,246,.88); backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line); }
-nav .wrap { display: flex; align-items: center; gap: 26px; height: 66px; }
-.logo { display: flex; align-items: center; gap: 9px; font: 800 17px/1 var(--display);
-  color: var(--ink); text-decoration: none; letter-spacing: -.01em; margin-right: auto; }
-.mark { width: 28px; height: 28px; border-radius: 8px; background: var(--jade); color: #fff;
-  display: grid; place-items: center; font: 800 15px/1 var(--sans); }
-nav a.nl { color: var(--soft); text-decoration: none; font: 600 14px/1 var(--sans); }
-nav a.nl { position: relative; }
-nav a.nl::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -6px;
-  height: 2px; background: var(--jade); transition: right .18s ease; }
+  background: color-mix(in srgb, var(--paper-0) 88%, transparent);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rule); }
+nav .wrap { display: flex; align-items: center; gap: var(--s-6); height: 64px; }
+.logo { display: inline-flex; align-items: center; gap: var(--s-2);
+  font: 700 var(--t-17)/1 var(--display); letter-spacing: 0;
+  color: var(--ink); text-decoration: none; margin-right: auto; }
+.mark { width: 24px; height: 24px; border-radius: var(--r-sm); background: var(--accent-600);
+  color: var(--paper-0); display: grid; place-items: center;
+  font: 700 var(--t-13)/1 var(--display); position: relative; top: -1px; }
+nav a.nl { position: relative; color: var(--ink-2); text-decoration: none;
+  font: 500 var(--t-15)/1 var(--text); padding: var(--s-1) 0;
+  transition: color var(--dur-1) var(--ease-out); }
+nav a.nl::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0;
+  height: 1px; background: var(--ink); transform: scaleX(0); transform-origin: left;
+  transition: transform var(--dur-1) var(--ease-out); }
 nav a.nl:hover { color: var(--ink); }
-nav a.nl:hover::after { right: 0; }
-nav .btn { padding: 11px 18px; font-size: 14px; }
-@media (max-width: 760px) { nav a.nl { display: none; } nav .wrap { gap: 12px; } }
+nav a.nl:hover::after { transform: scaleX(1); }
+nav .btn { min-height: 40px; }
+@media (max-width: 760px) { nav a.nl { display: none; } nav .wrap { gap: var(--s-3); } }
 
-/* --------------------------------------------------------------- hero */
-.hero { padding: 74px 0 40px; text-align: center; position: relative; overflow: hidden; }
-.hero::before { content: ""; position: absolute; inset: -20% -10% auto;  height: 90%;
-  background: radial-gradient(560px 340px at 22% 8%, rgba(13,122,95,.07), transparent 65%),
-              radial-gradient(520px 320px at 82% 18%, rgba(13,122,95,.05), transparent 60%);
-  pointer-events: none; }
-.hero .wrap { position: relative; }
-.kick { display: block; font: 600 14px/1 inherit; color: var(--soft);
-  margin-bottom: 20px; }
-h1 { font: 800 clamp(34px, 5.2vw, 58px)/1.07 var(--display); letter-spacing: -.03em;
-  max-width: 900px; margin: 0 auto 18px; text-wrap: balance; }
-h1 em { font-style: normal; color: inherit; }
-.lede { font-size: clamp(16px, 2vw, 19px); color: var(--soft); max-width: 640px;
-  margin: 0 auto 30px; text-wrap: balance; }
-.ctarow { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; align-items: center; }
-.ctanote { width: 100%; margin-top: 14px; font: 400 13.5px/1 inherit; color: var(--faint); }
-.herostats { max-width: 520px; margin: 34px auto 0; color: var(--soft); font-size: 14.5px; }
-.herostats b { color: var(--ink); font-weight: 700; }
+/* --------------------------------------------------------------- hero
+   Left-aligned, two columns: the claim on the left, the three facts that
+   back it on the right as a ruled block. The headline is broken by hand. */
+.hero { padding: var(--s-9) 0 var(--s-9); }
+.herogrid { display: grid; grid-template-columns: minmax(0, 1fr) 300px;
+  gap: var(--s-7) var(--s-8); align-items: end; }
+.kick { display: block; font: 400 var(--t-17)/1.5 var(--text); color: var(--ink-2);
+  margin: 0 0 var(--s-5); }
+h1 { font: 600 clamp(40px, 5.6vw, 68px)/1.02 var(--display); letter-spacing: var(--track-3);
+  color: var(--ink); margin: 0 0 var(--s-5); text-wrap: balance; }
+.lede { font: 400 var(--t-19)/1.5 var(--text); color: var(--ink-2); max-width: 52ch;
+  margin: 0 0 var(--s-6); }
+.ctarow { display: flex; gap: var(--s-3); flex-wrap: wrap; align-items: center; }
+.ctanote { width: 100%; margin-top: var(--s-2); font: 400 var(--t-13)/1.45 var(--text);
+  color: var(--ink-3); }
+.facts { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ink); }
+.facts li { display: flex; flex-direction: column; gap: var(--s-1);
+  padding: var(--s-4) 0; border-bottom: 1px solid var(--rule); }
+.facts span { font: 400 var(--t-13)/1.45 var(--text); color: var(--ink-3); }
+.facts b { font: 600 var(--t-28)/1.1 var(--display); letter-spacing: var(--track-1);
+  color: var(--ink); font-variant-numeric: tabular-nums; }
 
-/* the product, in a browser frame — proof beats promises */
-.shot { max-width: 940px; margin: 46px auto 0; background: var(--card);
-  border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
-  box-shadow: 0 2px 6px rgba(23,33,28,.06), 0 30px 80px -30px rgba(23,33,28,.25); }
-.shot .bar { display: flex; align-items: center; gap: 6px; padding: 11px 14px;
-  border-bottom: 1px solid var(--line); background: #f4f2ec; }
-.shot .bar span { font: 500 12.5px/1 inherit; color: var(--faint); }
-.shot video { width: 100%; }
+/* the product, in our own frame: a rule, a radius, a shadow, no title bar */
+.shot { margin: var(--s-8) 0 0; background: var(--paper-0); border: 1px solid var(--rule);
+  border-radius: var(--r-md); overflow: hidden; isolation: isolate; box-shadow: var(--sh-2);
+  scroll-margin-top: calc(64px + var(--s-4)); }
+.shot video { display: block; width: 100%; border-radius: inherit; }
+.shotcap { margin: var(--s-3) 0 0; font: 400 var(--t-13)/1.45 var(--text); color: var(--ink-3); }
+@media (max-width: 720px) {
+  .hero { padding: var(--s-7) 0 var(--s-8); }
+  .herogrid { grid-template-columns: minmax(0, 1fr); gap: var(--s-6); }
+  /* the hand-set breaks are for the wide column; on a phone "businesses"
+     alone would overflow 40px, so let balance set the lines */
+  h1 br { display: none; }
+  .facts li { flex-direction: row; align-items: baseline; justify-content: space-between;
+    gap: var(--s-4); padding: var(--s-3) 0; }
+  .facts b { font-size: var(--t-24); }
+  .ctarow .btn { flex: 1 1 auto; }
+  .shot { margin-top: var(--s-7); }
+}
 
 /* ------------------------------------------------------------- shared */
-section { padding: 78px 0; }
+section { padding: var(--s-9) 0; }
 section.alt { background: var(--card); border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line); }
-.eyebrow { text-align: center; font: 600 13px/1 inherit; color: var(--soft);
-  margin-bottom: 10px; }
-h2 { font: 800 clamp(26px, 3.6vw, 40px)/1.12 var(--display); letter-spacing: -.025em;
-  text-align: center; margin-bottom: 12px; text-wrap: balance; }
-.sub { text-align: center; color: var(--soft); max-width: 560px; margin: 0 auto 44px; }
+/* Base section type — ON THE SCALE, left-aligned, so a section that sets
+   nothing locally still lands on the system (the old 800 clamp / 13px
+   inherit / 16.5px rules leaked into #pricing). */
+.eyebrow { text-align: left; font: 500 var(--t-15)/1 var(--text); color: var(--ink-3);
+  margin: 0 0 var(--s-3); }
+h2 { font: 600 var(--t-36)/1.1 var(--display); letter-spacing: var(--track-2);
+  text-align: left; margin: 0 0 var(--s-3); text-wrap: balance; }
+.sub { text-align: left; font: 400 var(--t-17)/1.5 var(--text); color: var(--ink-2);
+  max-width: var(--measure); margin: 0 0 var(--s-7); }
 
-/* ----------------------------------------------------------- 3 steps */
-.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-@media (max-width: 820px) { .steps { grid-template-columns: 1fr; } }
-.step { background: var(--card); border: 1px solid var(--line); border-radius: 14px;
-  padding: 26px 24px; box-shadow: 0 1px 3px rgba(23,33,28,.05); }
-section.alt .step { background: var(--paper); }
-.step .no { font: 700 12px/1 var(--mono); color: var(--jade); letter-spacing: .1em; }
-.step h3 { font: 750 19px/1.25 var(--display); margin: 10px 0 8px; letter-spacing: -.01em; }
-.step p { color: var(--soft); font-size: 15px; }
-.step .tagfree { display: inline-block; margin-left: 8px; font: 700 10px/1 var(--mono);
-  letter-spacing: .1em; color: var(--jade); background: var(--wash);
-  border-radius: 99px; padding: 4px 8px; vertical-align: 2px; }
+/* ===================================================== site-middle ====
+   Try it · How it works · Examples · The pitch · Who made it · Questions.
+   One shape shared by all six: a left-aligned two-column intro (.shead), then
+   the section's own body. Only "How it works" keeps an eyebrow — the nav
+   links to it. Nothing here fades or slides on scroll. */
+.mid { padding: var(--s-9) 0; }
+.mid.alt { background: var(--paper-1); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+.mid h2 { font: 600 var(--t-36)/1.1 var(--display); letter-spacing: var(--track-2);
+  text-align: left; margin: 0; max-width: 22ch; }
+.mid .eyebrow { text-align: left; font: 500 var(--t-15)/1 var(--text); color: var(--ink-3);
+  margin: 0 0 var(--s-3); }
+.mid .sub { text-align: left; font-size: var(--t-17); line-height: 1.5; color: var(--ink-2);
+  max-width: 48ch; margin: 0; }
+.mid .sub b { font-weight: 600; color: var(--ink); }
+.shead { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: var(--s-5) var(--s-7); align-items: start; margin-bottom: var(--s-7); }
+/* with an eyebrow above the h2, the sub drops to the h2's own top edge */
+#how .shead .sub { padding-top: calc(var(--t-15) + var(--s-3)); }
+@media (max-width: 820px) {
+  .mid { padding: var(--s-8) 0; }
+  .shead { grid-template-columns: 1fr; gap: var(--s-4); margin-bottom: var(--s-6); }
+  #how .shead .sub { padding-top: 0; }
+}
 
-/* --------------------------------------------------- try-it live browser */
-.tryit { max-width: 980px; margin: 0 auto 34px; background: var(--card);
-  border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
-  box-shadow: 0 2px 6px rgba(23,33,28,.06), 0 30px 80px -30px rgba(23,33,28,.25); }
-.trybar { display: flex; align-items: center; gap: 12px; padding: 10px 14px;
-  border-bottom: 1px solid var(--line); background: #f4f2ec; flex-wrap: wrap; }
-.trytabs { display: flex; gap: 4px; }
-.trytabs button { border: 1px solid transparent; background: transparent; cursor: pointer;
-  font: 650 13px/1 var(--sans); color: var(--soft); padding: 8px 14px; border-radius: 8px;
-  transition: all .14s ease; }
+/* How it works — three columns under one continuous rule; the numerals count. */
+.steps { list-style: none; margin: 0; padding: var(--s-5) 0 0; display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-7);
+  border-top: 1px solid var(--rule-2); }
+.step { margin: 0; padding: 0; }
+.step .no { display: block; font: 600 var(--t-56)/1 var(--display); letter-spacing: var(--track-3);
+  font-variant-numeric: tabular-nums; color: var(--ink-4); margin-bottom: var(--s-5); }
+.step h3 { font: 600 var(--t-24)/1.15 var(--display); letter-spacing: var(--track-1);
+  margin: 0 0 var(--s-2); }
+.step p { color: var(--ink-2); font-size: var(--t-15); line-height: 1.5; margin: 0; max-width: 34ch; }
+@media (max-width: 820px) {
+  .steps { grid-template-columns: 1fr; gap: 0; padding-top: 0; }
+  .step { display: grid; grid-template-columns: 56px minmax(0, 1fr); column-gap: var(--s-4);
+    padding: var(--s-5) 0; border-bottom: 1px solid var(--rule); }
+  .step .no { grid-row: 1 / span 2; font-size: var(--t-36); letter-spacing: var(--track-2); margin: 0; }
+  .step p { max-width: none; }
+}
+
+/* Examples — our own frame: a 44px strip, text tabs underlined in ink, no chrome. */
+.tryit { border: 1px solid var(--rule); border-radius: var(--r-md); overflow: hidden;
+  background: var(--paper-0); box-shadow: var(--sh-2); margin-bottom: var(--s-6); }
+.trybar { display: flex; align-items: center; gap: var(--s-5); height: 44px; padding: 0 var(--s-4);
+  background: var(--paper-1); border-bottom: 1px solid var(--rule); }
+.trytabs { display: flex; gap: var(--s-4); height: 100%; }
+.trytabs button { height: 100%; padding: 0; border: 0; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; background: transparent; cursor: pointer;
+  font: 500 var(--t-15)/1 var(--text); color: var(--ink-2);
+  transition: color var(--dur-1) var(--ease-out), border-color var(--dur-1) var(--ease-out); }
 .trytabs button:hover { color: var(--ink); }
-.trytabs button.on { background: var(--card); border-color: var(--line); color: var(--ink);
-  box-shadow: 0 1px 2px rgba(23,33,28,.08); }
-.tryhint { margin-left: auto; font: 600 11px/1 var(--mono); letter-spacing: .08em;
-  text-transform: uppercase; color: var(--faint); }
-.tryview { display: flex; gap: 1px; border: 1px solid var(--line); border-radius: 7px;
-  overflow: hidden; }
-.tryview button { border: 0; background: var(--card); color: var(--faint); cursor: pointer;
-  font-size: 13px; padding: 6px 10px; }
-.tryview button.on { color: var(--jade); background: var(--wash); }
-.tryframe { height: 560px; display: grid; background: var(--paper); }
-.tryframe iframe { width: 100%; height: 100%; border: 0; background: #fff;
-  justify-self: center; transition: width .25s ease; }
-.tryit.mob .tryframe iframe { width: 390px; border-left: 1px solid var(--line);
-  border-right: 1px solid var(--line); }
-.trymore { text-align: center; font: 600 11.5px/1 var(--mono); letter-spacing: .1em;
-  text-transform: uppercase; color: var(--faint); margin: 0 0 22px; }
+.trytabs button.on { color: var(--ink); border-bottom-color: var(--ink); }
+.trytabs button:focus-visible { outline-offset: -2px; }
+.tryhint { margin-left: auto; font: 400 var(--t-13)/1 var(--text); color: var(--ink-3); }
+.tryview { flex: none; margin-left: auto; }
+.tryhint + .tryview { margin-left: 0; }
+.tryview button { width: 32px; min-height: 32px; padding: 0; }
+.tryview svg { display: block; }
+.tryframe { height: 560px; display: grid; background: var(--paper-1); }
+.tryframe iframe { width: 100%; height: 100%; border: 0; background: var(--paper-0);
+  justify-self: center; transition: width var(--dur-3) var(--ease-io); }
+.tryit.mob .tryframe iframe { width: 390px; border-left: 1px solid var(--rule);
+  border-right: 1px solid var(--rule); }
+.trymore { font: 400 var(--t-13)/1.45 var(--text); color: var(--ink-3); margin: 0 0 var(--s-3); }
 @media (max-width: 700px) {
   .tryhint { display: none; }
   .tryframe { height: 440px; }
-  /* thumb-sized: QA found these at ~30px on a phone */
-  .trytabs button { padding: 11px 16px; }
-  .tryview button { padding: 10px 13px; }
+  .trybar { gap: var(--s-4); padding: 0 var(--s-3); }
+  .trytabs { gap: var(--s-3); }
+}
+@media (max-width: 700px) {
   .btn { padding: 15px 22px; }
   nav .btn { padding: 12px 18px; }
 }
 
-/* ----------------------------------------------------------- examples */
-.exgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+/* Example cards — a rule, not a shadow; "live" is a word with a dot, not a badge. */
+.exgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-4); }
 .exgrid .ex:first-child { grid-column: span 2; }
-.exgrid .ex:first-child img { aspect-ratio: auto; height: 100%; min-height: 300px; }
-@media (max-width: 820px) { .exgrid .ex:first-child { grid-column: span 2; } }
-@media (max-width: 540px) { .exgrid .ex:first-child { grid-column: auto; } }
+.exgrid .ex:first-child img { aspect-ratio: auto; min-height: 300px; }
 @media (max-width: 820px) { .exgrid { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 540px) { .exgrid { grid-template-columns: 1fr; } }
-.ex { display: block; border-radius: 12px; overflow: hidden; position: relative;
-  border: 1px solid var(--line); box-shadow: 0 1px 3px rgba(23,33,28,.06);
-  transition: transform .15s ease, box-shadow .15s ease; }
-.ex:nth-child(odd) { transform: rotate(-.4deg); }
-.ex:nth-child(even) { transform: rotate(.4deg); }
-.ex:hover { transform: translateY(-3px) rotate(0); box-shadow: 0 14px 34px -16px rgba(23,33,28,.3); }
-.ex::after { content: "LIVE"; position: absolute; top: 10px; right: 10px;
-  font: 700 9px/1 var(--mono); letter-spacing: .12em; color: #fff;
-  background: rgba(10,18,14,.55); backdrop-filter: blur(3px);
-  border: 1px solid rgba(255,255,255,.25); border-radius: 99px; padding: 5px 8px 5px 16px; }
-.ex::before { content: ""; position: absolute; top: 16px; right: 64px; width: 6px; height: 6px;
-  border-radius: 50%; background: #4ade80; z-index: 1; animation: livedot 2s ease infinite; }
-@keyframes livedot { 50% { opacity: .4; } }
+@media (max-width: 540px) {
+  .exgrid { grid-template-columns: 1fr; }
+  .exgrid .ex:first-child { grid-column: auto; }
+  .exgrid .ex:first-child img { aspect-ratio: 16/10; min-height: 0; }
+}
+.ex { display: flex; flex-direction: column; position: relative; overflow: hidden;
+  text-decoration: none; color: var(--ink); background: var(--paper-0);
+  border: 1px solid var(--rule); border-radius: var(--r-md);
+  transition: border-color var(--dur-1) var(--ease-out); }
+.ex:hover { border-color: var(--ink-4); }
 /* left top, not centre top: these are screenshots of real pages, and a
    headline starts at the LEFT. Centred cropping sliced "We're on the way"
-   down to "e way." in the narrow columns — a sample site that looks broken
-   is worse than no sample at all. */
-.ex img { aspect-ratio: 16/10; object-fit: cover; object-position: left top; width: 100%;
-  height: 100%; min-height: 100%; }
-.ex { display: flex; }
-.ex b { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 14px 12px;
-  background: linear-gradient(transparent, rgba(10,18,14,.82));
-  color: #fff; font: 650 14px/1.2 var(--sans); }
-.ex b small { display: block; font: 600 10.5px/1 var(--mono); letter-spacing: .1em;
-  text-transform: uppercase; opacity: .75; margin-top: 4px; }
+   down to "e way." in the narrow columns. */
+.ex img { flex: 1 1 auto; width: 100%; min-height: 0; aspect-ratio: 16/10;
+  object-fit: cover; object-position: left top; border-bottom: 1px solid var(--rule); }
+.ex b { display: block; padding: var(--s-3) 72px var(--s-3) var(--s-4);
+  font: 600 var(--t-15)/1.3 var(--text); color: var(--ink); }
+.ex b small { display: block; font: 400 var(--t-13)/1.45 var(--text); color: var(--ink-3); margin-top: 2px; }
+.ex::after { content: "live"; position: absolute; right: var(--s-4); bottom: var(--s-3);
+  font: 400 var(--t-13)/1.45 var(--text); color: var(--ink-3); }
+.ex::before { content: ""; position: absolute; right: 46px; bottom: 19px; width: 6px; height: 6px;
+  border-radius: var(--r-full); background: var(--accent-600); z-index: 1; }
 
-/* ------------------------------------------------------------ pricing */
-/* Two tiers, not three — Agency was removed because it sold volume to a customer
-   who wants white-label, which this product does not have. A 3-column grid with
-   two cards leaves a hole, so the grid follows the ladder. max-width keeps two
-   cards from stretching absurdly wide on a large screen. */
-.plans { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px;
-  align-items: stretch; max-width: 720px; margin-inline: auto; }
-@media (max-width: 880px) { .plans { grid-template-columns: 1fr; } }
-.plan { background: var(--card); border: 1px solid var(--line); border-radius: 16px;
-  padding: 30px 28px; display: flex; flex-direction: column;
-  box-shadow: 0 1px 3px rgba(23,33,28,.05); }
-.plan.feat { border-color: var(--jade); border-width: 2px; position: relative;
-  box-shadow: 0 2px 6px rgba(13,122,95,.08), 0 24px 60px -28px rgba(13,122,95,.35); }
-.plan.feat::before { content: "MOST POPULAR"; position: absolute; top: -12px; left: 50%;
-  transform: translateX(-50%); background: var(--jade); color: #fff;
-  font: 700 10px/1 var(--mono); letter-spacing: .14em; border-radius: 99px; padding: 6px 12px; }
-.plan .pt { font: 650 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase;
-  color: var(--faint); }
-.plan h3 { font: 750 22px/1.2 var(--display); margin: 8px 0 2px; }
-.plan .pr { font: 800 34px/1.1 var(--display); letter-spacing: -.02em; margin: 8px 0 2px; }
-.plan .pr small { font: 600 14px/1 var(--sans); color: var(--faint); letter-spacing: 0; }
-/* 🔴 .plans sets an explicit display, which outranks the browser's built-in
-   [hidden] rule — without this line the annual cards render underneath the
-   monthly ones. Same bug bit the app's billing page tonight. */
+/* ------------------------------------------------------------ pricing
+   A comparison, not two cards: rows are what differs, columns are the plans.
+   Studio is marked by a 2px ink top rule, a paper-1 column and the only
+   primary button — all the emphasis it needs. Monthly / Annual is a
+   segmented control (.seg) that swaps two tables: the [data-plans] wrappers
+   are toggled via the hidden attribute by the JS below, so the [hidden]
+   override must stay. The same markup renders the app's Billing page. */
+#pricing { background: var(--paper-0); }
+/* 3:2, not 1:1 — the second hand-set headline line ("Pick a plan when you
+   start building.") needs ~571px at 36px; an equal split gives it 486. */
+#pricing .phead { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: var(--s-5) var(--s-8); align-items: end; margin-bottom: var(--s-6); }
+/* Set explicitly on the scale — the section must not lean on the old base
+   h2 / .eyebrow / body rules (800 clamp, 13px inherit, 16.5/1.6). */
+#pricing .eyebrow { text-align: left; margin: 0 0 var(--s-3);
+  font: 400 var(--t-15)/1.45 var(--text); color: var(--ink-3); }
+#pricing h2 { text-align: left; margin: 0; max-width: 26ch; /* 22ch = 506px, too narrow for line 2 */
+  font: 600 var(--t-36)/1.1 var(--display); letter-spacing: var(--track-2); }
+#pricing .sub { text-align: left; margin: 0; max-width: var(--measure);
+  font: 400 var(--t-17)/1.5 var(--text); color: var(--ink-2); }
+.cycle { display: flex; margin-top: var(--s-5); }
+.cycle .save { color: var(--ink-3); font-weight: 400; }
+.cycle .on .save { color: var(--ink-2); }
+/* 🔴 The wrapper is what the JS hides. An explicit display on .plans would
+   outrank the browser's [hidden] rule, so this override stays regardless. */
 .plans[hidden] { display: none !important; }
-.cycle { display: flex; gap: 6px; justify-content: center; margin: 26px auto 30px;
-  background: #fff; border: 1px solid var(--line); border-radius: 999px;
-  padding: 5px; width: max-content; }
-.cycle button { background: none; border: 0; border-radius: 999px; cursor: pointer;
-  color: var(--ink-soft, #5b6b66); font: 700 14px/1 inherit; padding: 10px 18px; }
-.cycle button.on { background: var(--jade); color: #fff; }
-.cycle .save { font: 700 10px/1 var(--mono, ui-monospace); letter-spacing: .08em;
-  text-transform: uppercase; opacity: .85; margin-left: 6px; }
-/* thumb-sized on touch: 35px is under the 44pt minimum and this is the
-   control that reveals the cheaper option. */
-@media (max-width: 900px) { .cycle button { padding: 14px 18px; } }
-.plusof { color: var(--jade); font: 700 12px/1.4 inherit; margin: 4px 0 -4px; }
+.pgrid { width: 100%; border-collapse: collapse; table-layout: fixed;
+  font: 400 var(--t-15)/1.45 var(--text); }
+.pgrid th, .pgrid td { padding: var(--s-3) var(--s-4); border-top: 1px solid var(--rule);
+  text-align: left; vertical-align: top; }
+.pgrid .lab { width: 34%; padding-left: 0; color: var(--ink-2); font-weight: 400; }
+.pgrid thead th, .pgrid thead td { border-top: 0; padding-top: 0; padding-bottom: var(--s-5);
+  vertical-align: bottom; }
+.pgrid .feat { background: var(--paper-1); }
+.pgrid thead th.feat { border-top: 2px solid var(--ink); padding-top: var(--s-5); }
+.pgrid tbody td { color: var(--ink); font-variant-numeric: tabular-nums; }
+.pgrid tfoot td { padding-top: var(--s-5); padding-bottom: var(--s-5); }
+.pgrid .btn { justify-content: center; }
+.pr { display: block; font: 600 var(--t-36)/1.05 var(--display); letter-spacing: var(--track-2);
+  font-variant-numeric: tabular-nums; }
+.pr small { font: 400 var(--t-15)/1 var(--text); color: var(--ink-3); letter-spacing: 0; }
+.pt { display: block; margin-top: var(--s-2); font: 500 var(--t-17)/1.3 var(--text); color: var(--ink); }
+.pt span { display: inline-block; color: var(--ink-3); font-weight: 400; }
+.pnote { margin: var(--s-4) 0 0; font: 400 var(--t-13)/1.45 var(--text); color: var(--ink-3); }
+.freenote { margin: var(--s-6) 0 0; max-width: var(--measure); color: var(--ink-2);
+  font: 400 var(--t-17)/1.5 var(--text); }
+/* Under 640px the table reflows into stacked plans: every cell becomes a
+   grid item, ordered by its column, and the row label is repeated above each
+   value from data-l. The Studio block keeps its paper-1 ground and ink rule. */
+@media (max-width: 640px) {
+  #pricing .phead { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  #pricing h2 { max-width: none; }
+  .pgrid { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .pgrid thead, .pgrid tbody, .pgrid tfoot, .pgrid tr { display: contents; }
+  .pgrid .lab { display: none; }
+  .pgrid th, .pgrid td { display: block; width: auto; }
+  .pgrid [data-col="1"] { order: 1; }
+  .pgrid [data-col="2"] { order: 2; }
+  .pgrid [data-col="3"] { order: 3; }
+  .pgrid thead th { border-top: 1px solid var(--rule); padding-top: var(--s-5); margin-top: var(--s-6); }
+  .pgrid thead th[data-col="1"] { margin-top: 0; }
+  .pgrid thead th.feat { border-top: 2px solid var(--ink); }
+  .pgrid td[data-l]::before { content: attr(data-l); display: block;
+    font-size: var(--t-13); color: var(--ink-3); }
+  .pgrid tfoot td { border-top: 0; padding-top: var(--s-3); }
+  .pgrid .btn { width: 100%; }
+}
 
-/* Free town check — the acquisition hook. Sits directly under the hero so the
-   pitch stops being abstract before anyone has to decide anything. */
-#towncheck { text-align: center; }
-.tcform { display: flex; gap: 10px; max-width: 560px; margin: 26px auto 0;
-  flex-wrap: wrap; justify-content: center; }
-.tcform input { flex: 1 1 300px; min-width: 0; padding: 15px 18px; font: inherit;
-  font-size: 16px; border: 1px solid var(--line); border-radius: 12px;
-  background: #fff; color: var(--ink); }
-.tcform input:focus { outline: 2px solid var(--jade); outline-offset: 1px; }
-.tcform button { flex: 0 0 auto; }
-.tcout { max-width: 620px; margin: 26px auto 0; }
+/* Try it — the question on the left, the answer rendered in place on the right.
+   Form ids and everything the JS injects are unchanged; only their clothes are. */
+.tcwrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--s-6) var(--s-8); align-items: start; }
+@media (max-width: 820px) { .tcwrap { grid-template-columns: 1fr; } }
+.tclead .sub { margin-top: var(--s-4); }
+.tcform { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.tcform .input { flex: 1 1 260px; min-height: 48px; font-size: var(--t-17); padding: 0 var(--s-4); }
+.tcform .btn { flex: 0 0 auto; }
+@media (max-width: 540px) { .tcform .btn { flex: 1 1 100%; } }
+.tcout { margin-top: var(--s-6); }
 .tcout[hidden] { display: none !important; }
-.tcbig { font-family: var(--display); font-weight: 800; letter-spacing: -.02em;
-  font-size: clamp(30px, 6vw, 46px); line-height: 1.1; }
-.tcbig b { color: var(--jade); }
-.tcsub { color: var(--ink-soft, #5b6b66); margin-top: 10px; font-size: 15px; }
-.tctrades { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
-  margin: 20px 0 4px; }
-.tctrade { border: 1px solid var(--line); border-radius: 999px; padding: 8px 14px;
-  font-size: 13.5px; background: #fff; }
-.tctrade b { font-weight: 700; }
+.tcbig { font: 600 var(--t-24)/1.15 var(--display); letter-spacing: var(--track-1);
+  max-width: 24ch; text-wrap: balance; }
+.tcbig b { display: block; font-size: var(--t-68); line-height: 1; letter-spacing: var(--track-3);
+  font-variant-numeric: tabular-nums; color: var(--ink); margin-bottom: var(--s-2); }
+.tcsub { color: var(--ink-2); margin-top: var(--s-2); font-size: var(--t-15); }
+.tctrades { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0 var(--s-5); margin: var(--s-5) 0 0; border-top: 1px solid var(--rule-2); }
+.tctrade { display: flex; align-items: baseline; gap: var(--s-2); padding: var(--s-2) 0;
+  border-bottom: 1px solid var(--rule); font-size: var(--t-15); color: var(--ink-2); }
+.tctrade b { font: 600 var(--t-17)/1 var(--display); font-variant-numeric: tabular-nums;
+  color: var(--ink); min-width: 2.2ch; }
 /* Five masked records. A bare count proves an opportunity exists but not that
    this tool actually holds the businesses — it could be an estimate. The shape
    of a real name proves the data is real and is useless for contacting anyone,
    which is exactly the gap an account fills. */
-.tcsample { max-width: 380px; margin: 22px auto 0; text-align: left;
-  border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-.tcsamplehead { font: 600 10.5px/1 var(--mono, monospace); letter-spacing: .13em;
-  text-transform: uppercase; color: var(--ink-soft, #6b7c76);
-  padding: 12px 14px; border-bottom: 1px solid var(--line); }
-.tcrow { display: flex; align-items: baseline; gap: 12px; padding: 11px 14px;
-  border-bottom: 1px solid var(--line); }
-.tcname { flex: 1; font-weight: 600; letter-spacing: .06em; }
-.tctrade2 { font-size: 12.5px; color: var(--ink-soft, #6b7c76); }
-.tcsamplenote { padding: 12px 14px; font-size: 12.5px; line-height: 1.5;
-  color: var(--ink-soft, #6b7c76); }
-
-.tcnote { color: var(--ink-soft, #5b6b66); font-size: 13px; margin-top: 16px;
-  line-height: 1.6; max-width: 48ch; margin-inline: auto; }
-.tcerr { color: #b4462a; font-size: 15px; }
-.tccta { margin-top: 22px; }
+.tcsample { margin-top: var(--s-5); max-width: 480px; background: var(--paper-0);
+  border: 1px solid var(--rule); border-radius: var(--r-md); overflow: hidden; }
+.tcsamplehead { font: 500 var(--t-13)/1.45 var(--text); color: var(--ink-3);
+  padding: var(--s-2) var(--s-4); border-bottom: 1px solid var(--rule); }
+.tcrow { display: flex; align-items: baseline; gap: var(--s-3); padding: var(--s-2) var(--s-4);
+  border-bottom: 1px solid var(--rule); font-size: var(--t-15); }
+.tcname { flex: 1; font-weight: 500; letter-spacing: 0; }
+.tctrade2 { font-size: var(--t-13); color: var(--ink-3); }
+.tcsamplenote { padding: var(--s-2) var(--s-4); font-size: var(--t-13); line-height: 1.45;
+  color: var(--ink-3); }
+.tcnote { color: var(--ink-3); font-size: var(--t-13); line-height: 1.45; margin-top: var(--s-4);
+  max-width: 52ch; }
+.tcerr { color: var(--brick); font-size: var(--t-15); }
+.tccta { margin-top: var(--s-5); }
 
 /* The email offer. It sits ABOVE the signup button on purpose: typing an
    address is a far smaller ask than making an account, and what arrives is
    ten phone numbers someone can start calling — real value that stands on its
-   own whether or not they ever sign up. Searching is free in the app anyway,
-   so nothing is being given away that would otherwise be charged for. */
-.tcmail { max-width: 480px; margin: 24px auto 0; padding: 18px;
-  border: 1px solid var(--line); border-radius: 12px;
-  background: var(--paper-2, rgba(0,0,0,.015)); }
-.tcmailhead { font-family: var(--display); font-weight: 700; font-size: 17px;
-  letter-spacing: -.01em; margin-bottom: 4px; }
-.tcmailsub { font-size: 13px; line-height: 1.55; color: var(--ink-soft, #6b7c76);
-  margin-bottom: 14px; }
-.tcmailform { display: flex; gap: 8px; flex-wrap: wrap; }
-.tcmailform input[type=email] { flex: 1 1 220px; min-width: 0; padding: 12px 14px;
-  font: inherit; font-size: 15px; border: 1px solid var(--line); border-radius: 9px;
-  background: var(--paper, #fff); color: inherit; }
-.tcmailform input[type=email]:focus { outline: 2px solid var(--jade); outline-offset: 1px; }
-.tcmailform button { flex: 0 0 auto; }
+   own whether or not they ever sign up. */
+.tcmail { margin-top: var(--s-5); padding: var(--s-5); max-width: 480px;
+  background: var(--paper-0); border: 1px solid var(--rule); border-radius: var(--r-md); }
+.tcmailhead { font: 600 var(--t-17)/1.3 var(--text); margin-bottom: var(--s-1); }
+.tcmailsub { font-size: var(--t-13); line-height: 1.45; color: var(--ink-2); margin-bottom: var(--s-3); }
+.tcmailform { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+.tcmailform .input { flex: 1 1 200px; }
+.tcmailform .btn { flex: 0 0 auto; }
 /* The honeypot. Off-screen rather than display:none — a form-filler that skips
    hidden fields would walk straight past a display:none trap, and this one is
    meant to be filled in. Never focusable, never announced. */
 .tchp { position: absolute; left: -9999px; width: 1px; height: 1px;
   opacity: 0; pointer-events: none; }
-.tcmailnote { font-size: 12px; line-height: 1.5; color: var(--ink-soft, #6b7c76);
-  margin-top: 10px; }
-.tcmailok { font-size: 14.5px; line-height: 1.6; }
-.tcmailok b { color: var(--jade); }
-/* One person, named — and written as an invitation rather than a bio. The
-   customer here IS a solo freelancer cold-calling local businesses, which is
-   literally what Finley is doing, so the strongest thing available is "I'm
-   doing the same thing you are" and a promise only a small operation can make:
-   email me and I answer. Verified that hello@unwebbed.app really forwards
-   before putting it on the page. */
-.who { max-width: 640px; }
-.whoWhy { margin: 22px 0 4px; padding: 18px 20px; border-radius: 13px;
-  background: var(--jade-soft, #edf5f1); }
-.whoWhyL { font: 700 10.5px/1 var(--mono, ui-monospace); letter-spacing: .13em;
-  text-transform: uppercase; color: var(--jade, #0d7a5f); margin-bottom: 9px; }
-.whoWhy p { font-size: 15.5px; line-height: 1.62; color: var(--jade-ink, #0a5b47);
-  margin: 0; }
-.whoCta { display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-  margin-top: 24px; }
-.whoMail { font-size: 14px; color: var(--ink-soft, #5b6b66); }
-.whoP { font-size: 16.5px; line-height: 1.68; color: var(--ink-soft, #5b6b66);
-  margin-top: 14px; }
-.whoP b { color: var(--ink); font-weight: 650; }
-.whoSig { margin-top: 20px; font: 600 13px/1.5 var(--mono, ui-monospace);
-  letter-spacing: .02em; color: var(--ink-faint, #8a978f); }
-#who h2 { max-width: 16ch; }
+.tcmailnote { font-size: var(--t-12); line-height: 1.45; color: var(--ink-3); margin-top: var(--s-2); }
+.tcmailok { font-size: var(--t-15); line-height: 1.5; color: var(--ink-2); }
+.tcmailok b { color: var(--ink); font-weight: 600; }
+/* Who made it — one person, named, and a pull quote instead of a green box. */
+.who { max-width: 65ch; }
+.whoP { font-size: var(--t-17); line-height: 1.5; color: var(--ink-2); margin-top: var(--s-4); }
+.whoP b { color: var(--ink); font-weight: 600; }
+.whoQuote { margin: var(--s-6) 0; padding: var(--s-1) 0 var(--s-1) var(--s-5);
+  border-left: 2px solid var(--ink); }
+.whoQuote p { font: italic 400 var(--t-19)/1.5 var(--text); color: var(--ink); margin: 0;
+  hanging-punctuation: first; }
+@supports not (hanging-punctuation: first) { .whoQuote p { text-indent: -.42ch; } }
+.whoCta { display: flex; align-items: center; gap: var(--s-4); flex-wrap: wrap; margin-top: var(--s-6); }
+.whoMail { font-size: var(--t-15); color: var(--ink-2); text-decoration: underline;
+  text-underline-offset: 3px; text-decoration-color: var(--rule-2);
+  transition: color var(--dur-1) var(--ease-out), text-decoration-color var(--dur-1) var(--ease-out); }
+.whoMail:hover { color: var(--ink); text-decoration-color: var(--ink); }
+.whoSig { margin-top: var(--s-5); font: 400 var(--t-15)/1.5 var(--text); color: var(--ink-3); }
 
-.freenote { text-align: center; color: var(--ink-soft, #5b6b66); font-size: 14px;
-  max-width: 46ch; margin: 26px auto 0; line-height: 1.6; }
-/* The reader should not have to do this arithmetic themselves. A freelancer
-   charges a few hundred for a site; saying what one sale covers turns a price
-   into an investment, and it is the single most persuasive sentence available
-   on this page. */
-.payback { margin-top: 14px; padding: 10px 12px; border-radius: 9px;
-  background: var(--jade-soft, #edf5f1); color: var(--jade-ink, #0a5b47);
-  font-size: 13px; text-align: center; line-height: 1.45; }
-.payback b { font-weight: 700; }
-.pnote { color: var(--ink-soft, #6b7c76); font-size: 12px; text-align: center; margin-top: 10px; }
-.plan ul { list-style: none; padding: 0; margin: 16px 0 22px; display: flex;
-  flex-direction: column; gap: 9px; color: var(--soft); font-size: 14.5px; }
-.plan li { padding-left: 22px; position: relative; }
-.plan li::before { content: "✓"; position: absolute; left: 0; color: var(--jade); font-weight: 800; }
-.plan .btn { margin-top: auto; justify-content: center; }
+/* (pricing notes, payback and list rules moved up into the comparison grid) */
 
-/* ---------------------------------------------------------- the pitch */
-.pitchwrap { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 900px;
-  margin: 0 auto; align-items: start; }
-@media (max-width: 800px) { .pitchwrap { grid-template-columns: 1fr; } }
-.chat { background: var(--card); border: 1px solid var(--line); border-radius: 16px;
-  padding: 22px; display: flex; flex-direction: column; gap: 10px;
-  box-shadow: 0 1px 3px rgba(23,33,28,.05); }
-.cb { max-width: 85%; padding: 11px 14px; border-radius: 14px; font-size: 14.5px; line-height: 1.5; }
-.cb.you { align-self: flex-end; background: var(--jade); color: #fff;
-  border-bottom-right-radius: 4px; }
-.cb.them { align-self: flex-start; background: var(--wash); color: var(--ink);
-  border: 1px solid #dfe9e3; border-bottom-left-radius: 4px; }
-.mathcard { background: var(--card); border: 1px solid var(--line); border-radius: 16px;
-  padding: 24px; box-shadow: 0 1px 3px rgba(23,33,28,.05); }
+/* The pitch — h2 above the left column only; chat as plain blocks; the math
+   as three ruled rows with tabular figures. */
+.pitchwrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: var(--s-6) var(--s-8); align-items: start; }
+.pitchhead { grid-column: 1; }
+.pitchhead .sub { margin-top: var(--s-4); }
+.chat { grid-column: 1; display: flex; flex-direction: column; gap: var(--s-2); }
+.mathcard { grid-column: 2; grid-row: 2; }
+@media (max-width: 800px) {
+  .pitchwrap { grid-template-columns: 1fr; gap: var(--s-6); }
+  .chat, .mathcard { grid-column: 1; grid-row: auto; }
+}
+.cb { max-width: 85%; padding: var(--s-3) var(--s-4); border-radius: var(--r-md);
+  font-size: var(--t-15); line-height: 1.5; hanging-punctuation: first; }
+.cb.you { align-self: flex-end; background: var(--paper-1); color: var(--ink); }
+.cb.them { align-self: flex-start; background: var(--paper-0); color: var(--ink);
+  border: 1px solid var(--rule); }
 .mathcard .mrow { display: flex; justify-content: space-between; align-items: baseline;
-  gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--line);
-  color: var(--soft); font-size: 14.5px; }
-.mathcard .mrow b { font: 750 19px/1 var(--display); color: var(--ink); white-space: nowrap; }
-.mathcard .mrow.total { border-bottom: 0; }
-.mathcard .mrow.total b { color: var(--jade); font-size: 22px; }
-.mathcard p { color: var(--faint); font-size: 13.5px; margin-top: 10px; }
+  gap: var(--s-4); padding: var(--s-4) 0; border-bottom: 1px solid var(--rule);
+  color: var(--ink-2); font-size: var(--t-15); line-height: 1.45; }
+/* the label wins the width contest: a 24px figure never needs more than its own
+   digits, and a row label that wraps under a one-line figure reads unbalanced */
+.mathcard .mrow > span { flex: 1 1 auto; min-width: 0; text-wrap: pretty; }
+.mathcard .mrow:first-child { border-top: 1px solid var(--rule-2); }
+.mathcard .mrow b { font: 600 var(--t-24)/1 var(--display); letter-spacing: var(--track-1);
+  font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; flex: none; }
+.mathcard .mrow.total { border-bottom: 1px solid var(--rule-2); }
+.mathcard .mrow.total b { font: 600 var(--t-17)/1 var(--text); letter-spacing: 0; }
+.mathcard p { color: var(--ink-3); font-size: var(--t-13); line-height: 1.45;
+  margin-top: var(--s-4); max-width: 40ch; }
 
-/* --------------------------------------------------------------- FAQ */
-.faq { max-width: 680px; margin: 0 auto; }
-.faq details { border-bottom: 1px solid var(--line); }
+/* Questions — h2 in the left column, the accordion in the right. */
+.faqwrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--s-6) var(--s-8); align-items: start; }
+@media (max-width: 820px) { .faqwrap { grid-template-columns: 1fr; } }
+.faq { border-top: 1px solid var(--rule-2); }
+.faq details { border-bottom: 1px solid var(--rule); }
 .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between;
-  align-items: center; gap: 14px; padding: 18px 2px; font: 650 16px/1.4 var(--sans); }
+  align-items: center; gap: var(--s-4); padding: var(--s-4) 0;
+  font: 600 var(--t-17)/1.4 var(--text); color: var(--ink);
+  transition: color var(--dur-1) var(--ease-out); }
+.faq summary:hover { color: var(--ink-2); }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: "+"; font: 400 22px/1 var(--mono); color: var(--jade); flex: none; }
-.faq details[open] summary::after { content: "–"; }
-.faq p { color: var(--soft); font-size: 15px; padding: 0 2px 18px; max-width: 60ch; }
+.faq summary::after { content: ""; flex: none; width: 16px; height: 16px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none' stroke='%23787D74' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.5 6 8 10.5 12.5 6'/%3E%3C/svg%3E") center / 16px no-repeat;
+  transition: transform var(--dur-2) var(--ease-io); }
+.faq details[open] summary::after { transform: rotate(180deg); }
+.faq p { color: var(--ink-2); font-size: var(--t-15); line-height: 1.5;
+  padding: 0 var(--s-6) var(--s-4) 0; max-width: 65ch; }
+.faq a { color: var(--accent-600); }
 
-/* ----------------------------------------------------------- end band */
-.endcta { background: var(--jade); color: #fff; text-align: center; padding: 84px 0; }
-.endcta h2 { color: #fff; }
-.endcta .sub { color: rgba(255,255,255,.85); margin-bottom: 30px; }
-.endcta .btn { background: #fff; color: var(--jade-dk); border-color: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,.18), 0 14px 34px -14px rgba(0,0,0,.35); }
-.endcta .btn:hover { filter: brightness(.97); }
-/* sticky CTA — phones only, appears once the hero CTA has scrolled away */
+/* ----------------------------------------------------------- end band
+   Ink, paper text, and the one place the accent button is the brightest
+   thing on screen. Left-aligned like every other section. */
+.endcta { background: var(--ink); color: var(--paper-0); padding: var(--s-9) 0; }
+.endcta .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s-6) var(--s-8); align-items: end; }
+.endcta h2 { font: 600 var(--t-36)/1.1 var(--display); letter-spacing: var(--track-2);
+  color: var(--paper-0); text-align: left; margin: 0 0 var(--s-4); max-width: 24ch; }
+.endcta .sub { font: 400 var(--t-17)/1.5 var(--text); color: var(--rule-2);
+  text-align: left; margin: 0; max-width: 52ch; }
+.endcta .btn-primary { border-color: transparent; }
+.endcta .btn-primary:focus-visible { outline-color: var(--paper-0); }
+@media (max-width: 720px) { .endcta { padding: var(--s-8) 0; }
+  .endcta .wrap { grid-template-columns: minmax(0, 1fr); } }
+
+/* sticky CTA — phones only, slides in once the hero has scrolled away */
 .stickycta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
-  display: none; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
-  background: rgba(250,249,246,.94); backdrop-filter: blur(10px);
-  border-top: 1px solid var(--line); font-size: 13px; color: var(--soft);
-  transform: translateY(100%); transition: transform .25s ease; }
-.stickycta b { color: var(--ink); }
-.stickycta .btn { padding: 11px 18px; font-size: 14px; white-space: nowrap; }
+  display: none; align-items: center; justify-content: space-between; gap: var(--s-3);
+  padding: var(--s-2) var(--s-4) calc(var(--s-2) + env(safe-area-inset-bottom));
+  background: color-mix(in srgb, var(--paper-0) 94%, transparent);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  border-top: 1px solid var(--rule); font: 400 var(--t-13)/1.45 var(--text); color: var(--ink-3);
+  transform: translateY(100%); transition: transform var(--dur-3) var(--ease-io); }
+.stickycta b { color: var(--ink); font-weight: 500; }
+.stickycta .tag { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stickycta .btn { flex: 0 0 auto; }
 .stickycta.show { transform: none; }
 @media (max-width: 700px) { .stickycta { display: flex; } }
+@media (max-width: 480px) { .stickycta .tagx { display: none; } }
 
-footer { padding: 30px 0 40px; color: var(--faint); font-size: 13.5px; }
-footer .wrap { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
-.footcols { display: grid !important; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 26px; }
-@media (max-width: 760px) { .footcols { grid-template-columns: 1fr 1fr; } }
-.fcol { display: flex; flex-direction: column; gap: 8px; }
-.fcol b { color: var(--ink); font-size: 13px; margin-bottom: 2px; }
-footer a { color: var(--soft); text-decoration: none; }
-footer a:hover { color: var(--ink); }
-
-/* fade-up on scroll — one pattern, JS adds .in; nothing hidden without JS */
-.rise { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: no-preference) {
-  .js .rise { opacity: 0; transform: translateY(14px);
-    transition: opacity .5s ease, transform .5s ease; }
-  .js .rise.in { opacity: 1; transform: none; }
+/* ------------------------------------------------------------- footer */
+footer { padding: var(--s-7) 0; color: var(--ink-3); font: 400 var(--t-13)/1.45 var(--text); }
+.footcols { display: grid; grid-template-columns: 1.6fr repeat(4, 1fr); gap: var(--s-6); }
+.fcol { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-2); }
+.fcol b { color: var(--ink); font-weight: 500; margin-bottom: var(--s-1); }
+.fcol .logo { margin-right: 0; }
+.footbrand p { max-width: 30ch; margin: var(--s-2) 0 0; }
+footer a { color: var(--ink-2); text-decoration: none; transition: color var(--dur-1) var(--ease-out); }
+footer a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+/* the rule sits inside the wrap's padding so it starts at the U mark's left edge,
+   in line with the columns, not at the padding box */
+.footbase { margin: var(--s-6) auto 0; padding: var(--s-4) 0 0;
+  width: calc(100% - 2 * var(--s-5)); max-width: calc(1080px - 2 * var(--s-5));
+  border-top: 1px solid var(--rule); font-size: var(--t-12); }
+/* the sticky bar covers the last ~56px of the page on phones, so the footer clears it (48 + 56 ≈ s-9) */
+@media (max-width: 700px) { footer { padding-bottom: var(--s-9); } }
+@media (max-width: 760px) {
+  .footcols { grid-template-columns: 1fr 1fr; gap: var(--s-5) var(--s-4); }
+  .footcols .footbrand { grid-column: 1 / -1; }
 }
+
 </style>
 </head>
 <body>
 
 <nav><div class="wrap">
-  <a class="logo" href="/"><span class="mark">U</span>Unwebbed</a>
+  <a class="logo" href="/"><span class="mark" aria-hidden="true">U</span>Unwebbed</a>
   <a class="nl" href="#how">How it works</a>
   <a class="nl" href="#examples">Examples</a>
   <a class="nl" href="#who">Who made it</a>
   <a class="nl" href="#pricing">Pricing</a>
   <a class="nl" href="https://app.unwebbed.app/login">Log in</a>
-  <a class="btn" href="https://app.unwebbed.app/signup">Start free <span class="ar">&rarr;</span></a>
+  <a class="btn btn-primary" href="https://app.unwebbed.app/signup">Start free <span class="ar">&rarr;</span></a>
 </div></nav>
 
 <header class="hero"><div class="wrap">
-  <span class="kick">For freelance web designers</span>
-  <h1>Find local businesses with <em>no website</em>.<br>Show up with one <em>already built</em>.</h1>
-  <p class="lede">Point it at a town. You get every business with nothing to
-  click — and a real website built for each one in about three minutes, before
-  you've said a word to them. You make the call. You set the price.</p>
-  <div class="ctarow">
-    <a class="btn big" href="https://app.unwebbed.app/signup">Start free <span class="ar">&rarr;</span></a>
-    <a class="btn big ghost" href="#demo">Watch the 60-second demo</a>
-    <div class="ctanote">Free to search &middot; no card to start &middot; cancel anytime</div>
+  <div class="herogrid">
+    <div class="herocopy">
+      <p class="kick">For freelance web designers</p>
+      <h1>Find local businesses <br>with no website. <br>Show up with one <br>already&nbsp;built.</h1>
+      <p class="lede">Point it at a town. You get every business with nothing to
+      click, and a real website built for each one in about three minutes, before
+      you’ve said a word to them. You make the call. You set the price.</p>
+      <div class="ctarow">
+        <a class="btn btn-primary btn-lg" href="https://app.unwebbed.app/signup">Start free <span class="ar">&rarr;</span></a>
+        <a class="btn btn-secondary btn-lg" href="#demo">Watch the 60-second demo</a>
+        <div class="ctanote">Free to search &middot; no card to start &middot; cancel anytime</div>
+      </div>
+    </div>
+    <!-- the cost sentence, as three facts beside the claim -->
+    <ul class="facts">
+      <li><span>Each site takes about</span><b>3 minutes</b></li>
+      <li><span>and costs, in AI, about</span><b>40–80&cent;</b></li>
+      <li><span>Hosting is</span><b>Free to start</b></li>
+    </ul>
   </div>
-  <p class="herostats">Each site takes about three minutes and costs
-  <b>40&ndash;80&cent;</b> in AI to build. Hosting is free to start.</p>
   <div class="shot" id="demo">
-    <div class="bar"><span>A real build, condensed &mdash; no cuts, just sped up</span></div>
     <!-- Source chosen by screen size. The HD file is 7.6MB and the video is
          displayed at 344px wide on a phone — sending 1600px of video over
          cellular to fill 344px is most of this page's weight for no visible
@@ -479,110 +780,119 @@ footer a:hover { color: var(--ink); }
       })();
     </script>
   </div>
+  <p class="shotcap">A real build, condensed. No cuts, just sped up.</p>
 </div></header>
 
-<section id="towncheck"><div class="wrap">
-  <div class="eyebrow">Try it right now</div>
-  <h2>How many businesses near you have no website?</h2>
-  <p class="sub">Type your town. No sign-up, no card &mdash; this is the same
-  search the tool runs, and it takes a few seconds.</p>
-
-  <form class="tcform" id="tcform" autocomplete="off">
-    <input id="tctown" type="text" placeholder="Your town or city — e.g. Petaluma, CA"
-           aria-label="Town or city" maxlength="60">
-    <button class="btn" type="submit" id="tcgo">Check my town <span class="ar">&rarr;</span></button>
-  </form>
-
-  <div id="tcout" class="tcout" hidden></div>
-</div></section>
-
-<section id="how" class="alt"><div class="wrap">
-  <div class="eyebrow">How it works</div>
-  <h2>Three steps between you and your next client.</h2>
-  <p class="sub">No cold lists, no marketplaces, no bidding against a thousand
-  other designers. Just doors nobody has knocked on.</p>
-  <div class="steps">
-    <div class="step rise"><span class="no">STEP 01</span><span class="tagfree">FREE</span>
-      <h3>Search your town</h3>
-      <p>You get a list of every business nearby with no website — already
-      checked against the live web, with phone numbers, so you can just call.</p></div>
-    <div class="step rise"><span class="no">STEP 02</span>
-      <h3>Your pitch builds itself</h3>
-      <p>Pick a business and three minutes later you're holding their finished
-      website — before you've spoken a word to them.</p></div>
-    <div class="step rise"><span class="no">STEP 03</span>
-      <h3>Show it. Name your price.</h3>
-      <p>"I already built you something — want to see it?" is the easiest
-      opener you&rsquo;ll ever use. When they say yes, hand it over and invoice.</p></div>
+<section id="towncheck" class="mid alt"><div class="wrap tcwrap">
+  <div class="tclead">
+    <h2>How many businesses near you have no&nbsp;website?</h2>
+    <p class="sub">Type your town. No sign-up, no card—this is the same
+    search the tool runs, and it takes a few seconds.</p>
+  </div>
+  <div class="tcside">
+    <form class="tcform" id="tcform" autocomplete="off">
+      <input id="tctown" class="input" type="text" placeholder="Your town or city—e.g. Petaluma, CA"
+             aria-label="Town or city" maxlength="60">
+      <button class="btn btn-primary btn-lg" type="submit" id="tcgo">Check my town <span class="ar">&rarr;</span></button>
+    </form>
+    <div id="tcout" class="tcout" hidden></div>
   </div>
 </div></section>
 
-<section id="examples"><div class="wrap">
-  <div class="eyebrow">Examples</div>
-  <h2>This is the standard of work.</h2>
-  <p class="sub">Click through, resize one, tap the call button. Each took a
-  single build &mdash; no code, no design degree. <b>These five businesses are
-  invented</b>, so none of this is a real client&rsquo;s site &mdash; what it shows
-  you is the quality.</p>
-  <div class="tryit rise">
+<section id="how" class="mid"><div class="wrap">
+  <div class="shead">
+    <div>
+      <div class="eyebrow">How it works</div>
+      <h2>Three steps between you and your next&nbsp;client.</h2>
+    </div>
+    <p class="sub">No cold lists, no marketplaces, no bidding against a thousand
+    other designers. Just doors nobody has knocked on.</p>
+  </div>
+  <ol class="steps">
+    <li class="step"><span class="no" aria-hidden="true">1</span>
+      <h3>Search your town</h3>
+      <p>You get a list of every business nearby with no website, already
+      checked against the live web, with phone numbers, so you can just call.
+      Free.</p></li>
+    <li class="step"><span class="no" aria-hidden="true">2</span>
+      <h3>Your pitch builds itself</h3>
+      <p>Pick a business and three minutes later you’re holding their finished
+      website, before you’ve spoken a word to them.</p></li>
+    <li class="step"><span class="no" aria-hidden="true">3</span>
+      <h3>Show it. Name your price.</h3>
+      <p>“I already built you something. Want to see it?” is the easiest
+      opener you’ll ever use. When they say yes, hand it over and invoice.</p></li>
+  </ol>
+</div></section>
+
+<section id="examples" class="mid"><div class="wrap">
+  <div class="shead">
+    <h2>This is the standard of&nbsp;work.</h2>
+    <p class="sub">Click through, resize one, tap the call button. Each took a
+    single build—no code, no design degree. <b>These five businesses are
+    invented</b>, so none of this is a real client’s site—what it shows
+    you is the quality.</p>
+  </div>
+  <div class="tryit">
     <div class="trybar">
       <span class="trytabs">
         <button class="on" data-ex="/examples/cedar-dental/">Dentist</button>
         <button data-ex="/examples/rapid-rooter/">Plumber</button>
         <button data-ex="/examples/marigold-and-fern/">Florist</button>
       </span>
-      <span class="tryhint">a real build &mdash; scroll it, tap things</span>
-      <span class="tryview">
-        <button class="on" id="tvDesk" title="Desktop">&#9707;</button>
-        <button id="tvMob" title="Phone">&#9645;</button>
+      <span class="tryhint">A real build—scroll it, tap things</span>
+      <span class="tryview seg">
+        <button class="on" id="tvDesk" title="Desktop" aria-label="Desktop width"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="9" rx="1.5"/><path d="M5.5 14h5M8 11.5V14"/></svg></button>
+        <button id="tvMob" title="Phone" aria-label="Phone width"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="1.5" width="7" height="13" rx="1.5"/><path d="M7 12.5h2"/></svg></button>
       </span>
     </div>
     <div class="tryframe"><iframe id="tryFrame" title="A live Unwebbed build" loading="lazy" src="/examples/cedar-dental/"></iframe></div>
   </div>
-  <p class="trymore">More one-build sites, all live &darr;</p>
+  <p class="trymore">More one-build sites, all live.</p>
   <div class="exgrid">
-    <a class="ex rise" href="/examples/marin-auto-glass/"><img src="/img/ex-marin-auto-glass.jpg" alt="Auto glass site" loading="lazy"><b>Marin Auto Glass<small>Auto repair</small></b></a>
-    <a class="ex rise" href="/examples/rapid-rooter/"><img src="/img/ex-rapid-rooter.jpg" alt="Plumber site" loading="lazy"><b>Rapid Rooter<small>Plumbing</small></b></a>
-    <a class="ex rise" href="/examples/cedar-dental/"><img src="/img/ex-cedar-dental.jpg" alt="Dentist site" loading="lazy"><b>Cedar Dental<small>Dentist</small></b></a>
-    <a class="ex rise" href="/examples/marigold-and-fern/"><img src="/img/ex-marigold-and-fern.jpg" alt="Florist site" loading="lazy"><b>Marigold &amp; Fern<small>Florist</small></b></a>
-    <a class="ex rise" href="/examples/ironworks/"><img src="/img/ex-ironworks.jpg" alt="Gym site" loading="lazy"><b>Ironworks<small>Gym</small></b></a>
+    <a class="ex" href="/examples/marin-auto-glass/"><img src="/img/ex-marin-auto-glass.jpg" alt="Auto glass site" loading="eager" decoding="sync"><b>Marin Auto Glass<small>Auto repair</small></b></a>
+    <a class="ex" href="/examples/rapid-rooter/"><img src="/img/ex-rapid-rooter.jpg" alt="Plumber site" loading="eager" decoding="sync"><b>Rapid Rooter<small>Plumbing</small></b></a>
+    <a class="ex" href="/examples/cedar-dental/"><img src="/img/ex-cedar-dental.jpg" alt="Dentist site" loading="eager" decoding="sync"><b>Cedar Dental<small>Dentist</small></b></a>
+    <a class="ex" href="/examples/marigold-and-fern/"><img src="/img/ex-marigold-and-fern.jpg" alt="Florist site" loading="eager" decoding="sync"><b>Marigold &amp; Fern<small>Florist</small></b></a>
+    <a class="ex" href="/examples/ironworks/"><img src="/img/ex-ironworks.jpg" alt="Gym site" loading="eager" decoding="sync"><b>Ironworks<small>Gym</small></b></a>
   </div>
 </div></section>
 
-<section><div class="wrap">
-  <div class="eyebrow">The pitch</div>
-  <h2>Your first call could go like this.</h2>
-  <p class="sub">Cold pitching is hard when you're selling a promise. You won't
-  be — you'll be showing a finished thing they can tap.</p>
+<section class="mid pitch"><div class="wrap">
   <div class="pitchwrap">
-    <div class="chat rise">
-      <div class="cb you">Hi — is this Rosa's Bakery? I build websites for local
-        businesses, and I noticed you don't have one&hellip; so I went ahead and
-        built you something. Want the link?</div>
-      <div class="cb them">&hellip;you already built it?</div>
-      <div class="cb you">Yep. Take a look — if you love it, it's yours and we'll
-        talk price. If not, no harm done.</div>
-      <div class="cb them">okay&hellip; send it over</div>
+    <div class="pitchhead">
+      <h2>Your first call could go like&nbsp;this.</h2>
+      <p class="sub">Cold pitching is hard when you’re selling a promise. You won’t
+      be—you’ll be showing a finished thing they can tap.</p>
     </div>
-    <div class="mathcard rise">
+    <div class="chat">
+      <div class="cb you">Hi—is this Rosa’s Bakery? I build websites for local
+        businesses, and I noticed you don’t have one… so I went ahead and
+        built you something. Want the link?</div>
+      <div class="cb them">…you already built it?</div>
+      <div class="cb you">Yep. Take a look—if you love it, it’s yours and we’ll
+        talk price. If not, no harm done.</div>
+      <div class="cb them">okay… send it over</div>
+    </div>
+    <div class="mathcard">
       <div class="mrow"><span>What a build costs you</span><b><span data-count="60" data-pre="30&ndash;">60</span>&cent;</b></div>
-      <div class="mrow"><span>What freelancers typically charge for a simple site</span><b>$<span data-count="200">200</span>&ndash;$<span data-count="500">500</span></b></div>
+      <div class="mrow"><span>What freelancers typically charge for a simple site</span><b>$<span data-count="200">200</span>–$<span data-count="500">500</span></b></div>
       <div class="mrow total"><span>The difference</span><b>yours</b></div>
-      <p>That's the whole business. What you charge is up to you — one yes a
+      <p>That’s the whole business. What you charge is up to you—one yes a
       month pays for Unwebbed many times over.</p>
     </div>
   </div>
 </div></section>
 
-<section id="who"><div class="wrap who">
-  <div class="eyebrow">Who's behind this</div>
-  <h2>I'm doing the same thing you are.</h2>
-
-  <p class="whoP">I'm <b>Finley</b>. I built Unwebbed on my own, in Marin County,
-  and I use it on my own town before I ask anyone else to.</p>
-
+<section id="who" class="mid"><div class="wrap">
+  <div class="shead">
+    <h2>I’m doing the same thing you&nbsp;are.</h2>
+    <p class="sub">I’m <b>Finley</b>. I built Unwebbed on my own, in Marin County,
+    and I use it on my own town before I ask anyone else to.</p>
+  </div>
+  <div class="who">
   <p class="whoP">It started when I looked up the businesses near me and found
-  dozens with no website &mdash; auto shops, barbers, bakeries &mdash; all running
+  dozens with no website—auto shops, barbers, bakeries—all running
   on a phone number and a Google listing. The work was obvious. Finding the
   people who needed it was the hard part.</p>
 
@@ -590,178 +900,185 @@ footer a:hover { color: var(--ink); }
   site too, because turning up with the work already done beats asking for a
   meeting.</p>
 
-  <div class="whoWhy">
-    <div class="whoWhyL">Why that matters for you</div>
-    <p>Every awkward part of this job is why the tool is shaped the way it is.
+  <blockquote class="whoQuote">
+    <p>“Every awkward part of this job is why the tool is shaped the way it is.
     The call sheet exists because I needed one. The pitch says what it says
-    because I had to send it. And it refuses to invent a business&rsquo;s opening
-    hours because I would rather show up knowing nothing than show up wrong.</p>
-  </div>
+    because I had to send&nbsp;it.”</p>
+  </blockquote>
 
-  <p class="whoP">There aren&rsquo;t many of us yet, and that is the good part.
-  When you email me, <b>I answer</b> &mdash; not a support queue. If something
+  <p class="whoP">There aren’t many of us yet, and that is the good part.
+  When you email me, <b>I answer</b>—not a support queue. If something
   here is wrong for the way you work, tell me and it changes. That stops being
   true at some size; it is true now.</p>
 
   <div class="whoCta">
-    <a class="btn" href="https://app.unwebbed.app/signup">Start with your own town
+    <a class="btn btn-primary" href="https://app.unwebbed.app/signup">Start with your own town
       <span class="ar">&rarr;</span></a>
-    <a class="whoMail" href="mailto:hello@unwebbed.app">or just email me &mdash;
-      hello@unwebbed.app</a>
+    <a class="whoMail" href="mailto:hello@unwebbed.app">or just email me—hello@unwebbed.app</a>
   </div>
-  <p class="whoSig">&mdash; Finley &middot; Marin County, California</p>
+  <p class="whoSig">— Finley &middot; Marin County, California</p>
+  </div>
 </div></section>
 
 <section id="pricing" class="alt"><div class="wrap">
-  <div class="eyebrow">Pricing</div>
-  <h2>Searching is free forever. Pick a plan when you start building.</h2>
-  <p class="sub">Searching, leads and the call sheet are free and unlimited on
-  every plan. What goes up is how much you can build, how fast it builds, and
-  how you hand it over &mdash; and <b>one client win covers a year of any
-  plan</b>.</p>
-  <div class="cycle" role="tablist">
-    <button type="button" class="on" data-cycle="month">Monthly</button>
-    <button type="button" data-cycle="year">Annual <span class="save">4 months free</span></button>
+  <div class="phead">
+    <div>
+      <div class="eyebrow">Pricing</div>
+      <h2>Searching is free forever.<br>Pick a plan when you start&nbsp;building.</h2>
+    </div>
+    <div>
+      <p class="sub">Searching, leads and the call sheet are free and unlimited on
+      every plan. What goes up is how much you can build, how fast it builds, and
+      how you hand it over—and <b>one client win covers a year of any
+      plan</b>.</p>
+      <div class="cycle">
+        <div class="seg" aria-label="Billing cycle">
+          <button type="button" class="on" data-cycle="month" aria-pressed="true">Monthly</button>
+          <button type="button" data-cycle="year" aria-pressed="false">Annual <span class="save">4 months free</span></button>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="plans" data-plans="month">
-    <div class="plan rise">
-      <span class="pt">Getting started</span>
-      <h3>Solo</h3>
-      <div class="pr">$19 <small>/ month</small></div>
-      <ul>
-        <li><b>$6</b> of build budget &mdash; about <b>9 finished sites</b></li>
-        <li>Unlimited searching, pitches and the call sheet</li>
-        <li>Prepare 5 leads in one run</li>
-        <li>Builds one site at a time</li>
-        <li>Download any site to hand to your client</li>
-      </ul>
-      <a class="btn ghost" href="https://app.unwebbed.app/signup?plan=solo">Choose Solo &rarr;</a>
-      <div class="payback">One site you sell at $350 pays for <b>18 months</b></div>
-         <div class="pnote">Cancel anytime &middot; 30-day refund</div>
-    </div>
-    <div class="plan feat rise">
-      <span class="pt">For regulars</span>
-      <h3>Studio</h3>
-      <div class="pr">$49 <small>/ month</small></div>
-      <div class="plusof">Everything in Solo, plus:</div>
-      <ul>
-        <li><b>$18</b> of build budget &mdash; about <b>28 finished sites</b></li>
-        <li>Prepare <b>15 leads</b> in one run</li>
-        <li><b>4 sites building at once</b> &mdash; no more waiting through them one by one</li>
-        <li><b>One-click publish</b> &mdash; put the site live for your client</li>
-      </ul>
-      <a class="btn" href="https://app.unwebbed.app/signup?plan=studio">Choose Studio <span class="ar">&rarr;</span></a>
-      <div class="payback">One site you sell at $350 pays for <b>7 months</b></div>
-         <div class="pnote">Cancel anytime &middot; 30-day refund</div>
-    </div>
-    
-    </div>
+    <table class="pgrid">
+      <thead><tr>
+        <td class="lab"></td>
+        <th scope="col" data-col="1"><span class="pr">$19 <small>/month</small></span><span class="pt">Solo</span></th>
+        <th scope="col" class="feat" data-col="2"><span class="pr">$49 <small>/month</small></span><span class="pt">Studio <span>&middot; for regulars</span></span></th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row" class="lab">Build budget each month</th>
+          <td data-col="1" data-l="Build budget each month">$6 &middot; about 9 sites</td>
+          <td class="feat" data-col="2" data-l="Build budget each month">$18 &middot; about 28 sites</td></tr>
+        <tr><th scope="row" class="lab">Searching, pitches, call sheet</th>
+          <td data-col="1" data-l="Searching, pitches, call sheet">Unlimited</td>
+          <td class="feat" data-col="2" data-l="Searching, pitches, call sheet">Unlimited</td></tr>
+        <tr><th scope="row" class="lab">Leads prepared in one run</th>
+          <td data-col="1" data-l="Leads prepared in one run">5</td>
+          <td class="feat" data-col="2" data-l="Leads prepared in one run">15</td></tr>
+        <tr><th scope="row" class="lab">Sites building at once</th>
+          <td data-col="1" data-l="Sites building at once">1</td>
+          <td class="feat" data-col="2" data-l="Sites building at once">4</td></tr>
+        <tr><th scope="row" class="lab">Hand-over</th>
+          <td data-col="1" data-l="Hand-over">Download</td>
+          <td class="feat" data-col="2" data-l="Hand-over">One-click publish</td></tr>
+        <tr><th scope="row" class="lab">One $350 site pays for</th>
+          <td data-col="1" data-l="One $350 site pays for">18 months</td>
+          <td class="feat" data-col="2" data-l="One $350 site pays for">7 months</td></tr>
+      </tbody>
+      <tfoot><tr>
+        <td class="lab"></td>
+        <td data-col="1"><a class="btn btn-secondary" href="https://app.unwebbed.app/signup?plan=solo">Choose Solo <span class="ar">&rarr;</span></a></td>
+        <td class="feat" data-col="2"><a class="btn btn-primary" href="https://app.unwebbed.app/signup?plan=studio">Choose Studio <span class="ar">&rarr;</span></a></td>
+      </tr></tfoot>
+    </table>
+  </div>
   <div class="plans" data-plans="year" hidden>
-    <div class="plan rise">
-      <span class="pt">Getting started</span>
-      <h3>Solo</h3>
-      <div class="pr">$150 <small>/ year</small></div>
-      <ul>
-        <li><b>$72</b> of build budget &mdash; about <b>114 finished sites</b></li>
-        <li>Unlimited searching, pitches and the call sheet</li>
-        <li>Prepare 5 leads in one run</li>
-        <li>Builds one site at a time</li>
-        <li>Download any site to hand to your client</li>
-      <li>Your whole year&rsquo;s budget on <b>day one</b></li>
-      </ul>
-      <a class="btn ghost" href="https://app.unwebbed.app/signup?plan=solo">Choose Solo &rarr;</a>
-      <div class="payback">One site you sell at $350 pays for <b>over two years</b></div>
-         <div class="pnote">Cancel anytime &middot; 30-day refund</div>
-    </div>
-    <div class="plan feat rise">
-      <span class="pt">For regulars</span>
-      <h3>Studio</h3>
-      <div class="pr">$390 <small>/ year</small></div>
-      <div class="plusof">Everything in Solo, plus:</div>
-      <ul>
-        <li><b>$216</b> of build budget &mdash; about <b>342 finished sites</b></li>
-        <li>Prepare <b>15 leads</b> in one run</li>
-        <li><b>4 sites building at once</b> &mdash; no more waiting through them one by one</li>
-        <li><b>One-click publish</b> &mdash; put the site live for your client</li>
-      <li>Your whole year&rsquo;s budget on <b>day one</b></li>
-      </ul>
-      <a class="btn" href="https://app.unwebbed.app/signup?plan=studio">Choose Studio <span class="ar">&rarr;</span></a>
-      <div class="payback">One site you sell at $350 pays for <b>almost a year</b></div>
-         <div class="pnote">Cancel anytime &middot; 30-day refund</div>
-    </div>
-    
-    </div>
-  <p class="freenote">Signing up is free and takes a minute &mdash; no card.
+    <table class="pgrid">
+      <thead><tr>
+        <td class="lab"></td>
+        <th scope="col" data-col="1"><span class="pr">$150 <small>/year</small></span><span class="pt">Solo</span></th>
+        <th scope="col" class="feat" data-col="2"><span class="pr">$390 <small>/year</small></span><span class="pt">Studio <span>&middot; for regulars</span></span></th>
+      </tr></thead>
+      <tbody>
+        <tr><th scope="row" class="lab">Build budget each year</th>
+          <td data-col="1" data-l="Build budget each year">$72 &middot; about 114 sites</td>
+          <td class="feat" data-col="2" data-l="Build budget each year">$216 &middot; about 342 sites</td></tr>
+        <tr><th scope="row" class="lab">Searching, pitches, call sheet</th>
+          <td data-col="1" data-l="Searching, pitches, call sheet">Unlimited</td>
+          <td class="feat" data-col="2" data-l="Searching, pitches, call sheet">Unlimited</td></tr>
+        <tr><th scope="row" class="lab">Leads prepared in one run</th>
+          <td data-col="1" data-l="Leads prepared in one run">5</td>
+          <td class="feat" data-col="2" data-l="Leads prepared in one run">15</td></tr>
+        <tr><th scope="row" class="lab">Sites building at once</th>
+          <td data-col="1" data-l="Sites building at once">1</td>
+          <td class="feat" data-col="2" data-l="Sites building at once">4</td></tr>
+        <tr><th scope="row" class="lab">Hand-over</th>
+          <td data-col="1" data-l="Hand-over">Download</td>
+          <td class="feat" data-col="2" data-l="Hand-over">One-click publish</td></tr>
+        <tr><th scope="row" class="lab">One $350 site pays for</th>
+          <td data-col="1" data-l="One $350 site pays for">Over two years</td>
+          <td class="feat" data-col="2" data-l="One $350 site pays for">Almost a year</td></tr>
+      </tbody>
+      <tfoot><tr>
+        <td class="lab"></td>
+        <td data-col="1"><a class="btn btn-secondary" href="https://app.unwebbed.app/signup?plan=solo">Choose Solo <span class="ar">&rarr;</span></a></td>
+        <td class="feat" data-col="2"><a class="btn btn-primary" href="https://app.unwebbed.app/signup?plan=studio">Choose Studio <span class="ar">&rarr;</span></a></td>
+      </tr></tfoot>
+    </table>
+    <p class="pnote">Your whole year’s budget on day one.</p>
+  </div>
+  <p class="pnote">Cancel anytime &middot; 30-day refund</p>
+  <p class="freenote">Signing up is free and takes a minute—no card.
   You get free credit to build your first couple of sites, and searching stays
   free and unlimited forever. Pick a plan when you want to keep building.</p>
-</div>
 </div></section>
 
-<section><div class="wrap">
-  <div class="eyebrow">Questions</div>
+<section class="mid faqsec"><div class="wrap faqwrap">
   <h2>The honest answers.</h2>
-  <div class="faq" style="margin-top:34px">
+  <div class="faq">
     <details><summary>Do I need to know how to code?</summary>
       <p>No. You describe, Unwebbed builds. If you can write a text message you
-      can direct a build — "make the hero warmer", "add their opening hours" —
-      and the site updates in about a minute.</p></details>
+      can direct a build—“make the hero warmer”, “add their opening hours”—and the site updates in about a minute.</p></details>
     <details><summary>Where do the leads come from?</summary>
       <p>Public map data (OpenStreetMap), checked against the live web. A lead
       only makes your list after Unwebbed has looked for their website and
       found nothing worth clicking.</p></details>
     <details><summary>What do the sites cost to build?</summary>
-      <p>Your budget is real AI cost, passed through — a full site with images
-      is typically 40&ndash;80 cents. What you charge the client is yours; most
+      <p>Your budget is real AI cost, passed through—a full site with images
+      is typically 40–80 cents. What you charge the client is yours; most
       freelancers charge a few hundred dollars per site.</p></details>
     <details><summary>How do the sites go live?</summary>
       <p>One click publishes to your own free Netlify account, or download the
       site as a folder and host it anywhere. The link belongs to you and your
-      client — not to us.</p>
-      <p>Worth knowing before several clients are live: Netlify&rsquo;s free
+      client—not to us.</p>
+      <p>Worth knowing before several clients are live: Netlify’s free
       plan is capped at 300 credits a month and a publish costs 15 of them, so
-      roughly twenty publishes &mdash; shared across every site on that account,
+      roughly twenty publishes—shared across every site on that account,
       along with visitor traffic. Go over and Netlify pauses <em>all</em> of
       them until the month resets. Fine for your first few clients; after that,
       give each client their own free account (in their name, which you want
       anyway) or use a host without that cap.</p></details>
     <details><summary>What do I get for free?</summary>
-      <p>Searching is free forever — every town, unlimited, on every plan.
+      <p>Searching is free forever—every town, unlimited, on every plan.
       Signing up adds trial build credit so you can make your first sites
       without a card. Pick a plan when you want to keep building.</p></details>
     <details><summary>Which plan should I start on?</summary>
-      <p>Solo. It does the whole job &mdash; find the businesses, build the
-      sites, write the pitches, work the call sheet &mdash; and you hand the
+      <p>Solo. It does the whole job—find the businesses, build the
+      sites, write the pitches, work the call sheet—and you hand the
       finished file to your client. Move up when waiting starts to annoy you:
       Studio builds four sites at once and publishes them live in a click,
       Studio does four at a time and preps fifteen leads in one run. Upgrading
       takes one click and nothing changes about how you work.</p></details>
     <details><summary>Can the client change the site later?</summary>
-      <p>Yes — you stay their designer. Open the project, tell the builder what
-      to change ("new hours", "add the spring menu"), republish, and the link
-      they already have updates. Edits typically cost 10&ndash;15&cent;.</p></details>
+      <p>Yes—you stay their designer. Open the project, tell the builder what
+      to change (“new hours”, “add the spring menu”), republish, and the link
+      they already have updates. Edits typically cost 10–15&cent;.</p></details>
     <details><summary>Is my list private?</summary>
       <p>Yes. Your leads, notes, and sites live in your account and nobody else
-      can see them. No ads, no selling data — the <a href="https://app.unwebbed.app/privacy" style="color:var(--jade)">privacy policy</a> is one page and in plain English.</p></details>
+      can see them. No ads, no selling data—the <a href="https://app.unwebbed.app/privacy">privacy policy</a> is one page and in plain English.</p></details>
   </div>
 </div></section>
 
 <div class="endcta"><div class="wrap">
-  <h2>The next town over is full of businesses<br>with nothing to click.</h2>
-  <p class="sub">Someone is going to build their sites. It might as well be you, first.</p>
-  <a class="btn big" href="https://app.unwebbed.app/signup">Start free <span class="ar">&rarr;</span></a>
+  <div>
+    <h2>The next town over is full of businesses<br>with nothing to&nbsp;click.</h2>
+    <p class="sub">Someone is going to build their sites. It might as well be you, first.</p>
+  </div>
+  <a class="btn btn-primary btn-lg" href="https://app.unwebbed.app/signup">Start free <span class="ar">&rarr;</span></a>
 </div></div>
 
 <footer><div class="wrap footcols">
-  <div class="fcol">
-    <div class="logo" style="margin-bottom:10px"><span class="mark">U</span>Unwebbed</div>
-    <p style="max-width:30ch">Find local businesses with no website. Show up
+  <div class="fcol footbrand">
+    <div class="logo"><span class="mark" aria-hidden="true">U</span>Unwebbed</div>
+    <p>Find local businesses with no website. Show up
     with one already built.</p>
   </div>
   <div class="fcol"><b>Product</b>
     <a href="#how">How it works</a>
     <a href="#examples">Examples</a>
     <a href="#who">Who made it</a>
-      <a href="#pricing">Pricing</a>
+    <a href="#pricing">Pricing</a>
     <a href="https://app.unwebbed.app/signup">Start free</a>
   </div>
   <div class="fcol"><b>By town</b>
@@ -780,55 +1097,17 @@ footer a:hover { color: var(--ink); }
     <a href="https://app.unwebbed.app/privacy">Privacy</a>
   </div>
 </div>
-<div class="wrap" style="margin-top:26px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px">
+<div class="wrap footbase">
   &copy; 2026 Unwebbed &middot; data from OpenStreetMap &middot; payments by Stripe</div>
 </footer>
 
 <div class="stickycta" id="stickycta">
-  <span><b>Unwebbed</b> &middot; find clients, build sites</span>
-  <a class="btn" href="https://app.unwebbed.app/signup">Start free &rarr;</a>
+  <span class="tag"><b>Unwebbed</b><span class="tagx"> &middot; find clients, build sites</span></span>
+  <a class="btn btn-primary" href="https://app.unwebbed.app/signup">Start free <span class="ar">&rarr;</span></a>
 </div>
 
 <script>
-document.documentElement.classList.add('js');
-(function () {
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var io = new IntersectionObserver(function (es) {
-    es.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-    });
-  }, { threshold: .12 });
-  var all = document.querySelectorAll('.rise');
-  all.forEach(function (el) { io.observe(el); });
-
-  /* FAILSAFE. IntersectionObserver can miss elements that are jumped past
-     (a nav anchor, a #hash landing, a very fast scroll), and anything it
-     misses stays at opacity:0 — which on this page would mean an invisible
-     PRICING section. Content must never be able to get stuck hidden just
-     because an animation didn't fire, so a cheap scroll handler reveals
-     anything that has reached the viewport, and a timer reveals whatever is
-     left. The observer still wins the race in the normal case, so the fade
-     still plays. */
-  function sweep() {
-    var vh = window.innerHeight, left = 0;
-    all.forEach(function (el) {
-      if (el.classList.contains('in')) return;
-      if (el.getBoundingClientRect().top < vh - 40) {
-        el.classList.add('in'); io.unobserve(el);
-      } else left++;
-    });
-    if (!left) window.removeEventListener('scroll', onScroll);
-  }
-  var tick = false;
-  function onScroll() {
-    if (tick) return; tick = true;
-    requestAnimationFrame(function () { tick = false; sweep(); });
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('load', sweep);
-  setTimeout(sweep, 2500);
-})();
-
+/* scroll-reveal removed in the design pass: content is simply there. */
 /* live-site browser: tabs + phone toggle */
 (function () {
   var frame = document.getElementById('tryFrame');
@@ -859,7 +1138,7 @@ document.documentElement.classList.add('js');
       io.unobserve(e.target);
       var el = e.target, target = +el.dataset.count, t0 = performance.now();
       (function tick(t) {
-        var p = Math.min(1, (t - t0) / 800), ease = 1 - Math.pow(1 - p, 3);
+        var p = Math.min(1, (t - t0) / 600), ease = 1 - Math.pow(1 - p, 3);
         el.textContent = Math.round(target * ease);
         if (p < 1) requestAnimationFrame(tick);
       })(t0);
@@ -957,7 +1236,7 @@ document.documentElement.classList.add('js');
   btns.forEach(function (b) {
     b.addEventListener('click', function () {
       var want = b.dataset.cycle;
-      btns.forEach(function (x) { x.classList.toggle('on', x === b); });
+      btns.forEach(function (x) { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });
       document.querySelectorAll('[data-plans]').forEach(function (g) {
         g.hidden = g.dataset.plans !== want;
       });
@@ -1013,11 +1292,11 @@ document.documentElement.classList.add('js');
           (j.sent === false ? 'Already sent.' : 'On its way.') + '</div>' +
           '<div class="tcmailok">' + (j.sent === false
             ? esc(j.note || 'Check your inbox, and your spam folder.')
-            : 'Check your inbox for the ' + esc(place) + ' list — and your ' +
+            : 'Check your inbox for the ' + esc(place) + ' list—and your ' +
               'spam folder, just in case. It should arrive within a minute.') +
           '</div>';
       } catch (e) {
-        note.innerHTML = '<span class="tcerr">Could not send just now — ' +
+        note.innerHTML = '<span class="tcerr">Could not send just now—' +
           'try again in a moment.</span>';
         go.disabled = false; go.textContent = 'Email me the list';
       }
@@ -1042,7 +1321,7 @@ document.documentElement.classList.add('js');
       } else if (!d.total) {
         out.innerHTML = '<div class="tcbig">Every business we can see in ' +
           esc(d.place) + ' already lists a website.</div>' +
-          '<div class="tcsub">Try a neighbouring town — most have plenty.</div>';
+          '<div class="tcsub">Try a neighbouring town—most have plenty.</div>';
       } else {
         var chips = (d.trades || []).map(function (t) {
           return '<span class="tctrade"><b>' + t.count + '</b> ' + esc(t.trade) + '</span>';
@@ -1060,14 +1339,14 @@ document.documentElement.classList.add('js');
         var mail = (d.callable > 0) ?
           '<div class="tcmail">' +
             '<div class="tcmailhead">Want ' + d.callable + ' of them, with phone numbers?</div>' +
-            '<div class="tcmailsub">Free, no account. We\'ll email you ' + d.callable +
+            '<div class="tcmailsub">Free, no account. We\u2019ll email you ' + d.callable +
             ' businesses in ' + esc(d.place) + ' you can start calling this morning.</div>' +
             '<form class="tcmailform" id="tcmailform">' +
-              '<input id="tcemail" type="email" required placeholder="you@example.com" ' +
+              '<input id="tcemail" class="input" type="email" required placeholder="you@example.com" ' +
                 'aria-label="Your email address" maxlength="254" autocomplete="email">' +
               '<input class="tchp" id="tccompany" type="text" tabindex="-1" ' +
                 'autocomplete="off" aria-hidden="true" placeholder="Company">' +
-              '<button class="btn" type="submit" id="tcmailgo">Email me the list</button>' +
+              '<button class="btn btn-secondary" type="submit" id="tcmailgo">Email me the list</button>' +
             '</form>' +
             '<div class="tcmailnote" id="tcmailnote">One email, once. No newsletter, ' +
             'no follow-ups unless you ask for another town.</div>' +
@@ -1084,12 +1363,12 @@ document.documentElement.classList.add('js');
           '<div class="tcnote">That is ' + count + ' people who could be paying ' +
           'someone to build them one. Unwebbed finds them, checks each against ' +
           'the live web, and builds the site before you call.</div>' +
-          '<div class="tccta"><a class="btn big" href="https://app.unwebbed.app/signup' +
+          '<div class="tccta"><a class="btn btn-primary btn-lg big" href="https://app.unwebbed.app/signup' +
           '?utm_source=towncheck&utm_medium=site">See who they are &rarr;</a></div>';
         wireMail(d.place, town);
       }
     } catch (err) {
-      out.innerHTML = '<div class="tcerr">Could not reach the search just now — ' +
+      out.innerHTML = '<div class="tcerr">Could not reach the search just now—' +
         'try again in a moment.</div>';
     }
     btn.disabled = false;
