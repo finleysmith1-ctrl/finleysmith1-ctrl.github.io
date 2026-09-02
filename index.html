@@ -24,7 +24,8 @@
  "offers":[{"@type":"Offer","name":"Solo","price":"19","priceCurrency":"USD"},
            {"@type":"Offer","name":"Studio","price":"49","priceCurrency":"USD"}]}
 </script>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d7a5f'/%3E%3Ctext x='32' y='45' font-family='Arial,sans-serif' font-size='38' font-weight='800' fill='white' text-anchor='middle'%3EU%3C/text%3E%3C/svg%3E">
+<!-- favicon: traced U path, no font, colours = --accent-600 / --paper-0 (SVG data URIs cannot read CSS vars; keep in step with the token block and .mark) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='11' fill='%230F7A5C'/%3E%3Cpath d='M19.5 17v19a12.5 12.5 0 0 0 25 0V17' fill='none' stroke='%23FAF9F6' stroke-width='9'/%3E%3C/svg%3E">
 <link rel="preload" href="/fonts/bricolage-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/plex-sans-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/plex-sans-italic.woff2" as="font" type="font/woff2" crossorigin>
@@ -523,6 +524,9 @@ h2 { font: 600 var(--t-36)/1.1 var(--display); letter-spacing: var(--track-2);
 .pnote { margin: var(--s-4) 0 0; font: 400 var(--t-13)/1.45 var(--text); color: var(--ink-3); }
 .freenote { margin: var(--s-6) 0 0; max-width: var(--measure); color: var(--ink-2);
   font: 400 var(--t-17)/1.5 var(--text); }
+/* Under 480px the hand-set break is dropped: at 36px on a 358px measure it
+   left "Searching is" alone on line one; text-wrap: balance sets it better. */
+@media (max-width: 480px) { #pricing h2 br { display: none; } }
 /* Under 640px the table reflows into stacked plans: every cell becomes a
    grid item, ordered by its column, and the row label is repeated above each
    value from data-l. The Studio block keeps its paper-1 ground and ink rule. */
@@ -786,7 +790,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
 <section id="towncheck" class="mid alt"><div class="wrap tcwrap">
   <div class="tclead">
     <h2>How many businesses near you have no&nbsp;website?</h2>
-    <p class="sub">Type your town. No sign-up, no card—this is the same
+    <p class="sub">Type your town. No sign-up, no card⁠—this is the same
     search the tool runs, and it takes a few seconds.</p>
   </div>
   <div class="tcside">
@@ -829,8 +833,8 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
   <div class="shead">
     <h2>This is the standard of&nbsp;work.</h2>
     <p class="sub">Click through, resize one, tap the call button. Each took a
-    single build—no code, no design degree. <b>These five businesses are
-    invented</b>, so none of this is a real client’s site—what it shows
+    single build⁠—no code, no design degree. <b>These five businesses are
+    invented</b>, so none of this is a real client’s site⁠—what it shows
     you is the quality.</p>
   </div>
   <div class="tryit">
@@ -840,7 +844,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
         <button data-ex="/examples/rapid-rooter/">Plumber</button>
         <button data-ex="/examples/marigold-and-fern/">Florist</button>
       </span>
-      <span class="tryhint">A real build—scroll it, tap things</span>
+      <span class="tryhint">A real build⁠—scroll it, tap things</span>
       <span class="tryview seg">
         <button class="on" id="tvDesk" title="Desktop" aria-label="Desktop width"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="2.5" width="13" height="9" rx="1.5"/><path d="M5.5 14h5M8 11.5V14"/></svg></button>
         <button id="tvMob" title="Phone" aria-label="Phone width"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="1.5" width="7" height="13" rx="1.5"/><path d="M7 12.5h2"/></svg></button>
@@ -863,14 +867,14 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
     <div class="pitchhead">
       <h2>Your first call could go like&nbsp;this.</h2>
       <p class="sub">Cold pitching is hard when you’re selling a promise. You won’t
-      be—you’ll be showing a finished thing they can tap.</p>
+      be⁠—you’ll be showing a finished thing they can tap.</p>
     </div>
     <div class="chat">
-      <div class="cb you">Hi—is this Rosa’s Bakery? I build websites for local
+      <div class="cb you">Hi⁠—is this Rosa’s Bakery? I build websites for local
         businesses, and I noticed you don’t have one… so I went ahead and
         built you something. Want the link?</div>
       <div class="cb them">…you already built it?</div>
-      <div class="cb you">Yep. Take a look—if you love it, it’s yours and we’ll
+      <div class="cb you">Yep. Take a look⁠—if you love it, it’s yours and we’ll
         talk price. If not, no harm done.</div>
       <div class="cb them">okay… send it over</div>
     </div>
@@ -878,7 +882,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
       <div class="mrow"><span>What a build costs you</span><b><span data-count="60" data-pre="30&ndash;">60</span>&cent;</b></div>
       <div class="mrow"><span>What freelancers typically charge for a simple site</span><b>$<span data-count="200">200</span>–$<span data-count="500">500</span></b></div>
       <div class="mrow total"><span>The difference</span><b>yours</b></div>
-      <p>That’s the whole business. What you charge is up to you—one yes a
+      <p>That’s the whole business. What you charge is up to you⁠—one yes a
       month pays for Unwebbed many times over.</p>
     </div>
   </div>
@@ -892,7 +896,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
   </div>
   <div class="who">
   <p class="whoP">It started when I looked up the businesses near me and found
-  dozens with no website—auto shops, barbers, bakeries—all running
+  dozens with no website⁠—auto shops, barbers, bakeries⁠—all running
   on a phone number and a Google listing. The work was obvious. Finding the
   people who needed it was the hard part.</p>
 
@@ -907,14 +911,14 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
   </blockquote>
 
   <p class="whoP">There aren’t many of us yet, and that is the good part.
-  When you email me, <b>I answer</b>—not a support queue. If something
+  When you email me, <b>I&nbsp;answer</b>&#8288;—not a support queue. If something
   here is wrong for the way you work, tell me and it changes. That stops being
   true at some size; it is true now.</p>
 
   <div class="whoCta">
     <a class="btn btn-primary" href="https://app.unwebbed.app/signup">Start with your own town
       <span class="ar">&rarr;</span></a>
-    <a class="whoMail" href="mailto:hello@unwebbed.app">or just email me—hello@unwebbed.app</a>
+    <a class="whoMail" href="mailto:hello@unwebbed.app">or just email me⁠—hello@unwebbed.app</a>
   </div>
   <p class="whoSig">— Finley &middot; Marin County, California</p>
   </div>
@@ -924,12 +928,12 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
   <div class="phead">
     <div>
       <div class="eyebrow">Pricing</div>
-      <h2>Searching is free forever.<br>Pick a plan when you start&nbsp;building.</h2>
+      <h2>Searching is free forever.<br> Pick a plan when you start&nbsp;building.</h2>
     </div>
     <div>
       <p class="sub">Searching, leads and the call sheet are free and unlimited on
       every plan. What goes up is how much you can build, how fast it builds, and
-      how you hand it over—and <b>one client win covers a year of any
+      how you hand it over⁠—and <b>one client win covers a year of any
       plan</b>.</p>
       <div class="cycle">
         <div class="seg" aria-label="Billing cycle">
@@ -1009,7 +1013,7 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
     <p class="pnote">Your whole year’s budget on day one.</p>
   </div>
   <p class="pnote">Cancel anytime &middot; 30-day refund</p>
-  <p class="freenote">Signing up is free and takes a minute—no card.
+  <p class="freenote">Signing up is free and takes a minute⁠—no card.
   You get free credit to build your first couple of sites, and searching stays
   free and unlimited forever. Pick a plan when you want to keep building.</p>
 </div></section>
@@ -1019,44 +1023,44 @@ footer a:hover { color: var(--ink); text-decoration: underline; text-underline-o
   <div class="faq">
     <details><summary>Do I need to know how to code?</summary>
       <p>No. You describe, Unwebbed builds. If you can write a text message you
-      can direct a build—“make the hero warmer”, “add their opening hours”—and the site updates in about a minute.</p></details>
+      can direct a build⁠—“make the hero warmer”, “add their opening hours”⁠—and the site updates in about a minute.</p></details>
     <details><summary>Where do the leads come from?</summary>
       <p>Public map data (OpenStreetMap), checked against the live web. A lead
       only makes your list after Unwebbed has looked for their website and
       found nothing worth clicking.</p></details>
     <details><summary>What do the sites cost to build?</summary>
-      <p>Your budget is real AI cost, passed through—a full site with images
+      <p>Your budget is real AI cost, passed through⁠—a full site with images
       is typically 40–80 cents. What you charge the client is yours; most
       freelancers charge a few hundred dollars per site.</p></details>
     <details><summary>How do the sites go live?</summary>
       <p>One click publishes to your own free Netlify account, or download the
       site as a folder and host it anywhere. The link belongs to you and your
-      client—not to us.</p>
+      client⁠—not to us.</p>
       <p>Worth knowing before several clients are live: Netlify’s free
       plan is capped at 300 credits a month and a publish costs 15 of them, so
-      roughly twenty publishes—shared across every site on that account,
+      roughly twenty publishes⁠—shared across every site on that account,
       along with visitor traffic. Go over and Netlify pauses <em>all</em> of
       them until the month resets. Fine for your first few clients; after that,
       give each client their own free account (in their name, which you want
       anyway) or use a host without that cap.</p></details>
     <details><summary>What do I get for free?</summary>
-      <p>Searching is free forever—every town, unlimited, on every plan.
+      <p>Searching is free forever⁠—every town, unlimited, on every plan.
       Signing up adds trial build credit so you can make your first sites
       without a card. Pick a plan when you want to keep building.</p></details>
     <details><summary>Which plan should I start on?</summary>
-      <p>Solo. It does the whole job—find the businesses, build the
-      sites, write the pitches, work the call sheet—and you hand the
+      <p>Solo. It does the whole job⁠—find the businesses, build the
+      sites, write the pitches, work the call sheet⁠—and you hand the
       finished file to your client. Move up when waiting starts to annoy you:
       Studio builds four sites at once and publishes them live in a click,
       Studio does four at a time and preps fifteen leads in one run. Upgrading
       takes one click and nothing changes about how you work.</p></details>
     <details><summary>Can the client change the site later?</summary>
-      <p>Yes—you stay their designer. Open the project, tell the builder what
+      <p>Yes⁠—you stay their designer. Open the project, tell the builder what
       to change (“new hours”, “add the spring menu”), republish, and the link
       they already have updates. Edits typically cost 10–15&cent;.</p></details>
     <details><summary>Is my list private?</summary>
       <p>Yes. Your leads, notes, and sites live in your account and nobody else
-      can see them. No ads, no selling data—the <a href="https://app.unwebbed.app/privacy">privacy policy</a> is one page and in plain English.</p></details>
+      can see them. No ads, no selling data⁠—the <a href="https://app.unwebbed.app/privacy">privacy policy</a> is one page and in plain English.</p></details>
   </div>
 </div></section>
 
