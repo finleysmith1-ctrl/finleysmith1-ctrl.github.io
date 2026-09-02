@@ -139,6 +139,9 @@ body {
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
 }
 button, input, select, textarea { font: inherit; color: inherit; }
+/* textareas resize vertically, but never show the browser's corner grip */
+textarea { resize: vertical; }
+textarea::-webkit-resizer { display: none; }
 ::placeholder { color: var(--ink-4); opacity: 1; }
 :focus-visible { outline: 2px solid var(--accent-600); outline-offset: 2px; }
 h1, h2, h3, h4 { font-family: var(--display); font-weight: 600; line-height: 1.1; }
@@ -179,7 +182,6 @@ a:hover, .link:hover { text-decoration-color: var(--ink-4); }
               color var(--dur-1) var(--ease-out), box-shadow var(--dur-1) var(--ease-out);
 }
 .btn .ar { font-family: var(--text); position: relative; top: -.5px; }
-.btn:disabled, .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
 .btn-primary { background: var(--accent-600); border-color: var(--accent-600); color: var(--paper-0); }
 .btn-primary:hover { background: var(--accent-700); border-color: var(--accent-700); }
 .btn-secondary { background: var(--paper-0); border-color: var(--rule-2); color: var(--ink); box-shadow: var(--sh-1); }
@@ -190,6 +192,12 @@ a:hover, .link:hover { text-decoration-color: var(--ink-4); }
 .btn-danger:hover { background: var(--brick-50); }
 .btn-sm { min-height: 32px; padding: 0 var(--s-3); font-size: var(--t-13); }
 .btn-lg { min-height: 48px; padding: 0 var(--s-5); font-size: var(--t-17); }
+/* disabled is a paper-2 fill in ink-4, never a faded copy of the live button;
+   after the variants so it wins over their hover too */
+.btn:disabled, .btn[aria-disabled="true"] {
+  background: var(--paper-2); border-color: var(--rule-2); color: var(--ink-4);
+  box-shadow: none; cursor: not-allowed;
+}
 
 /* inputs — the focus ring sits inside the border */
 .input {
@@ -244,12 +252,12 @@ select.input {
 .dot-amber  { background: var(--amber); }
 .dot-brick  { background: var(--brick); }
 
-/* tables — 44px rows, sentence-case headers, hover paper-1, selected paper-2 */
+/* tables — 44px rows, 12px/500 uppercase headers (Plausible), hover paper-1, selected paper-2 */
 .table { width: 100%; border-collapse: collapse; font-size: var(--t-13); line-height: 1.45; }
 .table th {
-  text-align: left; padding: var(--s-2) var(--s-4); border-bottom: 1px solid var(--rule);
+  text-align: left; height: 36px; padding: var(--s-2) var(--s-4); border-bottom: 1px solid var(--rule);
   font: 500 var(--t-12)/1.2 var(--text); letter-spacing: var(--track-label); color: var(--ink-3);
-  white-space: nowrap;
+  text-transform: uppercase; white-space: nowrap;
 }
 .table td {
   height: 44px; padding: var(--s-3) var(--s-4); border-bottom: 1px solid var(--rule);
@@ -260,16 +268,20 @@ select.input {
 .table tbody tr.on, .table tbody tr[aria-selected="true"] { background: var(--paper-2); }
 .table .num { text-align: right; font-variant-numeric: tabular-nums; }
 
-/* notice — the one inline "needs a look" row: a 2px amber rule on the left,
-   a tint, no full border, never a toast. Add .notice-brick for something that failed. */
+/* notice — THE one callout for every surface (app mailbar, /billing, Books
+   reconciliation strips): a 2px amber rule on the left, a tint, --r-sm, 12px 16px
+   padding, no full border, never a toast. .notice-brick = something failed;
+   .notice-ok = a check that passed. Pages must not restyle the box locally. */
 .notice {
-  display: flex; align-items: flex-start; gap: var(--s-4); padding: var(--s-4);
+  display: flex; align-items: flex-start; gap: var(--s-4); padding: var(--s-3) var(--s-4);
   border-left: 2px solid var(--amber); border-radius: var(--r-sm); background: var(--amber-50);
   color: var(--ink); font-size: var(--t-13); line-height: 1.45;
 }
 .notice[hidden] { display: none !important; }
 .notice > .btn, .notice > form { margin-left: auto; flex: none; align-self: center; }
 .notice-brick { border-left-color: var(--brick); background: var(--brick-50); }
+.notice-ok { border-left-color: var(--accent-600); background: var(--accent-50); }
+.notice b { font-weight: 600; }
 
 /* surfaces */
 .panel { background: var(--paper-0); border: 1px solid var(--rule); border-radius: var(--r-md); box-shadow: var(--sh-2); }
@@ -441,7 +453,16 @@ h2 { font: 600 var(--t-36)/1.1 var(--display); letter-spacing: var(--track-2);
    Try it · How it works · Examples · The pitch · Who made it · Questions.
    One shape shared by all six: a left-aligned two-column intro (.shead), then
    the section's own body. Only "How it works" keeps an eyebrow — the nav
-   links to it. Nothing here fades or slides on scroll. */
+   links to it. Nothing here fades or slides on scroll.
+   TWO RIGHT-COLUMN ORIGINS FOR THE WHOLE HOMEPAGE (Basecamp: heading column
+   at x183, content at x575 on every section; Linear's fixed 672+672 grid):
+     intro rows  (.shead, .pitchwrap, #pricing .phead, the hero fact panel)
+                 7/12 + 5/12 with a 48px gutter -> the sub starts at x826 @1440
+     content split (.tcwrap, .whowrap, .faqwrap)
+                 5/12 + 7/12 with a 64px gutter -> the content starts at x671
+   Use the custom properties, never a third pair of numbers. */
+body { --cols-intro: minmax(0, 7fr) minmax(0, 5fr); --gap-intro: var(--s-7);
+  --cols-split: minmax(0, 5fr) minmax(0, 7fr); --gap-split: var(--s-8); }
 .mid { padding: var(--s-9) 0; }
 /* rhythm: 96 and 128 alternate (Notion's 96, Linear's 128) — the two sections
    whose body is pure type get the deeper one so they never feel thin */
@@ -454,8 +475,8 @@ h2 { font: 600 var(--t-36)/1.1 var(--display); letter-spacing: var(--track-2);
 .mid .sub { text-align: left; font-size: var(--t-17); line-height: 1.5; color: var(--ink-2);
   max-width: 48ch; margin: 0; }
 .mid .sub b { font-weight: 600; color: var(--ink); }
-.shead { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: var(--s-5) var(--s-7); align-items: start; margin-bottom: var(--s-8); }
+.shead { display: grid; grid-template-columns: var(--cols-intro);
+  gap: var(--s-5) var(--gap-intro); align-items: start; margin-bottom: var(--s-8); }
 /* 64 between an intro row and its body (Linear: 96 under a 48px h2; at 36px, 64) */
 /* with an eyebrow above the h2, the sub drops to the h2's own top edge */
 #how .shead .sub { padding-top: calc(var(--t-15) + var(--s-3)); }
@@ -687,7 +708,7 @@ h2 { font: 600 var(--t-36)/1.1 var(--display); letter-spacing: var(--track-2);
    form + helper line on the right (Fathom's "Quick setup · Free 7-day trial"
    directly under its buttons; Mercury's hero input with the copy beneath) */
 #towncheck { padding: var(--s-8) 0; }
-.tcwrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+.tcwrap { display: grid; grid-template-columns: var(--cols-split);
   gap: var(--s-6) var(--s-8); align-items: start; }
 @media (max-width: 820px) { .tcwrap { grid-template-columns: 1fr; gap: var(--s-5); } }
 .tchelp { font: 400 var(--t-15)/1.5 var(--text); color: var(--ink-3); margin: var(--s-3) 0 0; max-width: 52ch; }
@@ -753,8 +774,8 @@ h2 { font: 600 var(--t-36)/1.1 var(--display); letter-spacing: var(--track-2);
 /* Who made it — Basecamp's letter: the heading holds the left column, the
    letter runs down the right one at 60ch, signed at the bottom. One person,
    named, and a pull quote instead of a green box. */
-.whowrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  gap: var(--s-6) var(--s-8); align-items: start; }
+.whowrap { display: grid; grid-template-columns: var(--cols-split);
+  gap: var(--s-6) var(--gap-split); align-items: start; }
 @media (max-width: 820px) { .whowrap { grid-template-columns: 1fr; gap: var(--s-4); } }
 .who { max-width: 60ch; }
 .who .sub { margin: 0; max-width: none; }
@@ -776,16 +797,15 @@ h2 { font: 600 var(--t-36)/1.1 var(--display); letter-spacing: var(--track-2);
 
 /* (pricing notes, payback and list rules moved up into the comparison grid) */
 
-/* The pitch — the one section whose intro is STACKED (Linear's h2-then-sub),
-   so it opens with a different shape from Examples and Who on either side;
-   then the call on the left and the math on the right, top-aligned. The call
-   is set as a script, not a chat: speaker label, the line, a rule between
-   turns; the customer's voice in italic (the second voice, not a fill). */
-.shead.pitchhead { display: block; }
-.pitchhead h2 { max-width: none; }
-.pitchhead .sub { max-width: 52ch; margin-top: var(--s-4); }
-.pitchwrap { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-  gap: var(--s-6) var(--s-8); align-items: start; }
+/* The pitch — the same intro row as How and Examples (h2 left, sub right at
+   x826), then the call on the left and the math on the right in the SAME
+   columns, so the two ruled lists open on one baseline and the math's rules
+   hang from the sub above them (Anthropic's heading-left / ruled-list-right
+   band). The call is set as a script, not a chat: speaker label, the line, a
+   rule between turns; the customer's voice in italic (the second voice, not a
+   fill). */
+.pitchwrap { display: grid; grid-template-columns: var(--cols-intro);
+  gap: var(--s-6) var(--gap-intro); align-items: start; }
 .chat { display: flex; flex-direction: column; border-top: 1px solid var(--rule-2); }
 @media (max-width: 800px) {
   .pitchwrap { grid-template-columns: 1fr; gap: var(--s-6); }
@@ -815,7 +835,7 @@ h2 { font: 600 var(--t-36)/1.1 var(--display); letter-spacing: var(--track-2);
 /* Questions — h2 in the left column, the accordion in the right (Anthropic's
    ruled list: ~56px rows, 1px rules, zero chrome). The h2 is padded down so
    its cap height sits level with the first question, not with the rule. */
-.faqwrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+.faqwrap { display: grid; grid-template-columns: var(--cols-split);
   gap: var(--s-6) var(--s-8); align-items: start; }
 .faqwrap h2 { padding-top: var(--s-3); }
 @media (max-width: 820px) { .faqwrap { grid-template-columns: 1fr; gap: var(--s-4); }
@@ -851,8 +871,8 @@ h2 { font: 600 var(--t-36)/1.1 var(--display); letter-spacing: var(--track-2);
   text-align: center; margin: 0 0 var(--s-6); max-width: 52ch; }
 .endcta .ctarow { justify-content: center; }
 /* on ink the primary steps up to accent-500 for contrast; hover still goes darker */
-.endcta .btn-primary { background: var(--accent-600); border-color: transparent; }  /* 5.0:1 under paper-0; accent-500 measured 3.62 */
-.endcta .btn-primary:hover { background: var(--accent-700); border-color: transparent; }
+.endcta .btn-primary { background: var(--accent-500); border-color: transparent; }  /* board §9: accent-500 on ink — the one place the button is the brightest thing on screen */
+.endcta .btn-primary:hover { background: var(--accent-600); border-color: transparent; }
 .endcta .endlink { color: var(--paper-2); text-decoration: underline;
   text-underline-offset: 4px; text-decoration-color: var(--ink-3); }
 .endcta .endlink:hover { color: var(--paper-0); text-decoration-color: var(--paper-0); }
