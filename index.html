@@ -77,6 +77,10 @@ img{display:block;max-width:100%}
 
 /* scene 1 — search */
 #s1{height:640vh}
+.intro{position:absolute;left:0;right:0;bottom:calc(100% + clamp(28px,5vh,56px));display:flex;flex-direction:column;align-items:flex-start;gap:16px;will-change:opacity,transform;pointer-events:none}
+.intro .pill{font-size:12.5px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--green);border:1px solid rgba(61,217,138,.4);border-radius:999px;padding:6px 12px}
+.intro p{font-size:clamp(20px,2.2vw,30px);font-weight:500;letter-spacing:-.03em;line-height:1.15;color:var(--fg);max-width:26ch;margin:0}
+.intro p span{color:var(--fg-2)}
 .search{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(880px,92vw);will-change:transform,opacity}
 .search .hint{font-size:15px;color:var(--fg-2);margin-bottom:18px;min-height:1.4em}
 .search .box{border-bottom:2px solid var(--fg-3);padding:0 64px 14px 0;display:flex;align-items:baseline}
@@ -236,6 +240,10 @@ img{display:block;max-width:100%}
     <div class="wm" aria-hidden="true">Petaluma</div>
     <div class="lab"><b>( 01 )</b> &nbsp;Search your town</div>
     <form class="search" id="tc" autocomplete="off">
+      <div class="intro" id="intro">
+      <span class="pill">For freelance web designers</span>
+      <p>Find every business in your town with no website. <span>Then show up with one already built.</span></p>
+      </div>
       <div class="hint" id="hint">Where do you want clients? Type a real town — this is the same search the tool runs.</div>
       <div class="box"><input id="town" type="text" placeholder="" aria-label="Town" enterkeyhint="search"></div>
       <button class="go" type="submit" aria-label="Check this town">→</button>
@@ -454,13 +462,14 @@ img{display:block;max-width:100%}
   var narrow=function(){return innerWidth<820};
 
   /* ---------- scene 1 ---------- */
-  var wm=$('.wm'), lab1=$('#s1 .lab'), search=$('#tc'), input=$('#town'), hint=$('#hint');
+  var wm=$('.wm'), intro=$('#intro'), lab1=$('#s1 .lab'), search=$('#tc'), input=$('#town'), hint=$('#hint');
   var count=$('#count'), words=$$('#count .w'), n=$('#n'), placeEl=$('#place'), rows=$$('#rows li'), rowsEl=$('#rows');
   var DEMO='Petaluma, CA', TOTAL=38, userTyped=false, rowsN=rows.length;
   input.addEventListener('focus',function(){userTyped=true; if(input.value===DEMO.slice(0,input.value.length)) input.value='';});
   input.addEventListener('input',function(){userTyped=true});
 
   function render1(p){
+    var fi=ease(seg(p,0.01,0.10)); intro.style.opacity=String(1-fi); intro.style.transform='translateY('+(-24*fi)+'px)';
     if(!userTyped){ input.value=DEMO.slice(0,Math.round(seg(p,0.02,0.26)*DEMO.length)); }
     var s=ease(seg(p,0.30,0.42));
     search.style.transform='translate(-50%,-50%) translateY('+(-42*s)+'vh) scale('+(1-0.62*s)+')';
