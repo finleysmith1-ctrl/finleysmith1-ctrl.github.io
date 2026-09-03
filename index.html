@@ -189,6 +189,19 @@ img{display:block;max-width:100%}
 .faq .a p+p{margin-top:12px}
 
 /* end band + footer */
+.keep{padding:clamp(70px,10vh,110px) var(--gut);border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.keep .h-m{font-size:clamp(28px,3.4vw,44px);font-weight:500;letter-spacing:-.04em;line-height:1.05;text-wrap:balance}
+.keep .p{margin-top:16px;max-width:38ch}
+.keep form{display:grid;gap:12px}
+.keep .f{display:flex;gap:10px}
+.keep input[type=email],.keep input[type=tel]{flex:1;min-width:0;background:var(--bg-2);border:1px solid var(--line-2);border-radius:999px;padding:15px 20px;color:var(--fg);font:inherit;font-size:16px;outline:0}
+.keep input:focus{border-color:var(--fg-3)}
+.keep input::placeholder{color:var(--fg-3)}
+.keep .btn{padding:15px 22px;font-size:16px;white-space:nowrap}
+.keep .tick{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--fg-2);line-height:1.4;padding:0 6px}
+.keep .tick input{margin-top:3px;accent-color:var(--green)}
+.keep .done{color:var(--green);font-weight:500;font-size:17px}
+@media (max-width:820px){.keep{grid-template-columns:1fr;gap:28px}.keep form{display:flex;flex-direction:column}.keep .f{display:contents}.keep .tick{order:3}.keep .btn{order:4;justify-content:center;margin-top:4px}}
 .end{background:var(--green);color:var(--green-ink);padding:clamp(100px,18vh,200px) var(--gut)}
 .end .h-xl{color:var(--green-ink)}
 .endmark{display:block;margin-bottom:36px}
@@ -439,6 +452,17 @@ img{display:block;max-width:100%}
 </section>
 
 <!-- end -->
+<section class="keep" id="keep">
+  <div>
+    <h2 class="h-m">Not ready to start? Keep me posted.</h2>
+    <p class="p">One short email when something worth knowing happens — new towns, new features, real results from real designers. No newsletter, no schedule.</p>
+  </div>
+  <form id="keepf" autocomplete="on">
+    <div class="f"><input type="email" name="email" placeholder="you@studio.com" required aria-label="Email"><button class="btn" type="submit">Keep me posted</button></div>
+    <input type="tel" name="phone" placeholder="Phone, optional — for a text instead" aria-label="Phone">
+    <label class="tick"><input type="checkbox" name="sms"><span>Text me too. US numbers only, a few a year, reply STOP any time.</span></label>
+  </form>
+</section>
 <section class="end">
   <img class="endmark" src="/brand/mark-ink.svg" alt="" width="108" height="96">
   <h2 class="h-xl">The next town over is full of businesses with nothing to click.</h2>
@@ -484,6 +508,18 @@ img{display:block;max-width:100%}
     wm.style.transform='translateX('+(-p*38)+'vw)';
   }
   var TOTAL_SUFFIX='';
+
+  /* keep me posted — stored by the app, same origin rule as the town check */
+  var keepf=$('#keepf');
+  if(keepf){ keepf.addEventListener('submit',function(e){
+    e.preventDefault();
+    var em=keepf.email.value.trim(); if(!em) return;
+    var APP=/staging\.|localhost|127\./.test(location.host) ? '' : 'https://app.unwebbed.app';
+    var body=JSON.stringify({email:em,phone:keepf.phone.value.trim(),sms:keepf.sms.checked,source:'home'});
+    fetch(APP+'/subscribe',{method:'POST',headers:{'content-type':'text/plain'},body:body,keepalive:true}).catch(function(){});
+    if(window.__px) window.__px('keep', keepf.sms.checked?'sms':'email');
+    keepf.innerHTML='<div class="done">You\'re on the list. Talk soon.</div>';
+  }); }
 
   /* real town check — same endpoint the app uses */
   var EP=/staging\.|localhost|127\./.test(location.host) ? '/towncheck' : 'https://app.unwebbed.app/towncheck';
