@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://unwebbed.app/</loc><lastmod>2026-09-02</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://unwebbed.app/examples/cedar-dental/</loc><lastmod>2026-08-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://unwebbed.app/examples/hazel-and-rye/</loc><lastmod>2026-08-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://unwebbed.app/examples/marigold-and-fern/</loc><lastmod>2026-08-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://unwebbed.app/examples/marin-auto-glass/</loc><lastmod>2026-08-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://unwebbed.app/examples/rapid-rooter/</loc><lastmod>2026-08-26</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+
+  <url><loc>https://unwebbed.app/examples/marlowe-hair-and-skin/</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://unwebbed.app/examples/harbor-and-oak-coffee/</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://unwebbed.app/examples/northgate-auto-repair/</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://unwebbed.app/examples/larkspur-family-dental/</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://unwebbed.app/examples/fern-and-thistle-florist/</loc><lastmod>2026-09-03</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>
