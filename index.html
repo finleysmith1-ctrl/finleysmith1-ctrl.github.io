@@ -176,6 +176,19 @@ img{display:block;max-width:100%}
 .plan .btn{margin-top:26px;width:100%;justify-content:center}
 .plan .fine{margin-top:14px;font-size:13px;color:var(--fg-3)}
 .free{margin-top:28px;font-size:15px;color:var(--fg-2);max-width:60ch}
+.pkg{margin-top:20px;max-width:1040px;border:1px solid var(--line-2);border-radius:18px;padding:32px 28px;background:var(--bg-2);display:grid;grid-template-columns:1.1fr 1fr;gap:28px 40px}
+.pkg .pkghead h3{font-weight:500;letter-spacing:-.03em;font-size:clamp(24px,2.4vw,34px);line-height:1.1;margin-top:10px;text-wrap:balance}
+.pkg .pkghead .p{margin-top:14px;font-size:16px;max-width:46ch}
+.pkg .terms{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-self:start}
+.pkg .term{border:1px solid var(--line-2);border-radius:14px;padding:18px 14px;text-align:center}
+.pkg .term.hi{border-color:rgba(61,217,138,.5)}
+.pkg .term .k{font-size:13px;color:var(--fg-2)}
+.pkg .term .amt b{display:block;font-weight:500;letter-spacing:-.04em;font-size:clamp(30px,3vw,40px);line-height:1;margin:10px 0 8px}
+.pkg .term .earn{font-size:12.5px;color:var(--fg-2);line-height:1.35}
+.pkg .term .earn b{color:var(--green);font-weight:500}
+.pkg .pkgul{grid-column:1/-1;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px 28px;color:var(--fg-2);font-size:15px;border-top:1px solid var(--line);padding-top:20px}
+.pkg .pkgul li b{color:var(--fg);font-weight:500}
+@media(max-width:820px){.pkg{grid-template-columns:1fr;padding:26px 20px}.pkg .pkgul{grid-template-columns:1fr}}
 
 /* faq */
 .faq{max-width:820px}
@@ -368,8 +381,8 @@ img{display:block;max-width:100%}
 <!-- pricing -->
 <section class="sec" id="pricing" style="border-top:1px solid var(--line)">
   <div class="head">
-    <div><div class="lab"><b>Pricing</b></div><h2 class="h-l" style="margin-top:16px">Searching is free forever. Pick a plan when you start building.</h2></div>
-    <p class="p">Searching, leads and the call sheet are free and unlimited on every plan. What goes up is how much you can build, how fast it builds, and how you hand it over — and <b>one client win covers a year of any plan</b>.</p>
+    <div><div class="lab"><b>Pricing</b></div><h2 class="h-l" style="margin-top:16px">Searching is free forever. Pick a plan when you start building — and earn on every site you host.</h2></div>
+    <p class="p">Searching, leads and the call sheet are free and unlimited on every plan. What goes up is how much you can build and how fast. Then, when a client says yes, <b>they pay one bill — your price plus 1, 2 or 3 years of hosting — and you keep your price and a share of the hosting</b>.</p>
   </div>
   <div class="toggle" role="group" aria-label="Billing period">
     <button type="button" data-cycle="month" aria-pressed="true">Monthly</button>
@@ -397,7 +410,7 @@ img{display:block;max-width:100%}
         <li><b>$18</b> of build budget — about <b>28 finished sites</b></li>
         <li>Prepare <b>15 leads</b> in one run</li>
         <li><b>4 sites building at once</b> — no more waiting through them one by one</li>
-        <li><b>One-click publish</b> — put the site live for your client</li>
+        <li><b>One-click publish</b> — show it live before they pay</li>
       </ul>
       <a class="btn" href="https://app.unwebbed.app/signup?plan=studio">Choose Studio →</a>
       <div class="fine">One site you sell at $350 pays for 7 months · Cancel anytime · 30-day refund</div>
@@ -426,12 +439,31 @@ img{display:block;max-width:100%}
         <li><b>$216</b> of build budget — about <b>342 finished sites</b></li>
         <li>Prepare <b>15 leads</b> in one run</li>
         <li><b>4 sites building at once</b></li>
-        <li><b>One-click publish</b> — put the site live for your client</li>
+        <li><b>One-click publish</b> — show it live before they pay</li>
         <li>Your whole year's budget on <b>day one</b></li>
       </ul>
       <a class="btn" href="https://app.unwebbed.app/signup?plan=studio_yr">Choose Studio →</a>
       <div class="fine">One site you sell at $350 pays for almost a year · Cancel anytime · 30-day refund</div>
     </div>
+  </div>
+  <div class="pkg">
+    <div class="pkghead">
+      <div class="lab"><b>What your client pays</b></div>
+      <h3>One bill: your price for the site, plus their domain and hosting.</h3>
+      <p class="p">You set the site price. They pick the term. They pay once, by card, and the site is live on their own domain within the minute. Your money is paid out to you through Stripe.</p>
+    </div>
+    <div class="terms">
+      <div class="term"><div class="k">1 year</div><div class="amt"><b>$299</b></div><div class="earn">you earn <b>$90</b> + your site price</div></div>
+      <div class="term hi"><div class="k">2 years</div><div class="amt"><b>$499</b></div><div class="earn">you earn <b>$150</b> + your site price</div></div>
+      <div class="term"><div class="k">3 years</div><div class="amt"><b>$649</b></div><div class="earn">you earn <b>$195</b> + your site price</div></div>
+    </div>
+    <ul class="pkgul">
+      <li><b>Their domain</b>, registered in their name and renewed for the whole term</li>
+      <li><b>Hosting, https and backups</b> on Unwebbed, for as long as they paid</li>
+      <li><b>A contact form</b> that emails them, and a monthly visitor count</li>
+      <li><b>Changes through you</b> — edits cost cents, you stay their designer</li>
+      <li>Nothing renews on its own: they are reminded 90, 30 and 7 days before the term ends</li>
+    </ul>
   </div>
   <p class="free">Signing up is free and takes a minute — no card. You get free credit to build your first couple of sites, and searching stays free and unlimited forever. Pick a plan when you want to keep building.</p>
 </section>
@@ -443,7 +475,8 @@ img{display:block;max-width:100%}
     <details><summary>Do I need to know how to code?</summary><div class="a"><p>No. You describe, Unwebbed builds. If you can write a text message you can direct a build — "make the hero warmer", "add their opening hours" — and the site updates in about a minute.</p></div></details>
     <details><summary>Where do the leads come from?</summary><div class="a"><p>Public map data (OpenStreetMap), checked against the live web. A lead only makes your list after Unwebbed has looked for their website and found nothing worth clicking.</p></div></details>
     <details><summary>What do the sites cost to build?</summary><div class="a"><p>Your budget is real AI cost, passed through — a full site with images is typically 40–80 cents. What you charge the client is yours; most freelancers charge a few hundred dollars per site.</p></div></details>
-    <details><summary>How do the sites go live?</summary><div class="a"><p>One click publishes to your own free Netlify account, or download the site as a folder and host it anywhere. The link belongs to you and your client — not to us.</p><p>Worth knowing before several clients are live: Netlify's free plan is capped at 300 credits a month and a publish costs 15 of them, so roughly twenty publishes — shared across every site on that account, along with visitor traffic. Go over and Netlify pauses all of them until the month resets. Fine for your first few clients; after that, give each client their own free account (in their name, which you want anyway) or use a host without that cap.</p></div></details>
+    <details><summary>How do the sites go live?</summary><div class="a"><p>One click publishes the site on Unwebbed hosting at its own secure address, so you can show it live before anyone pays. When the client says yes, you send them one bill — your price plus 1, 2 or 3 years of hosting — and the moment they pay, their domain is registered in their name and the site goes live on it. You can also download any site as a file and host it anywhere.</p><p>The domain is theirs: we hold it on their behalf and hand it over on request. Hosting never renews on its own — they get reminders at 90, 30 and 7 days, then two weeks of grace before the site shows a notice.</p></div></details>
+    <details><summary>What do I earn on the hosting?</summary><div class="a"><p>Your site price in full, plus $90 on a 1-year package, $150 on 2 years, or $195 on 3 years. Both are paid out to your own Stripe account when the client pays. Renewals earn the same share again, for as long as you stay their designer.</p></div></details>
     <details><summary>What do I get for free?</summary><div class="a"><p>Searching is free forever — every town, unlimited, on every plan. Signing up adds trial build credit so you can make your first sites without a card. Pick a plan when you want to keep building.</p></div></details>
     <details><summary>Which plan should I start on?</summary><div class="a"><p>Solo. It does the whole job — find the businesses, build the sites, write the pitches, work the call sheet — and you hand the finished file to your client. Move up when waiting starts to annoy you: Studio builds four sites at once, publishes them live in a click, and preps fifteen leads in one run. Upgrading takes one click and nothing changes about how you work.</p></div></details>
     <details><summary>Can the client change the site later?</summary><div class="a"><p>Yes — you stay their designer. Open the project, tell the builder what to change ("new hours", "add the spring menu"), republish, and the link they already have updates. Edits typically cost 10–15¢.</p></div></details>
