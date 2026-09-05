@@ -382,16 +382,28 @@ img{display:block;max-width:100%}
 @media (max-width:820px){#who .who2{grid-template-columns:1fr}#who .signoff{flex-wrap:wrap}#who .signoff .btn{margin-left:0;width:100%;justify-content:center}}
 
 /* hero town (prototype) */
-.hero .town{position:relative;aspect-ratio:16/10.4;border-radius:16px;overflow:hidden;background:#0E100F;border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.55)}
-.hero .town canvas{position:absolute;inset:0;width:100%!important;height:100%!important;display:block}
-.hero .towncap{display:flex;justify-content:space-between;gap:16px;margin-top:14px;font-size:15px;color:var(--fg-2)}
-.hero .towncap b{color:var(--green);font-weight:600}
-.hero .towncap .dim{color:var(--fg-3);font-size:13px;letter-spacing:.03em;text-transform:uppercase}
+/* the town of lights: one fixed scene behind the hero and the three chapters; the flowing sections cover it */
+#townc{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;pointer-events:none}
+#scrim{position:fixed;inset:0;z-index:0;pointer-events:none;background:linear-gradient(90deg,rgba(14,16,15,.9) 0%,rgba(14,16,15,.7) 32%,rgba(14,16,15,.22) 60%,rgba(14,16,15,0) 100%)}
+html:not(.has3d) #townc,html:not(.has3d) #scrim{display:none}
+html.has3d .hero{background:transparent}
+html.has3d:not(.still) .stage{background:transparent;box-shadow:0 -30px 60px rgba(0,0,0,.35)}
+html.has3d .wm{display:none}
+.hero{z-index:1}
+.townlab{justify-self:end;text-align:right;max-width:380px;text-shadow:0 2px 28px rgba(14,16,15,.95),0 0 2px rgba(14,16,15,.8)}
+.townlab .tnum{font-weight:500;letter-spacing:-.06em;line-height:.9;font-size:clamp(72px,9.5vw,156px);color:var(--green)}
+.townlab .tl{margin-top:12px;font-size:clamp(16px,1.3vw,19px);color:var(--fg);letter-spacing:-.01em}
+.townlab .tsub{margin-top:8px;font-size:12.5px;color:var(--fg-3);letter-spacing:.04em;text-transform:uppercase}
+.townlab.nonum .tnum{display:none}
 .hero .frame.fallback{display:none}
-@media (max-width:820px),(prefers-reduced-motion:reduce){.hero .town,.hero .towncap{display:none}.hero .frame.fallback{display:block}}
+html.no3d .townlab{display:none}
+html.no3d .hero .frame.fallback{display:block}
+@media (max-width:820px){#scrim{background:linear-gradient(180deg,rgba(14,16,15,.92) 0%,rgba(14,16,15,.72) 42%,rgba(14,16,15,.28) 72%,rgba(14,16,15,.12) 100%)}.townlab{justify-self:start;text-align:left;margin-top:8px;max-width:none}.townlab .tnum{font-size:64px}}
 </style>
 </head>
 <body>
+<canvas id="townc" aria-hidden="true"></canvas>
+<div id="scrim" aria-hidden="true"></div>
 
 <nav class="nav">
   <a class="brand" href="#top"><img class="m1" src="/brand/mark.svg" alt="" width="27" height="24"><img class="m2" src="/brand/mark-ink.svg" alt="" width="27" height="24"><span>unwebbed</span></a>
@@ -421,11 +433,11 @@ img{display:block;max-width:100%}
     <div class="down">Scroll — how it works ↓</div>
   </div>
   <div class="vis">
-    <div class="town" id="townscene" aria-hidden="true">
-      <canvas id="townc"></canvas>
-      <div class="townscan" id="townscan"></div>
+    <div class="townlab" id="townlab" aria-live="polite">
+      <div class="tnum"><b class="num g" id="tn">0</b></div>
+      <div class="tl">businesses in <span id="tplace">Petaluma</span> with no website</div>
+      <div class="tsub"><span id="tstate">scanning</span></div>
     </div>
-    <div class="towncap"><span><b class="num g" id="tn">0</b> businesses in <span id="tplace">Petaluma</span> with no website</span><span class="dim" id="tstate">scanning</span></div>
     <div class="frame fallback">
       <div class="bar"><i></i><i></i><i></i><span>marlowehairandskin.com</span></div>
       <div class="shot" style="background-image:url(/img/ex-marlowe-hair-and-skin.jpg)"></div>
@@ -738,6 +750,7 @@ img{display:block;max-width:100%}
       if(r.top>innerHeight||r.bottom<0) return;  /* off screen: skip */
       var raw=clamp(-r.top/total,0,1);
       sc[1](clamp(raw/0.66,0,1));
+      if(document.documentElement.classList.contains('has3d')){var st=el.querySelector('.stage'); if(st) st.style.opacity=String(1-ease(seg(raw,0.69,0.76)));}
     });
     ticking=false;
   }
@@ -840,110 +853,6 @@ img{display:block;max-width:100%}
 
 
 <script src="vendor/three.min.js"></script>
-<script src="vendor/CopyShader.js"></script>
-<script src="vendor/LuminosityHighPassShader.js"></script>
-<script src="vendor/GammaCorrectionShader.js"></script>
-<script src="vendor/EffectComposer.js"></script>
-<script src="vendor/RenderPass.js"></script>
-<script src="vendor/ShaderPass.js"></script>
-<script src="vendor/UnrealBloomPass.js"></script>
-<script src="vendor/RoundedBoxGeometry.js"></script>
-<script>
-(function(){
-  var box=document.getElementById('townscene'), cv=document.getElementById('townc');
-  if(!box||!cv||!window.THREE||getComputedStyle(box).display==='none') return;
-  var GREEN=0x3DD98A, BG=0x0E100F;
-  function init(){
-    var rect=box.getBoundingClientRect(); var W=Math.round(rect.width), H=Math.round(rect.height); if(H<W*0.5) H=Math.round(W*11/16);
-    var dpr=Math.min(devicePixelRatio||1,2);
-    var renderer=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:false,powerPreference:'high-performance'});
-    renderer.setPixelRatio(dpr); renderer.setSize(W,H,false); renderer.setClearColor(BG,1);
-    renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-    renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=0.85; renderer.outputEncoding=THREE.sRGBEncoding;
-    var scene=new THREE.Scene(); scene.fog=new THREE.FogExp2(BG,0.03);
-    var cam=new THREE.PerspectiveCamera(26,W/H,.1,120);
-    // lights: dusk
-    scene.add(new THREE.HemisphereLight(0x2b3a40,0x070808,.45));
-    var sun=new THREE.DirectionalLight(0xfff0dc,1.15); sun.position.set(16,22,6); sun.castShadow=true;
-    sun.shadow.mapSize.set(2048,2048); sun.shadow.camera.left=-18; sun.shadow.camera.right=18; sun.shadow.camera.top=18; sun.shadow.camera.bottom=-18; sun.shadow.camera.near=1; sun.shadow.camera.far=70; sun.shadow.bias=-0.0006; sun.shadow.radius=3; scene.add(sun);
-    var fill=new THREE.DirectionalLight(0x8fb4cc,.18); fill.position.set(-12,9,-10); scene.add(fill);
-    // ground with a touch of grain
-    function noiseTex(w,h,base,amt){var c=document.createElement('canvas');c.width=w;c.height=h;var g=c.getContext('2d');g.fillStyle=base;g.fillRect(0,0,w,h);var id=g.getImageData(0,0,w,h),d=id.data;for(var i=0;i<d.length;i+=4){var n=(Math.random()-.5)*amt;d[i]+=n;d[i+1]+=n;d[i+2]+=n;}g.putImageData(id,0,0);var t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;return t;}
-    var gt=noiseTex(256,256,'#101312',10); gt.repeat.set(24,24);
-    var ground=new THREE.Mesh(new THREE.PlaneGeometry(90,90),new THREE.MeshStandardMaterial({map:gt,color:0xffffff,roughness:1})); ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
-    // streets with lane dashes
-    function laneTex(vertical){var c=document.createElement('canvas');c.width=64;c.height=256;var g=c.getContext('2d');g.fillStyle='#171b19';g.fillRect(0,0,64,256);g.fillStyle='rgba(215,205,170,.18)';for(var y=8;y<256;y+=48){g.fillRect(30,y,4,24);}var t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;if(!vertical){t.rotation=Math.PI/2;t.center.set(.5,.5);}return t;}
-    var COLS=12, ROWS=9, cell=1.35, ox=-COLS/2*cell+cell/2, oz=-ROWS/2*cell+cell/2;
-    var tv=laneTex(true); tv.repeat.set(1,ROWS/2); var th=laneTex(false); th.repeat.set(COLS/2,1);
-    for(var i=0;i<COLS;i++) if(i%4===3){var r=new THREE.Mesh(new THREE.PlaneGeometry(cell,ROWS*cell+2),new THREE.MeshStandardMaterial({map:tv,roughness:1})); r.rotation.x=-Math.PI/2; r.position.set(ox+i*cell,0.004,0); r.receiveShadow=true; scene.add(r);}
-    for(var j=0;j<ROWS;j++) if(j%4===3){var r2=new THREE.Mesh(new THREE.PlaneGeometry(COLS*cell+2,cell),new THREE.MeshStandardMaterial({map:th,roughness:1})); r2.rotation.x=-Math.PI/2; r2.position.set(0,0.005,oz+j*cell); r2.receiveShadow=true; scene.add(r2);}
-    // sidewalks: one slab per block
-    var walk=new THREE.MeshStandardMaterial({color:0x1b201e,roughness:1});
-    for(var bi=0;bi<COLS;bi+=4) for(var bj=0;bj<ROWS;bj+=4){var w=new THREE.Mesh(new THREE.BoxGeometry(3*cell+0.16,0.04,3*cell+0.16),walk); w.position.set(ox+(bi+1)*cell,0.02,oz+(bj+1)*cell); w.receiveShadow=true; scene.add(w);}
-    // windows texture (emissive): warm dots, some lit
-    function winTex(){var c=document.createElement('canvas');c.width=64;c.height=128;var g=c.getContext('2d');g.fillStyle='#000';g.fillRect(0,0,64,128);for(var y=8;y<120;y+=14)for(var x=8;x<56;x+=14){var on=Math.random()<.42;g.fillStyle=on?(Math.random()<.5?'#ffd8a3':'#ffe7c2'):'#141614';g.fillRect(x,y,7,9);}var t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;return t;}
-    var wins=[winTex(),winTex(),winTex()];
-    var seed=11; function rnd(){seed=(seed*9301+49297)%233280; return seed/233280;}
-    var greys=[0x262b29,0x2c3230,0x31383a,0x242927,0x2a302d];
-    var bld=[]; var top=new THREE.MeshStandardMaterial({color:0x3c423f,roughness:.9});
-    for(var i2=0;i2<COLS;i2++) for(var j2=0;j2<ROWS;j2++){
-      if(i2%4===3||j2%4===3) continue; if(rnd()<0.06) continue;
-      var h=0.5+rnd()*1.5; if(rnd()<0.15) h+=1.3; var fw=cell*(0.58+rnd()*0.2), fd=cell*(0.58+rnd()*0.2);
-      var col=greys[Math.floor(rnd()*greys.length)]; var wt=wins[Math.floor(rnd()*3)].clone(); wt.needsUpdate=true; wt.repeat.set(Math.max(1,Math.round(fw*2.2)),Math.max(1,Math.round(h*1.6)));
-      var side=new THREE.MeshStandardMaterial({color:col,roughness:.72,metalness:.06});
-      var b=new THREE.Mesh(new THREE.RoundedBoxGeometry(fw,h,fd,3,0.06),side); b.position.set(ox+i2*cell+(rnd()-.5)*0.08,h/2+0.04,oz+j2*cell+(rnd()-.5)*0.08); b.castShadow=true; b.receiveShadow=true; scene.add(b);
-      var cap=new THREE.Mesh(new THREE.RoundedBoxGeometry(fw-0.14,0.06,fd-0.14,2,0.02),new THREE.MeshStandardMaterial({color:0x3a413e,roughness:.9})); cap.position.set(b.position.x,h+0.06,b.position.z); cap.castShadow=true; scene.add(cap);
-      bld.push({m:b,side:side,x:b.position.x,z:b.position.z,h:h,no:rnd()<0.34,lit:0,cap:cap,base:col});
-    }
-    // trees at block corners, lamps at some intersections
-    var trunk=new THREE.MeshStandardMaterial({color:0x3b2f26,roughness:1}), leaf1=new THREE.MeshStandardMaterial({color:0x2f5d3f,roughness:1}), leaf2=new THREE.MeshStandardMaterial({color:0x3a6f4a,roughness:1});
-    for(var bi2=0;bi2<COLS;bi2+=4) for(var bj2=0;bj2<ROWS;bj2+=4) for(var k=0;k<4;k++){ if(rnd()<0.45) continue; var cx=ox+(bi2+(k%2?2:0))*cell+((k%2)?0.42:-0.42), cz=oz+(bj2+(k<2?0:2))*cell+((k<2)?-0.42:0.42);
-      var t1=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.04,0.28,6),trunk); t1.position.set(cx,0.18,cz); t1.castShadow=true; scene.add(t1);
-      var sc=0.2+rnd()*0.12; var t2=new THREE.Mesh(new THREE.IcosahedronGeometry(sc,1),rnd()<.5?leaf1:leaf2); t2.position.set(cx,0.34+sc*.6,cz); t2.castShadow=true; scene.add(t2); }
-    var lampM=new THREE.MeshStandardMaterial({color:0xffe2b0,emissive:0xffd9a0,emissiveIntensity:2.2}), poleM=new THREE.MeshStandardMaterial({color:0x2b302e,roughness:1});
-    for(var li=3;li<COLS;li+=4) for(var lj=3;lj<ROWS;lj+=4){ if(rnd()<0.5) continue; var px=ox+li*cell+0.55, pz=oz+lj*cell+0.55;
-      var pole=new THREE.Mesh(new THREE.CylinderGeometry(0.015,0.015,0.55,5),poleM); pole.position.set(px,0.3,pz); scene.add(pole);
-      var bulb=new THREE.Mesh(new THREE.SphereGeometry(0.035,8,8),lampM); bulb.position.set(px,0.58,pz); scene.add(bulb); }
-    // tags
-    function tag(){var c=document.createElement('canvas');c.width=320;c.height=96;var g=c.getContext('2d');var r=44;
-      g.fillStyle='rgba(14,16,15,.92)';g.strokeStyle='rgba(61,217,138,.85)';g.lineWidth=4;g.beginPath();g.moveTo(r,6);g.lineTo(320-r,6);g.arcTo(314,6,314,6+r,r);g.lineTo(314,90-r);g.arcTo(314,90,314-r,90,r);g.lineTo(r,90);g.arcTo(6,90,6,90-r,r);g.lineTo(6,6+r);g.arcTo(6,6,6+r,6,r);g.closePath();g.fill();g.stroke();
-      g.fillStyle='#3DD98A';g.font='500 34px "Bricolage", system-ui, sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText('no website',160,50);
-      var t=new THREE.CanvasTexture(c);t.minFilter=THREE.LinearFilter;var s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthTest:false,opacity:0}));s.scale.set(2.5,0.75,1);s.renderOrder=20;return s;}
-    // scan
-    var line=new THREE.Mesh(new THREE.BoxGeometry(0.05,0.03,ROWS*cell+3),new THREE.MeshBasicMaterial({color:GREEN})); line.position.y=0.03; scene.add(line);
-    var veil=new THREE.Mesh(new THREE.PlaneGeometry(2.6,ROWS*cell+3),new THREE.MeshBasicMaterial({color:GREEN,transparent:true,opacity:.09,depthWrite:false,blending:THREE.AdditiveBlending})); veil.rotation.x=-Math.PI/2; veil.position.y=0.02; scene.add(veil);
-    // post
-    var composer=new THREE.EffectComposer(renderer); composer.setPixelRatio(dpr); composer.setSize(W,H);
-    composer.addPass(new THREE.RenderPass(scene,cam));
-    var bloom=new THREE.UnrealBloomPass(new THREE.Vector2(W,H),0.55,0.45,0.9); composer.addPass(bloom);
-    var gamma=new THREE.ShaderPass(THREE.GammaCorrectionShader); composer.addPass(gamma);
-    var n=0, TOTAL=0, WANT=0, tn=document.getElementById('tn'), ts=document.getElementById('tstate'); var t0=performance.now()+900; var DUR=7500, x0=ox-2, x1=ox+COLS*cell+1; var tags=[], tagCount=0;
-    var grey=greys.slice();
-    function rescan(place,total){ if(place){document.getElementById('tplace').textContent=place;} n=0; tn.textContent='0'; ts.textContent='scanning'; for(var i=0;i<tags.length;i++){scene.remove(tags[i].s);} tags=[]; tagCount=0;
-      var target=Math.round(total||0)||Math.round(bld.length*0.34); var want=Math.max(3,Math.min(Math.round(bld.length*0.6),target)); TOTAL=target; WANT=want; var idx=[]; for(var i2=0;i2<bld.length;i2++) idx.push(i2); for(var k=idx.length-1;k>0;k--){var j=Math.floor(rnd()*(k+1)); var tmp=idx[k]; idx[k]=idx[j]; idx[j]=tmp;}
-      for(var q2=0;q2<bld.length;q2++){var b2=bld[q2]; b2.lit=0; b2.no=false; b2.side.emissiveIntensity=0; b2.side.emissive.setHex(0x000000); b2.side.color.setHex(b2.base); b2.cap.material.emissiveIntensity=0;}
-      for(var w=0;w<want;w++){bld[idx[w]].no=true;} t0=performance.now()+400; }
-    window.__town={rescan:rescan};
-    var litC=new THREE.Color(0x155a3b), litE=new THREE.Color(0x29c97b);
-    function frame(){
-      var now=performance.now(); var t=(now-t0)/1000; var p=Math.max(0,Math.min(1,(now-t0)/DUR)); var e=p<1?p:1; var sx=x0+(x1-x0)*e;
-      line.position.x=sx; veil.position.x=sx-0.6; line.visible=veil.visible=(p>0&&p<1);
-      for(var k=0;k<bld.length;k++){var q=bld[k];
-        if(!q.lit&&q.no&&q.x<sx-0.15){q.lit=now; n++; tn.textContent=(TOTAL&&WANT)?Math.round(TOTAL*n/WANT):n; if(tagCount<6&&(n%5===1)){var sp=tag(); sp.position.set(q.x,q.h+0.62,q.z); scene.add(sp); tags.push({s:sp,at:now}); tagCount++;}}
-        if(q.lit){var a=Math.min(1,(now-q.lit)/600); var ea=1-Math.pow(1-a,3); q.side.emissive.copy(litE); q.side.emissiveIntensity=ea*0.34; q.side.color.copy(litC); q.cap.material.emissive=litE; q.cap.material.emissiveIntensity=ea*1.6;} }
-      for(var m=0;m<tags.length;m++){tags[m].s.material.opacity=Math.min(1,(now-tags[m].at)/450);}
-      if(p>=1&&ts.textContent!=='done · same search the tool runs'){ts.textContent='done · same search the tool runs';}
-      var ang=Math.PI/4+Math.sin(t*0.12)*0.08, R=25-Math.min(1,Math.max(0,t/9))*2.2, el=17+Math.sin(t*0.2)*0.3;
-      cam.position.set(Math.sin(ang)*R,el,Math.cos(ang)*R); cam.lookAt(0,0.5,0);
-      composer.render(); requestAnimationFrame(frame);
-    }
-    frame();
-    function sync(){var r=box.getBoundingClientRect();var w=Math.round(r.width),h=Math.round(r.height);if(h<w*0.5)h=Math.round(w*11/16);if(w!==W||h!==H){W=w;H=h;renderer.setSize(W,H,false);composer.setSize(W,H);cam.aspect=W/H;cam.updateProjectionMatrix();}}
-    addEventListener('resize',sync); if(window.ResizeObserver){new ResizeObserver(sync).observe(box);}
-  }
-  var go=function(){requestAnimationFrame(init);};
-  if(document.fonts&&document.fonts.ready){document.fonts.ready.then(function(){ if(document.readyState==='complete') go(); else addEventListener('load',go); });} else if(document.readyState==='complete') go(); else addEventListener('load',go);
-})();
-</script>
+<script src="town.js"></script>
 </body>
 </html>
