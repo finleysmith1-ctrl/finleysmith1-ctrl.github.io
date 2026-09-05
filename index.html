@@ -70,13 +70,13 @@ img{display:block;max-width:100%}
 
 /* pinned scenes */
 .scene{position:relative}
-.scene+.scene,.scene+.flow{margin-top:-100vh;position:relative;z-index:2}
-.stage{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--bg);box-shadow:0 -40px 80px rgba(0,0,0,.5)}
+.scene+.scene,.scene+.flow{margin-top:-100vh;margin-top:-100dvh;position:relative;z-index:2}
+.stage{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden;background:var(--bg);box-shadow:0 -40px 80px rgba(0,0,0,.5)}
 .stage .lab{position:absolute;top:96px;left:var(--gut)}
 .wm{position:absolute;left:0;bottom:-.22em;white-space:nowrap;font-weight:600;font-stretch:90%;letter-spacing:-.05em;line-height:1;font-size:clamp(110px,15vw,220px);color:#1C1F1D;user-select:none;pointer-events:none}
 
 /* hero — one screen, then the page */
-.hero{position:relative;min-height:100vh;overflow:hidden;background:var(--bg);display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(32px,5vw,80px);align-items:center;padding:clamp(84px,11vh,120px) var(--gut) clamp(40px,7vh,72px)}
+.hero{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden;background:var(--bg);display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(32px,5vw,80px);align-items:center;padding:clamp(84px,11vh,120px) var(--gut) clamp(40px,7vh,72px)}
 .hero>*{min-width:0}
 .hero .txt{position:relative;z-index:2;max-width:620px}
 .hero .pill{display:inline-block;font-size:12.5px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--green);border:1px solid rgba(61,217,138,.4);border-radius:999px;padding:6px 12px}
@@ -261,8 +261,17 @@ img{display:block;max-width:100%}
   .railfoot{flex-direction:column;align-items:flex-start}
   .who2,.plans{grid-template-columns:1fr}
 }
+@media (max-width:520px){
+  .hero{gap:16px;padding:84px 20px 20px}
+  .hero h1{margin-top:12px}
+  .hero .p{margin-top:10px}
+  .hero .search{margin-top:16px}
+  .hero .frame{width:100%;max-width:290px;margin-inline:auto}
+  .hero .down{display:block;margin-top:8px}
+}
 @media (prefers-reduced-motion:reduce){
-  .scene{height:100vh!important}
+  .scene{height:100vh!important;height:100dvh!important}
+  .scene+.scene,.scene+.flow{margin-top:0}
 }
 </style>
 </head>

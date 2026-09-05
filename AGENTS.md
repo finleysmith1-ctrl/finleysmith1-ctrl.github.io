@@ -16,3 +16,30 @@ Quick facts for this repo:
   in this repository is public, so never commit anything private.
 - The first line of any report to Finley about this site is **"Live on unwebbed.app"** or
   **"Not pushed yet"**.
+
+## Viewport sizing and isolated local preview
+
+- `index.html` keeps `100vh` fallbacks followed by `100dvh` for the hero minimum
+  height, sticky-stage height, overlapping-scene negative margin, and reduced-motion
+  scene height. The `520vh` animation travel lengths are intentional and unchanged.
+- The hero uses a minimum height, not a fixed crop. Content and in-place town results
+  may make it taller than a viewport; test that text, search and the example remain
+  available rather than hiding overflow to force a one-screen measurement.
+- At widths up to 520px, tighter hero spacing and a centred 290px-wide preview keep
+  the original font sizes, words, image aspect ratio and visible scroll hint. The
+  desktop layout is unaffected. In reduced motion, scene overlap margins are zero so
+  the three explanation sections remain separate and readable.
+- `tools/homepage_preview.js` exercises 390×844, 1280×720, 1440×900 and 1920×1080,
+  normal and reduced motion. It accepts only the approved worktree and a local preview
+  at `http://127.0.0.1:8400`, checks the served HTML matches the worktree, and refuses to
+  overwrite an earlier screenshot attempt. Run from `/root/tools/shot` with
+  `NODE_PATH=/root/tools/shot/node_modules node /root/code/uw-codex-site/tools/homepage_preview.js attempt-1`.
+- The homepage sends a production `/px` beacon even on localhost. The helper installs
+  its context-wide request fence before navigation: external requests and WebSockets
+  are blocked, town search and subscription submissions are local response fixtures,
+  and only public static local assets may reach the preview server. Do not replace
+  this with an unfenced browser script or saved-account screenshot tool.
+- Focused offline checks: `node --test tests/homepage_preview.test.js` from this repo.
+  Screenshot measurements report a failed check with exit 1; setup failure exits 2.
+  A fixed headless viewport is not proof of mobile browser-toolbar behavior; retain
+  a real-device check for that browser-specific interaction.
