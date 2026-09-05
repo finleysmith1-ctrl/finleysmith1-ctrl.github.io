@@ -73,28 +73,36 @@ img{display:block;max-width:100%}
 .scene+.scene,.scene+.flow{margin-top:-100vh;position:relative;z-index:2}
 .stage{position:sticky;top:0;height:100vh;overflow:hidden;background:var(--bg);box-shadow:0 -40px 80px rgba(0,0,0,.5)}
 .stage .lab{position:absolute;top:96px;left:var(--gut)}
-.wm{position:absolute;left:0;bottom:-.22em;white-space:nowrap;font-weight:600;font-stretch:90%;letter-spacing:-.05em;line-height:1;font-size:clamp(140px,24vw,360px);color:#2A2E2B;user-select:none;pointer-events:none;will-change:transform}
+.wm{position:absolute;left:0;bottom:-.22em;white-space:nowrap;font-weight:600;font-stretch:90%;letter-spacing:-.05em;line-height:1;font-size:clamp(110px,15vw,220px);color:#1C1F1D;user-select:none;pointer-events:none}
 
-/* scene 1 — search */
-#s1{height:640vh}
-.intro{position:absolute;left:0;right:0;bottom:calc(100% + clamp(28px,5vh,56px));display:flex;flex-direction:column;align-items:flex-start;gap:16px;will-change:opacity,transform;pointer-events:none}
-.intro .pill{font-size:12.5px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--green);border:1px solid rgba(61,217,138,.4);border-radius:999px;padding:6px 12px}
-.intro p{font-size:clamp(20px,2.2vw,30px);font-weight:500;letter-spacing:-.03em;line-height:1.15;color:var(--fg);max-width:26ch;margin:0}
-.intro p span{color:var(--fg-2)}
-.search{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(880px,92vw);will-change:transform,opacity}
-.search .hint{font-size:15px;color:var(--fg-2);margin-bottom:18px;min-height:1.4em}
-.search .box{border-bottom:2px solid var(--fg-3);padding:0 64px 14px 0;display:flex;align-items:baseline}
-.search input{width:100%;background:none;border:0;outline:0;color:var(--fg);font:inherit;font-size:clamp(44px,7vw,104px);font-weight:500;letter-spacing:-.04em;line-height:1;caret-color:var(--green);padding:0}
+/* hero — one screen, then the page */
+.hero{position:relative;min-height:100vh;overflow:hidden;background:var(--bg);display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(32px,5vw,80px);align-items:center;padding:clamp(84px,11vh,120px) var(--gut) clamp(40px,7vh,72px)}
+.hero>*{min-width:0}
+.hero .txt{position:relative;z-index:2;max-width:620px}
+.hero .pill{display:inline-block;font-size:12.5px;font-weight:500;letter-spacing:.03em;text-transform:uppercase;color:var(--green);border:1px solid rgba(61,217,138,.4);border-radius:999px;padding:6px 12px}
+.hero h1{font-weight:500;letter-spacing:-.045em;line-height:.95;font-size:clamp(36px,4.2vw,66px);text-wrap:balance;margin-top:20px}
+.hero h1 span{color:var(--fg-2)}
+.hero .p{margin-top:18px;max-width:46ch}
+.search{position:relative;margin-top:30px;max-width:560px;min-width:0}
+.search .hint{font-size:15px;color:var(--fg-2);margin-bottom:14px;min-height:1.4em}
+.search .box{border-bottom:2px solid var(--fg-3);padding:0 64px 12px 0;display:flex;align-items:baseline;min-width:0}
+.search input{width:100%;min-width:0;background:none;border:0;outline:0;color:var(--fg);font:inherit;font-size:clamp(32px,3.4vw,54px);font-weight:500;letter-spacing:-.04em;line-height:1;caret-color:var(--green);padding:0}
 .search input::placeholder{color:var(--fg-3)}
-.search .go{position:absolute;right:0;bottom:16px;width:52px;height:52px;border-radius:999px;background:var(--green);color:var(--green-ink);display:grid;place-items:center;font-size:22px;font-weight:600}
-.count{position:absolute;left:var(--gut);right:var(--gut);top:50%;transform:translateY(-50%);will-change:transform,opacity;pointer-events:none}
-.count .w{display:inline-block;opacity:0;transform:translateY(.25em);will-change:transform,opacity}
-.rows{pointer-events:none;position:absolute;left:var(--gut);right:var(--gut);bottom:clamp(28px,6vh,64px);list-style:none;display:grid;font-size:clamp(15px,1.25vw,19px)}
-.rows li{display:grid;grid-template-columns:1.6fr 1fr 1fr auto;align-items:center;gap:16px;padding:16px 0;border-top:1px solid var(--line);opacity:0;transform:translateY(24px);will-change:transform,opacity}
-.rows li:first-child{border-top-color:var(--line-2)}
-.rows .n{font-weight:500}
-.rows .t,.rows .ph{color:var(--fg-2)}
+.search .go{position:absolute;right:0;bottom:12px;width:52px;height:52px;border-radius:999px;background:var(--green);color:var(--green-ink);display:grid;place-items:center;font-size:22px;font-weight:600}
+.found{display:none;margin-top:22px;max-width:560px}
+.found.on{display:block}
+.found .big{font-weight:500;letter-spacing:-.03em;line-height:1.15;font-size:clamp(20px,1.8vw,28px);text-wrap:balance}
+.found ul{list-style:none;margin-top:12px;display:grid;font-size:15px}
+.found li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
+.found li .n{font-weight:500}
+.found li .t{color:var(--fg-2);margin-left:auto}
 .tag{font-size:12px;font-weight:500;letter-spacing:.02em;color:var(--green);border:1px solid rgba(61,217,138,.4);border-radius:999px;padding:5px 10px;white-space:nowrap}
+.hero .vis{position:relative;z-index:2}
+.hero .frame{aspect-ratio:16/11}
+.hero .frame .shot{clip-path:none}
+.hero .cap{display:flex;justify-content:space-between;gap:16px;margin-top:14px;font-size:14px;color:var(--fg-2)}
+.hero .cap b{color:var(--fg);font-weight:500}
+.hero .down{margin-top:28px;font-size:13px;color:var(--fg-3)}
 
 /* scene 2 — build */
 #s2{height:520vh}
@@ -111,6 +119,7 @@ img{display:block;max-width:100%}
 .frame .bar i{width:10px;height:10px;border-radius:50%;background:#3A3F3B}
 .frame .bar span{margin-left:10px;font-size:12px;color:var(--fg-3);background:#151816;border-radius:6px;padding:4px 10px;flex:1}
 .frame .shot{position:absolute;inset:34px 0 0 0;background-size:100% auto;background-position:top;clip-path:inset(0 0 100% 0);will-change:clip-path}
+.hero .frame .shot{clip-path:none}
 .frame .scan{position:absolute;left:0;right:0;height:2px;background:var(--green);box-shadow:0 0 24px var(--green);top:34px;will-change:transform;opacity:0}
 
 /* scene 3 — the call */
@@ -227,10 +236,15 @@ img{display:block;max-width:100%}
   .nav .links{gap:14px}
   .nav .links .m{display:none}
   .stage .lab{top:76px}
+  .hero{grid-template-columns:1fr;gap:36px;padding:92px 20px 64px;align-content:start}
+  .hero h1{font-size:clamp(36px,10vw,48px)}
+  .search{margin-top:26px}
   .search .box{padding:0 52px 10px 0}
+  .search input{font-size:30px}
   .search .go{width:40px;height:40px;font-size:18px;bottom:10px}
-  .rows li{grid-template-columns:1.4fr auto;gap:10px;padding:13px 0}
-  .rows .t,.rows .ph{display:none}
+  .found li .t{display:none}
+  .hero .frame{aspect-ratio:16/10}
+  .hero .down{display:none}
   .build,.call{grid-template-columns:1fr;align-content:start;gap:22px;padding:110px 20px 24px}
   .build .txt .p{margin-top:14px}
   .log{margin-top:16px;font-size:14px}
@@ -260,31 +274,30 @@ img{display:block;max-width:100%}
   </div>
 </nav>
 
-<!-- 01 · search -->
-<section class="scene" id="s1">
-  <div class="stage" id="top">
-    <div class="wm" aria-hidden="true">Petaluma</div>
-    <div class="lab"><b>( 01 )</b> &nbsp;Search your town</div>
+<!-- hero -->
+<section class="hero" id="top">
+  <div class="wm" aria-hidden="true">Petaluma</div>
+  <div class="txt">
+    <span class="pill">For freelance web designers</span>
+    <h1>Find every business in your town with no website. <span>Then show up with one already built.</span></h1>
+    <p class="p">Point it at a town. It finds the businesses with nothing to click, and builds each one a real site in about three minutes, before you've said a word to them.</p>
     <form class="search" id="tc" autocomplete="off">
-      <div class="intro" id="intro">
-      <span class="pill">For freelance web designers</span>
-      <p>Find every business in your town with no website. <span>Then show up with one already built.</span></p>
-      </div>
       <div class="hint" id="hint">Where do you want clients? Type a real town — this is the same search the tool runs.</div>
-      <div class="box"><input id="town" type="text" placeholder="" aria-label="Town" enterkeyhint="search"></div>
+      <div class="box"><input id="town" type="text" placeholder="Petaluma, CA" aria-label="Town" enterkeyhint="search"></div>
       <button class="go" type="submit" aria-label="Check this town">→</button>
     </form>
-    <h1 class="count h-xl" id="count">
-      <span class="w num g" id="n">0</span> <span class="w">businesses</span> <span class="w">in</span> <span class="w" id="place">Petaluma</span><br>
-      <span class="w">with</span> <span class="w">no</span> <span class="w">website.</span>
-    </h1>
-    <ul class="rows" id="rows" aria-label="Example leads">
-      <li><span class="n">Marin Auto Glass</span><span class="t">Auto glass</span><span class="ph">(707) 555-0132</span><span class="tag">no website</span></li>
-      <li><span class="n">Rapid Rooter</span><span class="t">Plumbing</span><span class="ph">(707) 555-0178</span><span class="tag">no website</span></li>
-      <li><span class="n">Marigold &amp; Fern</span><span class="t">Florist</span><span class="ph">(707) 555-0119</span><span class="tag">no website</span></li>
-      <li><span class="n">Ironworks Gym</span><span class="t">Gym</span><span class="ph">(707) 555-0164</span><span class="tag">no website</span></li>
-      <li><span class="n">Hazel &amp; Rye</span><span class="t">Bakery</span><span class="ph">(707) 555-0141</span><span class="tag">no website</span></li>
-    </ul>
+    <div class="found" id="found" aria-live="polite">
+      <div class="big" id="foundbig"></div>
+      <ul id="foundrows" aria-label="Example leads"></ul>
+    </div>
+    <div class="down">Scroll — how it works ↓</div>
+  </div>
+  <div class="vis">
+    <div class="frame">
+      <div class="bar"><i></i><i></i><i></i><span>marlowehairandskin.com</span></div>
+      <div class="shot" style="background-image:url(/img/ex-marlowe-hair-and-skin.jpg)"></div>
+    </div>
+    <div class="cap"><span><b>Marlowe Hair &amp; Skin</b> · one build, no edits</span><span>2 min 41 s · 62¢</span></div>
   </div>
 </section>
 
@@ -297,7 +310,7 @@ img{display:block;max-width:100%}
         <h2 class="h-l">Three minutes later you're holding their finished website.</h2>
         <p class="p">Pick a business and it builds — before you've spoken a word to them. No code, no design degree.</p>
         <div class="log" id="log">
-          <div><span class="k">0:00</span>Reading Marlowe Hair &amp; Skin</div>
+          <div><span class="k">0:00</span>Reading Harbor &amp; Oak Coffee</div>
           <div><span class="k">0:12</span>Writing the copy</div>
           <div><span class="k">0:48</span>Choosing colours and type</div>
           <div><span class="k">1:30</span>Placing photos</div>
@@ -305,8 +318,8 @@ img{display:block;max-width:100%}
         </div>
       </div>
       <div class="frame" id="frame">
-        <div class="bar"><i></i><i></i><i></i><span>marlowehairandskin.com</span></div>
-        <div class="shot" id="shot" style="background-image:url(/img/ex-marlowe-hair-and-skin.jpg)"></div>
+        <div class="bar"><i></i><i></i><i></i><span>harborandoakcoffee.com</span></div>
+        <div class="shot" id="shot" style="background-image:url(/img-ex/harbor-and-oak-coffee.jpg)"></div>
         <div class="scan" id="scan"></div>
       </div>
     </div>
@@ -518,29 +531,9 @@ img{display:block;max-width:100%}
   var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var narrow=function(){return innerWidth<820};
 
-  /* ---------- scene 1 ---------- */
-  var wm=$('.wm'), intro=$('#intro'), lab1=$('#s1 .lab'), search=$('#tc'), input=$('#town'), hint=$('#hint');
-  var count=$('#count'), words=$$('#count .w'), n=$('#n'), placeEl=$('#place'), rows=$$('#rows li'), rowsEl=$('#rows');
-  var DEMO='Petaluma, CA', TOTAL=38, userTyped=false, rowsN=rows.length;
-  input.addEventListener('focus',function(){userTyped=true; if(input.value===DEMO.slice(0,input.value.length)) input.value='';});
-  input.addEventListener('input',function(){userTyped=true});
-
-  function render1(p){
-    var fi=ease(seg(p,0.01,0.10)); intro.style.opacity=String(1-fi); intro.style.transform='translateY('+(-24*fi)+'px)';
-    if(!userTyped){ input.value=DEMO.slice(0,Math.round(seg(p,0.02,0.26)*DEMO.length)); }
-    var s=ease(seg(p,0.30,0.42));
-    search.style.transform='translate(-50%,-50%) translateY('+(-42*s)+'vh) scale('+(1-0.62*s)+')';
-    search.style.opacity=String(narrow()?1-s:1-0.35*s);
-    search.style.pointerEvents = s>0.5 ? 'none' : '';
-    lab1.style.opacity=String(1-seg(p,0.34,0.40));
-    words.forEach(function(w,i){var k=ease(seg(p,0.40+i*0.025,0.50+i*0.025)); w.style.opacity=String(k); w.style.transform='translateY('+((1-k)*0.25)+'em)';});
-    n.textContent=String(Math.round(ease(seg(p,0.40,0.60))*TOTAL))+(TOTAL_SUFFIX);
-    var up=ease(seg(p,0.60,0.70));
-    count.style.transform='translateY(calc(-50% - '+(up*22)+'vh))';
-    rows.forEach(function(li,i){var k=ease(seg(p,0.64+i*(0.22/rowsN),0.74+i*(0.22/rowsN))); li.style.opacity=String(k); li.style.transform='translateY('+((1-k)*24)+'px)';});
-    wm.style.transform='translateX('+(-p*38)+'vw)';
-  }
-  var TOTAL_SUFFIX='';
+  /* ---------- hero search ---------- */
+  var wm=$('.wm'), search=$('#tc'), input=$('#town'), hint=$('#hint');
+  var found=$('#found'), foundBig=$('#foundbig'), foundRows=$('#foundrows');
 
   /* keep me posted — stored by the app, same origin rule as the town check */
   var keepf=$('#keepf');
@@ -564,17 +557,14 @@ img{display:block;max-width:100%}
     if(window.__px) window.__px('towncheck', town.slice(0,40));
     fetch(EP+'?town='+encodeURIComponent(town)).then(function(r){return r.json()}).then(function(d){
       if(d.error){ hint.textContent=d.error; return; }
-      if(!d.total){ hint.textContent='Every business we can see in '+(d.place||town)+' already lists a website. Try a neighbouring town — most have plenty.'; return; }
-      hint.textContent='Real result for '+d.place+'. Scroll.';
-      TOTAL=d.total; TOTAL_SUFFIX=d.capped?'+':'';
-      placeEl.textContent=d.place; wm.textContent=d.place;
+      if(!d.total){ hint.textContent='Every business we can see in '+(d.place||town)+' already lists a website. Try a neighbouring town — most have plenty.'; found.classList.remove('on'); return; }
+      hint.textContent='Real result for '+d.place+'.';
+      wm.textContent=d.place;
+      foundBig.innerHTML='<span class="g num">'+d.total+(d.capped?'+':'')+'</span> businesses in '+esc(d.place)+' with no website.';
       var sample=(d.sample||[]).slice(0,5);
-      if(sample.length){
-        rowsEl.innerHTML=sample.map(function(x){return '<li><span class="n">'+esc(x.name)+'</span><span class="t">'+esc(x.trade)+'</span><span class="ph">names unlock with a free account</span><span class="tag">no website</span></li>'}).join('');
-        rows=$$('#rows li'); rowsN=rows.length;
-      }
-      var s1=$('#s1'); var target=s1.offsetTop+(s1.offsetHeight-innerHeight)*0.66*0.62;
-      input.blur(); scrollTo({top:target,behavior:reduced?'auto':'smooth'});
+      foundRows.innerHTML=sample.map(function(x){return '<li><span class="n">'+esc(x.name)+'</span><span class="t">'+esc(x.trade)+'</span><span class="tag">no website</span></li>'}).join('');
+      found.classList.add('on');
+      input.blur();
     }).catch(function(){ hint.textContent='Something went wrong looking that up — try again.'; });
   });
 
@@ -601,7 +591,7 @@ img{display:block;max-width:100%}
     show(sum,ease(seg(p,0.66,0.78)));
   }
 
-  var scenes=[[$('#s1'),render1],[$('#s2'),render2],[$('#s3'),render3],[$('#s4'),render4]];
+  var scenes=[[$('#s2'),render2],[$('#s3'),render3],[$('#s4'),render4]];
   var ticking=false;
   function frameTick(){
     scenes.forEach(function(sc){
@@ -613,7 +603,7 @@ img{display:block;max-width:100%}
     ticking=false;
   }
   function onScroll(){ if(!ticking){ticking=true;requestAnimationFrame(frameTick)} }
-  if(reduced){ scenes.forEach(function(sc){sc[1](1)}); input.value=DEMO; }
+  if(reduced){ scenes.forEach(function(sc){sc[1](1)}); }
   else { addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',onScroll); frameTick(); }
 
   /* nav goes dark over the green band */
@@ -636,7 +626,7 @@ img{display:block;max-width:100%}
     $$('.toggle button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
     $$('.plans').forEach(function(pl){pl.hidden=pl.dataset.cycle!==b.dataset.cycle});
   })});
-  window.__render={s1:render1,s2:render2,s3:render3,s4:render4};
+  window.__render={s2:render2,s3:render3,s4:render4};
 })();
 
 /* ---------------------------------------------------------------- tracking
