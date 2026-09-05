@@ -43,3 +43,24 @@ Quick facts for this repo:
   Screenshot measurements report a failed check with exit 1; setup failure exits 2.
   A fixed headless viewport is not proof of mobile browser-toolbar behavior; retain
   a real-device check for that browser-specific interaction.
+
+## Homepage structured data
+
+- The head contains three separate JSON-LD blocks: the original `SoftwareApplication`
+  and its unchanged Solo/Studio offers, `Organization`, and `FAQPage`.
+- `FAQPage` mirrors all nine visible `.faq details` questions and their complete answer
+  text, including both paragraphs of the publishing answer. Update the visible answer
+  and JSON-LD together. The lead-source answer describes Overture Maps with OpenStreetMap
+  fallback and incomplete checks; earnings are recorded when paid and paid out by Finley,
+  with automatic Stripe payouts unavailable and no payout timing promised.
+- `Organization` uses Unwebbed, `https://unwebbed.app/`, the existing `/brand/mark.svg`
+  logo, and `hello@unwebbed.app`. Do not invent reviews, social profiles or company facts.
+- Run `node --test tests/*.test.js` for schema/copy agreement and viewport-fence checks.
+  `tools/homepage_schema_preview.js` uses the same pre-navigation production fence as
+  the viewport helper and checks actual DOM answers on desktop and phone. Run it from
+  `/root/tools/shot` with that folder's `NODE_PATH`; existing evidence is never overwritten.
+- For external schema validation, submit only the helper's inert `schema-input.html`
+  through Schema.org Validator's Code snippet tab, never a live URL or the executable
+  homepage. It contains all three exact JSON-LD blocks and no fetchable HTML resources.
+  Keep the input hash and actual tester counts with the result screenshot. A local JSON
+  parse check is not an external validator result or a promise of search visibility.

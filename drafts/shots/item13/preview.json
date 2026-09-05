@@ -1,0 +1,43 @@
+{
+  "mode": "local-static-only",
+  "origin": "http://127.0.0.1:8400",
+  "source_sha256": "f7a36323c827388d81b1f3905b1c5f22d689ecf4316e214df90e8c7906cc4351",
+  "input_sha256": "f03aea2f7afd43768e78b927da0d93fde9f0c3b67c8658de48dd554aea8a12da",
+  "schema_types": [
+    "SoftwareApplication",
+    "Organization",
+    "FAQPage"
+  ],
+  "software_sha256": "c175b00403237c9eacd167f4563f7376e6b39b89fe412074b4d21ed7ff7de8ad",
+  "audit": {
+    "allowedStatic": 17,
+    "blocked": 6,
+    "blockedProduction": 6,
+    "blockedWebSockets": 0,
+    "townFixtures": 0,
+    "subscribeFixtures": 0
+  },
+  "measurements": [
+    {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "faqCount": 9,
+      "allAnswersMatch": true,
+      "horizontalOverflow": 0,
+      "javaScriptErrors": []
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "faqCount": 9,
+      "allAnswersMatch": true,
+      "horizontalOverflow": 0,
+      "javaScriptErrors": []
+    }
+  ],
+  "external_schema_validation": "pending — this local check is not the schema.org result"
+}
