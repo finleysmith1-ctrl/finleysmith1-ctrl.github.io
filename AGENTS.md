@@ -17,4 +17,4 @@ Quick facts for this repo:
 - The first line of any report to Finley about this site is **"Live on unwebbed.app"** or
   **"Not pushed yet"**.
 
-Viewport sizing keeps `vh` fallbacks followed by `dvh`; the phone hero remains content-safe and reduced-motion scenes do not overlap. FAQPage mirrors the nine visible answers, alongside Organization and the existing SoftwareApplication schema.
+Viewport sizing keeps `vh` fallbacks followed by `dvh`; the phone hero remains content-safe and reduced-motion scenes do not overlap. FAQPage mirrors the nine visible answers, alongside Organization and the existing SoftwareApplication schema. The hero image and font are preloaded; the sheet and rail images lazy-load with explicit dimensions.
