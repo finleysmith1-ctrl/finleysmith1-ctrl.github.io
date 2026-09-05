@@ -117,10 +117,10 @@
       '  c=mix(vec3(0.24,0.85,0.54)*(1.0+flash),vec3(1.0,0.86,0.62),flip);',
       '  on=f;sz*=1.0+0.4*flash*(1.0-flip);',
       ' }',
-      ' float tw=1.0-uTwinkle*0.42*(0.5+0.5*sin(uTime*(0.7+aSeed*1.9)+aSeed*60.0));',
+      ' float tw=1.0-uTwinkle*0.22*(0.5+0.5*sin(uTime*(0.5+aSeed*1.3)+aSeed*60.0));',
       ' float coc=clamp(abs(depth-uFocus)/uDof,0.0,1.0);coc=coc*coc*(3.0-2.0*coc);',
       ' float base=sz*uScale/depth;',
-      ' float grow=1.0+coc*3.6;float ps=base*grow;',
+      ' float grow=1.0+coc*3.0;float ps=base*grow;',
       ' float a=on*tw*uGain*exp(-depth*uFog);',
       ' if(base<1.6){a*=base*base/2.56;}',
       ' float cap=uMaxPS/uPR;if(ps>cap){a*=cap*cap/(ps*ps);ps=cap;}',
@@ -178,7 +178,7 @@
   function V(x,y,z){return new THREE.Vector3(x,y,z)}
   var KP=[V(-22,84,66),V(-15,68,55),V(-6,48,40),V(SP.x-6,27,SP.z+25),V(SP.x-8,12,SP.z+14),V(SP.x-7.5,3.4,SP.z+6.5),V(SP.x+5.5,7.5,SP.z+6.5),V(SP.x+12,22,SP.z+24),V(-14,76,64)];
   var KT=[V(-3,0,-4),V(-1,0,-1),V(2,0,2),V(SP.x+1,0.5,SP.z+2),V(SP.x,1,SP.z),V(SP.x,1.3,SP.z),V(SP.x,1.1,SP.z),V(2,0,0),V(0,0,-2)];
-  var KD=[95,80,64,44,26,13,13,34,95], KG=[1.1,1.08,1.02,0.95,0.88,0.8,0.8,0.55,0.75], KF=[0.0026,0.003,0.004,0.008,0.016,0.045,0.05,0.012,0.0026];
+  var KD=[95,80,64,44,30,20,20,40,95], KG=[1.1,1.08,1.0,0.9,0.75,0.55,0.55,0.45,0.6], KF=[0.0026,0.003,0.004,0.008,0.016,0.045,0.05,0.012,0.0026];
   var cp=new THREE.CatmullRomCurve3(KP,false,'catmullrom',0.5), ct=new THREE.CatmullRomCurve3(KT,false,'catmullrom',0.5);
   var hero=document.getElementById('top'),s2=document.getElementById('s2'),s3=document.getElementById('s3'),s4=document.getElementById('s4'),flow=document.querySelector('.flow');
   var marks=[0,1,2,3,4];
