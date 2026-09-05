@@ -143,6 +143,11 @@ img{display:block;max-width:100%}
 .p b{color:var(--fg);font-weight:500}
 .btn{display:inline-flex;align-items:center;gap:10px;padding:16px 24px;border-radius:999px;background:var(--green);color:var(--green-ink);font-weight:600;font-size:17px;letter-spacing:-.01em}
 .btn.ghost{background:none;color:var(--fg);border:1px solid var(--line-2)}
+.mailme{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.mailme .addr{font-size:13.5px;color:var(--fg-2);user-select:all;cursor:text}
+.mailme .addr.copied{color:var(--green)}
+@media (max-width:820px){.mailme{align-items:flex-start}}
+
 .g{color:var(--green)}
 .num{font-variant-numeric:tabular-nums}
 
@@ -509,7 +514,7 @@ img{display:block;max-width:100%}
       <p class="p">So I built the thing that finds them, and made it build the site too, because turning up with the work already done beats asking for a meeting.</p>
       <blockquote>Every awkward part of this job is why the tool is shaped the way it is. The call sheet exists because I needed one. The pitch says what it says because I had to send it.</blockquote>
       <p class="p">There aren't many of us yet, and that is the good part. When you email me, <b>I answer</b> — not a support queue. If something here is wrong for the way you work, tell me and it changes.</p>
-      <div class="signoff"><img src="/brand/mark.svg" alt="" width="52" height="46"><div><div class="n">Finley C. W. Smith</div><div class="r">Founder · Marin County, California</div></div><a class="btn ghost" href="mailto:hello@unwebbed.app">Email Finley</a></div>
+      <div class="signoff"><img src="/brand/mark.svg" alt="" width="52" height="46"><div><div class="n">Finley C. W. Smith</div><div class="r">Founder · Marin County, California</div></div><div class="mailme"><a class="btn ghost" href="mailto:finley@unwebbed.app" id="emailme">Email Finley</a><span class="addr" id="emailaddr">finley@unwebbed.app</span></div></div>
     </div>
   </div>
 </section>
@@ -641,7 +646,7 @@ img{display:block;max-width:100%}
 </section>
 <footer class="foot">
   <div><img src="/brand/mark-ink.svg" alt="" width="27" height="24" style="vertical-align:middle;margin-right:8px">© 2026 Unwebbed · data from OpenStreetMap · payments by Stripe</div>
-  <div><a href="https://app.unwebbed.app/login">Log in</a><a href="https://app.unwebbed.app/billing">Billing</a><a href="mailto:support@unwebbed.app">Support</a><a href="https://app.unwebbed.app/terms">Terms</a><a href="https://app.unwebbed.app/privacy">Privacy</a></div>
+  <div><a href="https://app.unwebbed.app/login">Log in</a><a href="https://app.unwebbed.app/billing">Billing</a><a href="mailto:finley@unwebbed.app">Support</a><a href="https://app.unwebbed.app/terms">Terms</a><a href="https://app.unwebbed.app/privacy">Privacy</a></div>
 </footer>
 </div>
 
@@ -731,6 +736,11 @@ img{display:block;max-width:100%}
   if(reduced){ scenes.forEach(function(sc){sc[1](1)}); }
   else { addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',onScroll); frameTick(); }
 
+
+  /* "Email Finley": mailto: does nothing on a device with no mail app set up, so the
+     address is printed beside the button and a click also copies it. */
+  var em=$('#emailme'), ad=$('#emailaddr');
+  if(em&&ad){ em.addEventListener('click',function(){ try{ navigator.clipboard.writeText('finley@unwebbed.app').then(function(){ ad.textContent='finley@unwebbed.app — copied'; ad.classList.add('copied'); setTimeout(function(){ad.textContent='finley@unwebbed.app';ad.classList.remove('copied')},2600); }); }catch(e){} }); }
   /* nav goes dark over the green band */
   var nav=$('.nav'), greens=[$('.end'),$('.foot')], onGreen={};
   if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){es.forEach(function(e){onGreen[e.target.className]=e.isIntersecting}); nav.classList.toggle('dark',Object.keys(onGreen).some(function(k){return onGreen[k]}))},{rootMargin:'-40px 0px -95% 0px'}); greens.forEach(function(g){io.observe(g)}); }
