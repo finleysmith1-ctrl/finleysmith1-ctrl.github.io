@@ -364,6 +364,22 @@ img{display:block;max-width:100%}
   .scene{height:100vh!important;height:100dvh!important}
   .scene+.scene,.scene+.flow{margin-top:0}
 }
+
+/* who: the signed letter (Finley's pick, 2026-09-05) */
+#who .who2{grid-template-columns:.9fr 1.1fr;gap:clamp(32px,5vw,72px);align-items:start}
+#who .facts{list-style:none;margin-top:28px;display:grid;gap:12px;color:var(--fg-2);font-size:16px}
+#who .facts li{display:flex;gap:12px;align-items:baseline}
+#who .facts li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green);flex:0 0 8px;transform:translateY(-1px)}
+#who .letter{background:var(--bg-2);border:1px solid var(--line-2);border-radius:20px;padding:clamp(28px,3.4vw,48px)}
+#who .letter .p{max-width:none;font-size:clamp(17px,1.25vw,20px)}
+#who .letter .p:first-child{font-size:clamp(19px,1.45vw,23px);color:var(--fg)}
+#who .letter blockquote{margin:28px 0;padding:0 0 0 22px;border-left:2px solid var(--green);color:var(--fg);font-size:clamp(19px,1.5vw,24px);line-height:1.35;letter-spacing:-.015em;max-width:none}
+#who .signoff{display:flex;align-items:center;gap:18px;margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
+#who .signoff img{width:52px;height:46px;border-radius:10px;background:#fff;padding:6px}
+#who .signoff .n{font-weight:600;font-size:17px;letter-spacing:-.02em}
+#who .signoff .r{font-size:14px;color:var(--fg-2)}
+#who .signoff .btn{margin-left:auto;padding:12px 18px;font-size:15px}
+@media (max-width:820px){#who .who2{grid-template-columns:1fr}#who .signoff{flex-wrap:wrap}#who .signoff .btn{margin-left:0;width:100%;justify-content:center}}
 </style>
 </head>
 <body>
@@ -478,14 +494,22 @@ img{display:block;max-width:100%}
 <!-- who -->
 <section class="sec" id="who" style="border-top:1px solid var(--line)">
   <div class="who2">
-    <div><div class="lab"><b>Who's behind this</b></div><h2 class="h-l" style="margin-top:16px">I'm doing the same thing you are.</h2></div>
     <div>
-      <p class="p">I'm <b>Finley</b>. I built Unwebbed on my own, in Marin County, and I use it on my own town before I ask anyone else to.</p>
+      <div class="lab"><b>Who's behind this</b></div>
+      <h2 class="h-l" style="margin-top:16px">I'm doing the same thing you are.</h2>
+      <ul class="facts">
+        <li>Built by one person, in Marin County</li>
+        <li>Used on my own town first, every time</li>
+        <li>Email me and I answer — not a support queue</li>
+      </ul>
+    </div>
+    <div class="letter">
+      <p class="p">I'm Finley. I built Unwebbed on my own, in Marin County, and I use it on my own town before I ask anyone else to.</p>
       <p class="p">It started when I looked up the businesses near me and found dozens with no website — auto shops, barbers, bakeries — all running on a phone number and a Google listing. The work was obvious. Finding the people who needed it was the hard part.</p>
       <p class="p">So I built the thing that finds them, and made it build the site too, because turning up with the work already done beats asking for a meeting.</p>
       <blockquote>Every awkward part of this job is why the tool is shaped the way it is. The call sheet exists because I needed one. The pitch says what it says because I had to send it.</blockquote>
       <p class="p">There aren't many of us yet, and that is the good part. When you email me, <b>I answer</b> — not a support queue. If something here is wrong for the way you work, tell me and it changes.</p>
-      <div class="sig">— Finley · Marin County, California · <a href="mailto:hello@unwebbed.app" style="color:var(--fg);border-bottom:1px solid var(--line-2)">hello@unwebbed.app</a></div>
+      <div class="signoff"><img src="/brand/mark.svg" alt="" width="52" height="46"><div><div class="n">Finley C. W. Smith</div><div class="r">Founder · Marin County, California</div></div><a class="btn ghost" href="mailto:hello@unwebbed.app">Email Finley</a></div>
     </div>
   </div>
 </section>
