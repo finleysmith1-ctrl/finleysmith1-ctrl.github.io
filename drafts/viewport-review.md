@@ -80,11 +80,13 @@ the row labels from the stage label positioning and verify every wrapped label.
 
 ## Safety and limits
 
-The browser fence was installed before every navigation. It blocked 16 attempted
-production analytics requests; eight town searches used a fixed five-row fixture.
-Only public static GETs reached the local preview. No subscriptions were submitted.
-Eight focused Node tests passed. The browser helper correctly exited 1 because the
-two mobile one-screen checks failed; this is not an all-green preview.
+The browser fence was installed before every navigation. Each complete helper execution
+blocked 16 attempted production analytics requests; eight town searches used a fixed
+five-row fixture. Only public static GETs reached the local preview. No subscriptions
+were submitted. Attempt 1 had eight focused Node tests and correctly exited 1 because
+the two mobile one-screen checks failed. The final attempt 3 has ten passing focused
+tests, all eight size/motion cases passing, and helper exit 0. The existing price-label
+limitation above is outside those layout and animation-endpoint checks.
 
 Headless Chromium supports `dvh` here, but a fixed emulated viewport cannot prove how a
 real mobile browser's toolbar expands or collapses. A device check remains appropriate.
@@ -100,11 +102,12 @@ python3 -m http.server 8400 --bind 127.0.0.1
 ```
 
 In a separate shell, run the guarded helper from its installed dependency folder. Use a
-new attempt number (1 through 4); earlier evidence is never overwritten or deleted:
+new attempt number (1 through 4); attempts 1–3 are already retained, so use the still-unused
+attempt 4 below. Earlier evidence is never overwritten or deleted:
 
 ```sh
 cd /root/tools/shot
-NODE_PATH=/root/tools/shot/node_modules node /root/code/uw-codex-site/tools/homepage_preview.js attempt-2
+NODE_PATH=/root/tools/shot/node_modules node /root/code/uw-codex-site/tools/homepage_preview.js attempt-4
 ```
 
 Do not push `main`: that deploys the public homepage. This is a review branch only;
