@@ -96,6 +96,8 @@ img{display:block;max-width:100%}
 .found li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
 .found li .n{font-weight:500}
 .found li .t{color:var(--fg-2);margin-left:auto}
+.found .unlock{display:block;margin-top:12px;font-size:14px;color:var(--fg-2);border-top:1px solid var(--line);padding-top:12px}
+.found .unlock:hover{color:var(--fg)}
 .tag{font-size:12px;font-weight:500;letter-spacing:.02em;color:var(--green);border:1px solid rgba(61,217,138,.4);border-radius:999px;padding:5px 10px;white-space:nowrap}
 .hero .vis{position:relative;z-index:2}
 .hero .frame{aspect-ratio:16/11}
@@ -289,6 +291,7 @@ img{display:block;max-width:100%}
     <div class="found" id="found" aria-live="polite">
       <div class="big" id="foundbig"></div>
       <ul id="foundrows" aria-label="Example leads"></ul>
+      <a class="unlock" href="https://app.unwebbed.app/signup">Names, phone numbers and the rest unlock with a free account →</a>
     </div>
     <div class="down">Scroll — how it works ↓</div>
   </div>
