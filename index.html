@@ -753,6 +753,11 @@ img{display:block;max-width:100%}
      address is printed beside the button and a click also copies it. */
   var em=$('#emailme'), ad=$('#emailaddr');
   if(em&&ad){ em.addEventListener('click',function(){ try{ navigator.clipboard.writeText('finley@unwebbed.app').then(function(){ ad.textContent='finley@unwebbed.app — copied'; ad.classList.add('copied'); setTimeout(function(){ad.textContent='finley@unwebbed.app';ad.classList.remove('copied')},2600); }); }catch(e){} }); }
+
+  /* Campaign tracking: an ad lands here, the signup happens on the app. Carry the
+     utm_* values across on every app link so /stats can say which ad paid. */
+  (function(){ var q=new URLSearchParams(location.search), keep=[]; q.forEach(function(v,k){ if(/^utm_/.test(k)) keep.push(k+'='+encodeURIComponent(v)); });
+    if(!keep.length) return; $$('a[href^="https://app.unwebbed.app"]').forEach(function(a){ a.href+= (a.href.indexOf('?')>-1?'&':'?')+keep.join('&'); }); })();
   /* nav goes dark over the green band */
   var nav=$('.nav'), greens=[$('.end'),$('.foot')], onGreen={};
   if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){es.forEach(function(e){onGreen[e.target.className]=e.isIntersecting}); nav.classList.toggle('dark',Object.keys(onGreen).some(function(k){return onGreen[k]}))},{rootMargin:'-40px 0px -95% 0px'}); greens.forEach(function(g){io.observe(g)}); }
