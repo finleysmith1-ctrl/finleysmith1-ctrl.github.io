@@ -809,6 +809,32 @@ img{display:block;max-width:100%}
   window.__px = px;
   px('view');
 
+  /* 🔴 Did a PERSON look at this page, or did a script load it?
+     px('view') above fires the moment the document loads, which a headless
+     scraper does exactly as well as a reader — so on its own it cannot tell
+     them apart, and on 2026-09-18 that was 254 of 267 weekly visitors firing
+     one bare view and nothing else. This fires once, on the first genuine
+     sign of a person: a scroll, a pointer move, a touch, a key.
+
+     Two deliberate guards. Nothing counts inside the first 1.5 seconds,
+     because an "interaction" that lands instantly is a script, not a hand.
+     And the reason is sent along, so a quiet ten-second read stays separable
+     from a real interaction instead of being quietly merged into it. */
+  (function () {
+    var done = false, t0 = Date.now();
+    function engage(why) {
+      if (done || Date.now() - t0 < 1500) return;
+      done = true;
+      px('engaged', why);
+    }
+    ['scroll', 'pointermove', 'touchstart', 'keydown'].forEach(function (ev) {
+      addEventListener(ev, function () { engage(ev); }, { passive: true });
+    });
+    /* Somebody can read without touching anything. Only counts while the tab
+       is actually visible — a background prefetch is not a reader. */
+    setTimeout(function () { if (!document.hidden) engage('dwell10'); }, 10000);
+  })();
+
   /* Carry the campaign across to the app, which is a different origin and so
      cannot read this page's URL. Without this hand-off every signup would be
      attributed to "direct" and no channel could ever be judged. */
