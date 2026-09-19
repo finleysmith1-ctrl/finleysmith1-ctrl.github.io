@@ -228,6 +228,7 @@ img{display:block;max-width:100%}
 .hero .frame{aspect-ratio:16/11}
 .hero .cap{display:flex;justify-content:space-between;gap:16px;margin-top:14px;font-size:14px;color:var(--fg-2)}
 .hero .cap b{color:var(--fg);font-weight:500}
+.hint:empty{display:none}
 .hero .towndir{margin:16px 0 0;font-size:14px}
 .hero .towndir a{color:var(--fg-2);text-decoration:none;border-bottom:1px solid var(--line)}
 .hero .towndir a:hover{color:var(--fg);border-bottom-color:currentColor}
@@ -434,9 +435,12 @@ img{display:block;max-width:100%}
   <div class="wm" aria-hidden="true">Petaluma</div>
   <div class="txt">
     <h1>Find every business in your town with no website. <span>Then show up with one already built.</span></h1>
-    <p class="p">Point it at a town. It finds the businesses with nothing to click, and builds each one a real site in about three minutes, before you've said a word to them.</p>
     <form class="search" id="tc" autocomplete="off">
-      <div class="hint" id="hint">Where do you want clients? Type a real town — this is the same search the tool runs.</div>
+      <!-- Empty on purpose. The search JS writes status here ("Searching
+           Petaluma…", "Real result for Petaluma", errors), so the element has
+           to exist — but standing instructions above a box that already says
+           "Petaluma, CA" are words nobody reads. Hidden while empty. -->
+      <div class="hint" id="hint"></div>
       <div class="box"><input id="town" type="text" placeholder="Petaluma, CA" aria-label="Town" enterkeyhint="search"></div>
       <button class="go" type="submit" aria-label="Check this town">→</button>
     </form>
