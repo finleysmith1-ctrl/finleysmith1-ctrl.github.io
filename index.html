@@ -213,6 +213,9 @@ img{display:block;max-width:100%}
 .hero .frame{aspect-ratio:16/11}
 .hero .cap{display:flex;justify-content:space-between;gap:16px;margin-top:14px;font-size:14px;color:var(--fg-2)}
 .hero .cap b{color:var(--fg);font-weight:500}
+.hero .towndir{margin:16px 0 0;font-size:14px}
+.hero .towndir a{color:var(--fg-2);text-decoration:none;border-bottom:1px solid var(--line)}
+.hero .towndir a:hover{color:var(--fg);border-bottom-color:currentColor}
 .hero .down{margin-top:28px;font-size:13px;color:var(--fg-3)}
 
 /* scene 2 — build */
@@ -427,6 +430,14 @@ img{display:block;max-width:100%}
       <ul id="foundrows" aria-label="Example leads"></ul>
       <a class="unlock" href="https://app.unwebbed.app/signup">Names, phone numbers and the rest unlock with a free account →</a>
     </div>
+    <!-- 🔴 A real <a> to the town directory, for two reasons. Crawlers find
+         pages by following links, and until this existed the 212 town pages
+         were reachable only from app.unwebbed.app's sitemap — nothing on the
+         apex domain, which carries the authority, pointed at them at all. And
+         a visitor who can't think of a town to type now has somewhere to go
+         instead of bouncing. -->
+    <p class="towndir"><a href="https://app.unwebbed.app/towns">Or browse the
+      count for every town we've measured →</a></p>
     <div class="down">Scroll — how it works ↓</div>
   </div>
   <div class="vis">
