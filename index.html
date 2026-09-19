@@ -159,6 +159,12 @@ img{display:block;max-width:100%}
 
 /* nav */
 .nav{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:22px var(--gut);color:#fff;transition:color .2s}
+/* 🔴 .nav is position:fixed with NO background, so once the page is scrolled it
+   floats over whatever is underneath and the text collides. Harmless while the
+   hero was only ever read at scrollY=0 — but the town search now scrolls the
+   result into view, so this happens to every visitor who searches. Backdrop
+   only when scrolled AND not over a green section, which keeps .dark intact. */
+.nav.stuck:not(.dark){background:color-mix(in srgb, var(--bg) 80%, transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .nav.dark{color:var(--green-ink)}
 .nav.dark .cta{border-color:rgba(11,44,27,.5)}
 .nav .brand{font-weight:600;font-size:19px;letter-spacing:-.03em;display:inline-flex;align-items:center;gap:9px}
@@ -198,8 +204,17 @@ img{display:block;max-width:100%}
 .found li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
 .found li .n{font-weight:500}
 .found li .t{color:var(--fg-2);margin-left:auto}
-.found .unlock{display:block;margin-top:12px;font-size:14px;color:var(--fg-2);border-top:1px solid var(--line);padding-top:12px}
-.found .unlock:hover{color:var(--fg)}
+.found .unlocknote{margin:14px 0 11px;font-size:14px;color:var(--fg-2);border-top:1px solid var(--line);padding-top:12px}
+/* 🔴 This is the single highest-value click on the site: the moment someone has
+   just seen a real number for their own town. It was a 14px grey text link with
+   no underline, sitting at y=824 in an 844px phone viewport — below the fold,
+   and less prominent than the "browse every town" link directly beneath it,
+   which is why visitors kept browsing towns instead of signing up (one ran 18
+   town checks and never converted). It is a button now, in the same green as
+   the count itself. */
+.found .unlock{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;background:var(--green);color:var(--green-ink);font-weight:600;font-size:16px;letter-spacing:-.01em}
+.found .unlock:hover{filter:brightness(1.07)}
+@media (max-width:620px){.found .unlock{display:flex;justify-content:center;width:100%;font-size:15px;padding:14px 18px}}
 .tag{font-size:12px;font-weight:500;letter-spacing:.02em;color:var(--green);border:1px solid rgba(61,217,138,.4);border-radius:999px;padding:5px 10px;white-space:nowrap}
 .hero .vis{position:relative;z-index:2}
 /* first screen (Finley's pick, 2026-09-05): a warm photo from a real example site, the finished site on a phone in front of it */
@@ -428,7 +443,8 @@ img{display:block;max-width:100%}
     <div class="found" id="found" aria-live="polite">
       <div class="big" id="foundbig"></div>
       <ul id="foundrows" aria-label="Example leads"></ul>
-      <a class="unlock" href="https://app.unwebbed.app/signup">Names, phone numbers and the rest unlock with a free account →</a>
+      <p class="unlocknote">Names, phone numbers and addresses — all of them, free.</p>
+      <a class="unlock" id="unlock" href="https://app.unwebbed.app/signup">Unlock the names — free &rarr;</a>
     </div>
     <!-- 🔴 A real <a> to the town directory, for two reasons. Crawlers find
          pages by following links, and until this existed the 212 town pages
@@ -685,7 +701,7 @@ img{display:block;max-width:100%}
 
   /* ---------- hero search ---------- */
   var wm=$('.wm'), search=$('#tc'), input=$('#town'), hint=$('#hint');
-  var found=$('#found'), foundBig=$('#foundbig'), foundRows=$('#foundrows');
+  var found=$('#found'), foundBig=$('#foundbig'), foundRows=$('#foundrows'), unlockBtn=$('#unlock');
 
   /* keep me posted — stored by the app, same origin rule as the town check */
   var keepf=$('#keepf');
@@ -713,10 +729,22 @@ img{display:block;max-width:100%}
       hint.textContent='Real result for '+d.place+'.';
       wm.textContent=d.place;
       foundBig.innerHTML='<span class="g num">'+d.total+(d.capped?'+':'')+'</span> businesses in '+esc(d.place)+' with no website.';
-      var sample=(d.sample||[]).slice(0,5);
+      /* Three rows on a phone, five on desktop. Five pushed the unlock button
+         ~96px below the fold; three is still enough of a tease. */
+      var sample=(d.sample||[]).slice(0, window.innerWidth<=620 ? 3 : 5);
       foundRows.innerHTML=sample.map(function(x){return '<li><span class="n">'+esc(x.name)+'</span><span class="t">'+esc(x.trade)+'</span><span class="tag">no website</span></li>'}).join('');
+      if(unlockBtn) unlockBtn.innerHTML='Unlock all '+d.total+(d.capped?'+':'')+' names — free &rarr;';
       found.classList.add('on');
       input.blur();
+      /* 🔴 Bring the WHOLE result into view, button included. Trimming rows and
+         shrinking padding only ever wins ~30px, and the fold lands in a
+         different place on every device — on a 1440x900 desktop the button was
+         still 54px under it. Scrolling is the only fix that holds everywhere.
+         Deferred a frame so it measures the block AFTER the rows render. */
+      requestAnimationFrame(function(){
+        try{ found.scrollIntoView({behavior: reduced ? 'auto' : 'smooth', block:'center'}); }
+        catch(e){ found.scrollIntoView(); }
+      });
     }).catch(function(){ hint.textContent='Something went wrong looking that up — try again.'; });
   });
 
@@ -771,6 +799,8 @@ img{display:block;max-width:100%}
     if(!keep.length) return; $$('a[href^="https://app.unwebbed.app"]').forEach(function(a){ a.href+= (a.href.indexOf('?')>-1?'&':'?')+keep.join('&'); }); })();
   /* nav goes dark over the green band */
   var nav=$('.nav'), greens=[$('.end'),$('.foot')], onGreen={};
+  var setStuck=function(){ nav.classList.toggle('stuck', (window.scrollY||0) > 24); };
+  addEventListener('scroll', setStuck, {passive:true}); setStuck();
   if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){es.forEach(function(e){onGreen[e.target.className]=e.isIntersecting}); nav.classList.toggle('dark',Object.keys(onGreen).some(function(k){return onGreen[k]}))},{rootMargin:'-40px 0px -95% 0px'}); greens.forEach(function(g){io.observe(g)}); }
 
   /* examples rail: arrows + mouse drag */
