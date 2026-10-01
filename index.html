@@ -783,7 +783,13 @@ document.querySelectorAll('.tries button').forEach(function(b){b.addEventListene
          ~96px below the fold; three is still enough of a tease. */
       var sample=(d.sample||[]).slice(0, window.innerWidth<=620 ? 3 : 5);
       foundRows.innerHTML=sample.map(function(x){return '<li><span class="n">'+esc(x.name)+'</span><span class="t">'+esc(x.trade)+'</span><span class="tag">no website</span></li>'}).join('');
-      if(unlockBtn) unlockBtn.innerHTML='Unlock all '+d.total+(d.capped?'+':'')+' names — free &rarr;';
+      if(unlockBtn){
+        unlockBtn.innerHTML='Unlock all '+d.total+(d.capped?'+':'')+' names — free &rarr;';
+        /* Hand the town (and its commonest trades) to signup, so the new account
+           opens on these results instead of an empty search box (2026-10-01). */
+        var tr=(d.trades||[]).slice(0,5).map(function(t){return String(t.trade).toLowerCase().replace(/[^a-z]+/g,'_')}).join(',');
+        unlockBtn.href='https://app.unwebbed.app/signup?town='+encodeURIComponent(town)+(tr?'&trade='+encodeURIComponent(tr):'');
+      }
       found.classList.add('on');
       input.blur();
       /* 🔴 Bring the WHOLE result into view, button included. Trimming rows and
