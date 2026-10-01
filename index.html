@@ -452,42 +452,66 @@ img{display:block;max-width:100%}
 </nav>
 
 <!-- hero -->
-<section class="hero" id="top">
-  <div class="wm" aria-hidden="true">Petaluma</div>
+<section class="hero vx vc" id="top">
+  <style>
+.vx .search{margin-top:28px;max-width:600px}
+.vx .search .box{border:1px solid var(--line-2);border-radius:16px;background:#1A1D1B;padding:6px 6px 6px 22px;display:flex;align-items:center;gap:10px}
+.vx .search input{font-size:20px;font-weight:400;letter-spacing:-.01em;line-height:1.2;padding:14px 0;color:var(--fg)}
+.vx .search input::placeholder{color:var(--fg-3)}
+.vx .search .go{position:static;width:auto;height:auto;border-radius:12px;padding:15px 22px;font-size:16px;font-weight:600;white-space:nowrap;flex:none}
+.vx .search .box:focus-within{border-color:rgba(61,217,138,.7);box-shadow:0 0 0 4px rgba(61,217,138,.12)}
+.vx .search .hint:empty{display:none}
+.vx .tries{margin-top:16px;font-size:14px;color:var(--fg-3);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.vx .tries button{border:1px solid var(--line-2);border-radius:999px;padding:7px 13px;color:var(--fg-2);font-size:14px;background:none;cursor:pointer}
+.vx .tries button b{color:var(--green);font-weight:500;margin-left:4px}
+.vx .tries button:hover{border-color:var(--fg-3);color:var(--fg)}
+.vx .wm{display:none}
+@media (max-width:620px){.vx .search .box{padding:5px 5px 5px 16px}.vx .search input{font-size:17px;padding:12px 0}.vx .search .go{padding:13px 15px;font-size:15px}}
+
+  .vc{grid-template-columns:1fr;justify-items:center;text-align:center;align-content:center;padding-bottom:40px}
+  .vc .txt{max-width:820px;display:flex;flex-direction:column;align-items:center}
+  .vc h1{font-size:clamp(38px,5vw,76px)}
+  .vc .sub{margin-top:18px;color:var(--fg-2);font-size:clamp(17px,1.5vw,21px);line-height:1.45;max-width:46ch}
+  .vc .search{width:100%;max-width:640px;margin-top:34px}
+  .vc .search .box{border-radius:999px;background:#F4F3EE;border-color:#F4F3EE;padding:7px 7px 7px 26px}
+  .vc .search input{color:#111312;font-size:21px}
+  .vc .search input::placeholder{color:#7B807A}
+  .vc .search .go{border-radius:999px}
+  .vc .tries{justify-content:center}
+  .vc .found{text-align:left;width:100%;max-width:640px}
+  .vc .towndir{margin-top:18px}
+  .vc .strip{display:flex;gap:16px;margin-top:36px;justify-content:center;align-items:flex-end}
+  .vc .strip img{width:150px;height:auto;border-radius:14px;border:1px solid var(--line-2);display:block}
+  .vc .strip img:nth-child(2){width:180px}
+  @media (max-width:620px){.vc .strip img{width:92px}.vc .strip img:nth-child(2){width:112px}.vc .strip{gap:10px;margin-top:30px}}
+  </style>
+  <div class="wm" aria-hidden="true"></div>
   <div class="txt">
-    <h1>Show up with the website already built. <span>Not a list of leads. A finished site, in three minutes.</span></h1>
+    <h1>Find the businesses near you with no website.</h1>
+    <p class="sub">Unwebbed counts them, builds each one a finished site in three minutes, and you show up with it.</p>
     <form class="search" id="tc" autocomplete="off">
-      <!-- Empty on purpose. The search JS writes status here ("Searching
-           Petaluma…", "Real result for Petaluma", errors), so the element has
-           to exist — but standing instructions above a box that already says
-           "Petaluma, CA" are words nobody reads. Hidden while empty. -->
       <div class="hint" id="hint"></div>
-      <div class="box"><input id="town" type="text" placeholder="Petaluma, CA" aria-label="Town" enterkeyhint="search"></div>
-      <button class="go" type="submit" aria-label="Check this town">→</button>
+      <div class="box"><input id="town" type="text" placeholder="Type your town" aria-label="Your town" enterkeyhint="search"><button class="go" type="submit">Find them &rarr;</button></div>
     </form>
+    <div class="tries">Try one:
+      <button type="button" data-t="Petaluma, CA">Petaluma <b>138</b></button>
+      <button type="button" data-t="Santa Rosa, CA">Santa Rosa <b>373</b></button>
+      <button type="button" data-t="Boise, ID">Boise <b>356</b></button>
+    </div>
     <div class="found" id="found" aria-live="polite">
       <div class="big" id="foundbig"></div>
       <ul id="foundrows" aria-label="Example leads"></ul>
       <p class="unlocknote">Every name, phone and address — free. Then build any of them a finished site.</p>
       <a class="unlock" id="unlock" href="https://app.unwebbed.app/signup">Build your first site — free &rarr;</a>
     </div>
-    <!-- 🔴 A real <a> to the town directory, for two reasons. Crawlers find
-         pages by following links, and until this existed the 212 town pages
-         were reachable only from app.unwebbed.app's sitemap — nothing on the
-         apex domain, which carries the authority, pointed at them at all. And
-         a visitor who can't think of a town to type now has somewhere to go
-         instead of bouncing. -->
-    <p class="towndir"><a href="https://app.unwebbed.app/towns">Or browse the
-      count for every town we've measured →</a></p>
-    <div class="down">Scroll — how it works ↓</div>
+    <p class="towndir"><a href="https://app.unwebbed.app/towns">Or browse the count for every town we've measured &rarr;</a></p>
+    <div class="strip" aria-label="Sites Unwebbed built"><img src="/img-ex/larkspur-family-dental.jpg" alt="Larkspur Family Dental site"><img src="/img/ex-marlowe-full.jpg" alt="Marlowe Hair &amp; Skin site on a phone"><img src="/img-ex/marlowe-hair-and-skin.jpg" alt="Marlowe Hair &amp; Skin site"></div>
   </div>
-  <div class="vis">
-    <div class="photo">
-      <img class="ph" src="/img/hero-photo-1.jpg" alt="Scissors and a wide-tooth comb on folded linen, from a site Unwebbed built" width="1400" height="764" fetchpriority="high">
-      <div class="phone"><img src="/img/ex-marlowe-full.jpg" alt="The finished Marlowe Hair &amp; Skin site on a phone" width="1200" height="2512" loading="lazy" decoding="async"></div>
-    </div>
-  </div>
-</section>
+</section><script>
+document.querySelectorAll('.tries button').forEach(function(b){b.addEventListener('click',function(){
+  var i=document.getElementById('town'); i.value=b.dataset.t;
+  var f=document.getElementById('tc'); if(f.requestSubmit) f.requestSubmit(); else f.dispatchEvent(new Event('submit',{cancelable:true}));});});
+</script>
 
 <!-- 02 · build -->
 <section class="scene" id="s2">
