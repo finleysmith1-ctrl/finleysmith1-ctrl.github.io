@@ -566,6 +566,29 @@ document.querySelectorAll('.tries button').forEach(function(b){b.addEventListene
   </div>
 </section>
 
+<!-- finish — the half the lead-list tools don't do (2026-10-01). Every line is
+     live on production; "their own domain" waits for the Porkbun key. -->
+<section class="sec" id="finish">
+  <style>
+  #finish .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;max-width:1040px}
+  #finish .step{border:1px solid var(--line-2);border-radius:18px;padding:28px 26px;background:var(--bg-2)}
+  #finish .step .k{font-size:14px;color:var(--green);font-weight:500}
+  #finish .step h3{font-weight:500;letter-spacing:-.03em;font-size:clamp(22px,2vw,28px);line-height:1.1;margin-top:10px}
+  #finish .step p{margin-top:12px;color:var(--fg-2);font-size:16px;line-height:1.5}
+  #finish .step p b{color:var(--fg);font-weight:500}
+  @media(max-width:820px){#finish .steps{grid-template-columns:1fr}}
+  </style>
+  <div class="head">
+    <div><div class="lab"><b>Then finish it</b></div><h2 class="h-l" style="margin-top:16px">Anyone can show a mockup. Getting paid is the hard part.</h2></div>
+    <p class="p">A demo site wins the conversation, but it doesn't host anything and it doesn't send a bill. That's where most of these jobs stall. <b>Other tools stop at the list and the mockup. Unwebbed does the rest.</b></p>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="k">1 · Show it live</div><h3>A real site at its own address</h3><p>Publish it so the owner can open it on their own phone and see it working <b>before they pay</b>. One-click publish comes with Studio.</p></div>
+    <div class="step"><div class="k">2 · Send one bill</div><h3>Hosting, paid once</h3><p>Their hosting is a single card payment through Stripe, for 1, 2 or 3 years. <b>You charge for the site yourself, and keep all of it.</b></p></div>
+    <div class="step"><div class="k">3 · Get paid again</div><h3>$90–195 of every hosting payment</h3><p>Your share of the hosting is recorded the moment they pay, and <b>again at every renewal</b> for as long as you're their designer.</p></div>
+  </div>
+</section>
+
 <div class="flow">
 
 <!-- examples -->
